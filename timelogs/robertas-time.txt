@@ -1,0 +1,14 @@
+Robertas Timukas
+
+- 2021-09-04:
+    - 2h, papermc javadoc analizavimas, projekto analogu paieskos ir Citizens2 plugin source code analizavimas;
+
+- 2021-09-09:
+    - 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet;
+
+- 2021-09-12:
+    - 2h, team meeting;
+    - 5h, darbas su gradle, projekto failu strukturos tvarkymas, MIF GIT grupes tvarkymas, Debian serverio pakurimas ant OpenNebula;
+
+- 2021-09-13:
+    - 40m, projekto git repozitorijos sukurimas ir pradinis ikelimas;
