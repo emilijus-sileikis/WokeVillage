@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
 
         if (label.equalsIgnoreCase("gui")) {
             if (sender instanceof Player) {
@@ -71,7 +72,6 @@ public class Main extends JavaPlugin implements Listener {
 
             player.closeInventory();
         }
-        return;
     }
 
     public void createInv() {
