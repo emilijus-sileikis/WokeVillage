@@ -1,4 +1,7 @@
 name: Paskui
 author: Paskui Solutions
-main: lt.vu.mif.it.paskui.paskui
-version: ${project.version}
+main: lt.vu.mif.it.paskui.paskui.Main
+version: ${version}
+
+commands:
+  gui:
