@@ -14,3 +14,8 @@ Emilijus Šileikis
 
 - 2021-09-13:
     - 2h, Padariau Inventory-like gui prototipą ir išbandžiau jį lokaliam serveryje.
+
+- 2021-09-15:
+    - 2h, Meet (Darbu pasiskirstymas, testavimas, gitkraken setup).
+
+Viso valandu: 15h.
