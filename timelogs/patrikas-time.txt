@@ -1,0 +1,14 @@
+Patrik Vorornovic
+
+
+- 2021-09-09:
+    - 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet, papildomai aptariam viziją ir planuojam technologijų naudojimą
+
+
+- 2021-09-12:
+    - 5h pridėjau ir siunčiausi visą reikiamą softą (InteliJ), mokiausi Gradle/GIT veikimo principų, testavau ir padėjau kurti MC serverio hostą.
+    - 2h meet
+
+
+- 2021-09-13:
+    - 1h Susitvarkiau GitKraken paskyrą, mokiausi naudotis GitLabu ir tvarkyti kodą
