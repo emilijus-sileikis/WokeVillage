@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,13 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends JavaPlugin implements Listener {
+
+    private static Main instsance;
+    public  NPCManager npcManager;
     public Inventory inv;
+
+    public static Main getInstsance() {
+        return instsance;
+    }
+
+    public static void setInstsance(Main instsance) {
+        Main.instsance = instsance;
+    }
 
     @Override
     public void onEnable() {
         super.onEnable();
         this.getServer().getPluginManager().registerEvents(this,this);
         createInv();
+
+        setInstsance(this);
+        this.getCommand("npc").setExecutor(new NPC_CMD());
+        this.npcManager = new NPCManager();
     }
 
     @Override
@@ -97,6 +113,11 @@ public class Main extends JavaPlugin implements Listener {
         meta.lore(Lore);
         item.setItemMeta(meta);
         inv.setItem(8, item);
+
+    }
+
+    public class NPC {
+
 
     }
 }
