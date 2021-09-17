@@ -5,22 +5,22 @@
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/7.1.1/samples
  */
 plugins {
-    id 'java'
+    id('java')
 }
 
-group 'lt.vu.mif.it.paskui'
-version '1.0'
+group('lt.vu.mif.it.paskui')
+version('1.0')
 
 repositories {
     mavenCentral()
     maven {
-        url 'https://papermc.io/repo/repository/maven-public/'
+        url('https://papermc.io/repo/repository/maven-public/')
     }
 }
 
 dependencies {
-    implementation 'io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    implementation('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.2')
 }
 
 test {
@@ -29,9 +29,9 @@ test {
 
 processResources {
     def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
+    inputs.properties(props)
+    filteringCharset('UTF-8')
     filesMatching('plugin.yml') {
-        expand props
+        expand(props)
     }
 }
