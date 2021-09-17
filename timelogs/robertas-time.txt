@@ -12,3 +12,9 @@ Robertas Timukas
 
 - 2021-09-13:
     - 40m, projekto git repozitorijos sukurimas ir pradinis ikelimas;
+
+- 2021-09-14:
+    - 1h 10m, porting merging code from Emilis local repo to main project:
+
+- 2021-09-15:
+    - 2h, Fixing project file misconfigurations and adding project versioning automation;
