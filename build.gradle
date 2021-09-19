@@ -9,7 +9,7 @@ plugins {
 }
 
 group('lt.vu.mif.it.paskui')
-version('1.0')
+version('0.01.0')
 
 repositories {
     mavenCentral()
