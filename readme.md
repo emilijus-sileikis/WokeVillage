@@ -8,6 +8,9 @@ Our main goal is creation of a functional NPC (Non Playable Character) plugin in
 
 Requirements:
 -
+This plugin runs on the Java edition of Minecraft, either on your local game or a dedicated server.
+
+It can’t be used on Realms, Windows 10 Edition, Bedrock Edition, or Pocket Edition versions. These versions of Minecraft have limited or no mod support. Note that “Windows 10 Edition” refers to a specific Edition of Minecraft, not the Java Edition running on a Windows 10 computer.
 
 Instalation:
 - 
