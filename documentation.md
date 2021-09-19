@@ -7,19 +7,19 @@ Visit our [Google Sheets Issue Tracker](https://docs.google.com/spreadsheets/d/1
 
 API Documentation:
 -
-Coming Soon.
+Coming Soon. (make it easier to maintain the support between our and other projects)
 
 Code Documenting:
 -
-Coming Soon.
+Coming Soon. (explaining key points of our code.)
 
 Contribution:
 -
-Our team is not open for contribution.
+Our team is not open for internal contribution until further notice.
 
 Citation Information:
 -
-Coming Soon.
+Coming Soon. (mentioning any help we get from extrenal sources)
 
 Licensing:
 - 
@@ -39,6 +39,9 @@ FAQ:
 
 - Is it possible to modify the plugin? 
 <p> Yes, this plugin is open source and it is possible to modify it to your liking. </p>
+
+- Can I change what skin an NPC has? 
+<p> Yes, link your desired skin with the NPC through the config file (Coming Soon). </p>
 
 Contacts:
 -
