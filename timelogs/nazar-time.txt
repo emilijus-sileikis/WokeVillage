@@ -1,3 +1,4 @@
 09-09 2h - papildomai aptariam viziją ir planuojam technologijų naudojimą
 09-12 7h - Mokinausi kaip efektyviai dirbti su Minecraft Plugins, pridejau InteliJ plugins, gradle ir sukuriau 24/7 hostinama Minecraft Server, kad testuoti rezultatus. Susitkimas su komanda.
 09-15 2h - Susitikimas su komanda, naujos plugino testavimas serveryje.
+09-19 3h - Dokumentacija, README ir licenzijos nustatymas.
