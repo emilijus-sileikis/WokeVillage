@@ -1,20 +1,22 @@
 Robertas Timukas
 
-- 2021-09-04:
-    - 2h, papermc javadoc analizavimas, projekto analogu paieskos ir Citizens2 plugin source code analizavimas;
-
-- 2021-09-09:
-    - 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet;
-
-- 2021-09-12:
-    - 2h, team meeting;
-    - 5h, darbas su gradle, projekto failu strukturos tvarkymas, MIF GIT grupes tvarkymas, Debian serverio pakurimas ant OpenNebula;
-
-- 2021-09-13:
-    - 40m, projekto git repozitorijos sukurimas ir pradinis ikelimas;
-
-- 2021-09-14:
-    - 1h 10m, porting merging code from Emilis local repo to main project:
-
-- 2021-09-15:
-    - 2h, Fixing project file misconfigurations and adding project versioning automation;
+2021-09:
+- day 4:
+    > 2h, papermc javadoc analizavimas, projekto analogu paieskos ir Citizens2 plugin source code analizavimas;
+- day 9:
+    > 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet;
+- day 12:
+    > 2h, team meeting;
+    > 5h, darbas su gradle, projekto failu strukturos tvarkymas, MIF GIT grupes tvarkymas, Debian serverio pakurimas ant OpenNebula;
+- day 13:
+    > 40m, projekto git repozitorijos sukurimas ir pradinis ikelimas;
+- day 14:
+    > 1h 10m, porting merging code from Emilis local repo to main project:
+- day 15:
+    > 2h, Fixing project file misconfigurations and adding project versioning automation;
+- day 19:
+    > 2h, group meeting;
+    > 1h 30m, call with Emilijus to discuss about NMS integration methods;
+- days 20-21:
+    > 3h, research of NMS and Citizens (plugin) inner-working;
+    > 15m, managing project git repo;
