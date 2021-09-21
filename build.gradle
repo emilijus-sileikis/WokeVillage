@@ -12,6 +12,7 @@ group('lt.vu.mif.it.paskui')
 version('0.01.0')
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         url('https://papermc.io/repo/repository/maven-public/')
@@ -20,6 +21,9 @@ repositories {
 
 dependencies {
     implementation('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
+
+    implementation('org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT')
+
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.2')
 }
 
