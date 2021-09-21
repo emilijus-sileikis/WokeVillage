@@ -1,12 +1,16 @@
 package lt.vu.mif.it.paskui.paskui;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import net.kyori.adventure.text.Component;
+import net.minecraft.server.level.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,11 +24,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 
+    public static DataManager data;
     private static Main instsance;
-    public  NPCManager npcManager;
+    public NPCManager npcManager;
     public Inventory inv;
 
     public static Main getInstsance() {
@@ -37,9 +43,13 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        this.data = new DataManager(this);
         super.onEnable();
-        this.getServer().getPluginManager().registerEvents(this,this);
+        this.getServer().getPluginManager().registerEvents(new Join(),this);
         createInv();
+
+        if(data.getDataConfig().contains("data"))
+        loadNPC();
 
         setInstsance(this);
         this.getCommand("npc").setExecutor(new NPC_CMD());
@@ -48,13 +58,23 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+
         super.onDisable();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            for (EntityPlayer npc : NPCManager.getNPCs()) {
+
+                NPCManager.removeNPC(player, npc);
+
+            }
+        }
+
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, String label, String[] args) {
-	
-		if (label.equalsIgnoreCase("gui")) {
+
+        if (label.equalsIgnoreCase("gui")) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 player.openInventory(inv);
@@ -69,9 +89,9 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public  void onClick(InventoryClickEvent event) {
+    public void onClick(InventoryClickEvent event) {
 
-        if (!event.getInventory().equals(inv)) //test2222
+        if (!event.getInventory().equals(inv))
             return;
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getItemMeta() == null) return;
@@ -94,7 +114,7 @@ public class Main extends JavaPlugin implements Listener {
 
     public void createInv() {
 
-		inv = Bukkit.createInventory(null, InventoryType.BARREL, Component.text(ChatColor.AQUA + "" + ChatColor.BOLD + "Configuration Menu"));
+        inv = Bukkit.createInventory(null, InventoryType.BARREL, Component.text(ChatColor.AQUA + "" + ChatColor.BOLD + "Configuration Menu"));
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(ChatColor.DARK_GREEN + "Hello!"));
@@ -116,8 +136,27 @@ public class Main extends JavaPlugin implements Listener {
 
     }
 
-    public class NPC {
+    public static FileConfiguration getData() {
+        return data.getDataConfig();
+    }
 
+    public static void saveData() {
+        data.saveConfig();
+    }
+
+    public void loadNPC() {
+        FileConfiguration file = data.getDataConfig();
+        data.getDataConfig().getConfigurationSection("data").getKeys(false).forEach(npc -> {
+            Location location = new Location(Bukkit.getWorld(file.getString("data." + npc + ".world")), file.getInt("data." + npc + ".x"), file.getInt("data." + npc + ".y"),
+                    file.getInt("data." + npc + ".z"));
+            location.setPitch((float) file.getDouble("data." + npc + ".p"));
+            location.setYaw((float) file.getDouble("data." + npc + ".y"));
+
+            String name = file.getString("data." + npc + ".name");
+            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + name);
+            gameProfile.getProperties().put("textures",new Property("textures", file.getString("data." + npc +".tex"), file.getString("data." + npc + ".signature")));
+            NPCManager.loadNPC(location, gameProfile);
+        });
 
     }
 }

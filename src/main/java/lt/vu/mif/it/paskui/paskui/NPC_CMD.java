@@ -18,12 +18,17 @@ public class NPC_CMD implements CommandExecutor {
 
             if (command.getName().equalsIgnoreCase("npc")) {
 
-                plugin.npcManager.createNPC(player,"");
+                if (args.length == 0) {
 
+                    NPCManager.createNPC(player, player.getName());
+                    player.sendMessage("NPC CREATED");
+                    return true;
+                }
+                NPCManager.createNPC(player, args[0]);
+                player.sendMessage("NPC CREATED");
+                return true;
             }
         }
-
         return true;
     }
-
 }
