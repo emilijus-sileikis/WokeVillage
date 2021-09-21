@@ -5,8 +5,10 @@ Full Description:
 -
 Our main goal is creation of a functional NPC (Non Playable Character) plugin in “Minecraft: Java Edition”, using our developed “PaperMc” server API. These NPC's sometimes spawn in vanilla Minecraft villages and can provide great amounts of resources for a certain price. This feature saves the players time and prevents the need of grinding, while the game itself becomes a more relaxed experience and still remains challenging. 
 
-NPC's have roles and personalities. 
-(pictures)
+NPC's have roles and personalities.<br> <br>
+<img src="pictures/rolepersonalitygraph.png" width="750" height="500" />
+<img src="pictures/rolepersonality.png" width="400" height="450" />
+
 
 Roles determine what type of resource the NPC will be willing to gather, which further decreases the chance of the player to accidentally stumble upon the needed NPC. This encourages traveling and adventuring instead of grinding resources.
 Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task.
