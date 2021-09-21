@@ -8,15 +8,19 @@ Our main goal is creation of a functional NPC (Non Playable Character) plugin in
 
 Requirements:
 -
-REQ-MustHave-Edition1: Use only Java Edition of Minecraft.<br>
-  <em> Explanation: It can’t be used on Realms, Windows 10 Edition, Bedrock Edition, or Pocket Edition versions. These versions of Minecraft have limited or no mod support. Note that “Windows 10 Edition” refers to a specific Edition of Minecraft, not the Java Edition running on a Windows 10 computer. </em>
+1. Editions: This plugin will run only on Minecraft: Java Edition.<br>
+ <em> Explanation: It can’t be used on Realms, Windows 10 Edition, Bedrock Edition, or Pocket Edition versions. These versions of Minecraft have limited or no mod support. Note that “Windows 10 Edition” refers to a specific Edition of Minecraft, not the Java Edition running on a Windows 10 computer. </em><br>
+ Priority: Must Have.<br>
 
-REQ-MustHave-Server2: Use servers mentioned below. <br>
- <em>REQ-MustHave2.1: Local game;<br>
- REQ-MustHave2.2: Dedicated server.</em>
+2. Servers: This plugin works only on server types mentioned below:<br>
+ 2.1 This plugin works in local games; <br>
+ 2.2 This plugin works in dedicated servers.<br>
+ Priority: Must Have. <br>
+ 
 
-REQ-HighlyRecommended-Version1: Use the latest version of Java Edition Minecraft, upwards from Minecraft: Java Edition 1.17.1.<br>
-  <em>Explanation: The plugin has been developed on Minecraft: Java Edition 1.17.1 and will be supporting newer upcoming versions. Use in earlier instalations of the game could result in crashes/bugs and is not recommended.</em>
+3. Versions:This plugin works correctly only with the 1.17.1 version of Minecraft: Java Edition.<br>
+ <em>Explanation: The plugin has been developed on Minecraft: Java Edition 1.17.1, therefore is the most stable. Use in earlier or later instalations of the game could result in crashes/bugs and is not recommended.</em><br>
+ Priority: Highly Recommended.<br>
 
 Instalation:
 - 
