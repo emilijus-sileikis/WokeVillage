@@ -1,25 +1,23 @@
 <h1> Documentation of "Paskui Solutions" plugin </h1>
 All the information you need to know about this project.
 
+Full Description:
+-
+Our main goal is creation of a functional NPC (Non Playable Character) plugin in “Minecraft: Java Edition”, using our developed “PaperMc” server API. These NPC's sometimes spawn in vanilla Minecraft villages and can provide great amounts of resources for a certain price. This feature saves the players time and prevents the need of grinding, while the game itself becomes a more relaxed experience and still remains challenging. 
+
+NPC's have roles and personalities. 
+(pictures)
+
+Roles determine what type of resource the NPC will be willing to gather, which further decreases the chance of the player to accidentally stumble upon the needed NPC. This encourages traveling and adventuring instead of grinding resources.
+Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task.
+
 Issue Tracker:
 -
-Visit our [Google Sheets Issue Tracker](https://docs.google.com/spreadsheets/d/1IDIALgoFDAMxbeay3wwmpQQ_9iq5sRCrBay3JseMF_8/edit#gid=40141946)
-
-API Documentation:
--
-Coming Soon. (make it easier to maintain the support between our and other projects)
-
-Code Documenting:
--
-Coming Soon. (explaining key points of our code.)
+Visit our [Git Issue Tracker](https://git.mif.vu.lt/paskui/paskui-projektas/-/issues)
 
 Contribution:
 -
 Our team is not open for internal contribution until further notice.
-
-Citation Information:
--
-Coming Soon. (mentioning any help we get from extrenal sources)
 
 Licensing:
 - 
@@ -49,5 +47,5 @@ If you have any questions regarding this product, contact paskui@gmail.com.
 
 Versions:
 -
-0.1 Added Static NPC entity.
+0.1 Added inventory-like GUI.
 
