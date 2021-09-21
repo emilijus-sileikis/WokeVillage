@@ -1,10 +1,18 @@
-**"Minecraft" Plugin from "Paskui Solutions"**
+<h1>"Minecraft" Plugin from "Paskui Solutions"</h1>
 
 Server modification for "Minecraft", which adds extra NPC's to the world.
 
 Description:
 - 
-Our main goal is creation of a functional NPC (Non Playable Character) plugin in “Minecraft”, using our developed “PaperMc” server API. In the finished product, our NPC will be able to complete certain tasks/get hired for gold or food. Possible work fields: mining, tree chopping, harvesting food, etc.
+Our main goal is creation of a functional NPC (Non Playable Character) plugin in “Minecraft: Java Edition”, using our developed “PaperMc” server API. These NPC's sometimes spawn in vanilla Minecraft villages and can provide great amounts of resources for a certain price. This feature saves the players time and prevents the need of grinding, while the game itself becomes a more relaxed experience and still remains challenging.<br> <br>
+NPC's have roles: 
+- Miners;
+- Woodcutters;
+- Fishers;
+- Hunters;
+- Farmers.
+<p>Roles determine what type of resource the NPC will be willing to gather, which further decreases the chance of the player to accidentally stumble upon the needed NPC. This encourages traveling and adventuring instead of grinding resources.
+Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task.</p>
 
 Requirements:
 -
@@ -30,8 +38,11 @@ Instalation:
 
 Guide:
 - 
-The interface would be available in command or inventory-like interface when you right click them. Commands would allow admins to manually spawn the NPC (later might be more than one type) and configure some settings. An inventory-like interface would allow players to select available NPC settings (and administrators could have extra options).
-Since these NPC’s will be useful we plan to make them hard-to-find in order to keep the thrill and interest of the vanilla game itself. They might spawn in different biomes or in certain villages.
+1. Find an NPC in a village (administrators can use /npc command to spawn immediately);
+2. Right click on NPC to open inventory-like interface;
+3. Find a job you want done and check its price right next to the job;
+4. Get the required items (NPC's job price) and click on the job;
+5. Wait for your items to be shipped into your inventory.
 
 
-If you have any additional questions or problems contact our email: paskui@gmail.com.
+If you have any additional questions or problems contact our email: paskuisolutions@gmail.com.
