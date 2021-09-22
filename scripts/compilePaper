@@ -3,8 +3,8 @@ cwd=$(pwd)
 
 cd libs/Paper || exit
 
-./gradlew applyPatches || exit
-./gradlew reobfJar
+./gradlew --no-daemon applyPatches || exit
+./gradlew --no-daemon reobfJar
 
 cd "$cwd" || exit
 unset -v cwd

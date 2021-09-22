@@ -21,17 +21,20 @@ tasks.register('compilePaper') {
     def mainCMD = './scripts/compilePaper'
 
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        mainCMD += '.bat'
+        mainCMD = 'scripts\\compilePaper\\compilePaper.bat'
     }
 
-    exec {
-        workingDir('.')
-        commandLine(mainCMD)
+    doLast {
+        exec {
+            workingDir('.')
+            commandLine(mainCMD)
+        }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs/Paper/Paper-Server/build/libs', include: 'Paper-Server-reobf.jar')
+//    implementation('io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT')
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.7.2')
 }
 

@@ -1,8 +1,9 @@
-cwd=%cd%
+@echo off
+set cwd=%cd%
 
 cd libs\Paper
 
-gradlew.bat applyPatches
-gradlew.bat reobfJar
+gradlew.bat --no-daemon applyPatches
+gradlew.bat --no-daemon reobfJar
 
 cd %cwd%
