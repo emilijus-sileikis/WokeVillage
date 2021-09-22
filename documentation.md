@@ -45,9 +45,11 @@ FAQ:
 
 Contacts:
 -
-If you have any questions regarding this product, contact paskui@gmail.com.
+If you have any questions regarding this product, contact paskuisolutions@gmail.com.
 
 Versions:
 -
 0.1 Added inventory-like GUI.
+0.2 Added static NPC.
+0.3 Added GUI to NPC when right-clicked.
 
