@@ -49,7 +49,7 @@ If you have any questions regarding this product, contact paskuisolutions@gmail.
 
 Versions:
 -
-0.1 Added inventory-like GUI.<br>   
+0.1 Added inventory-like GUI.   
 0.2 Added static NPC.<br>
 0.3 Added GUI to NPC when right-clicked.<br>
 
