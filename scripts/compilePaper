@@ -1,0 +1,10 @@
+#!/bin/bash
+cwd=$(pwd)
+
+cd libs/Paper || exit
+
+./gradlew applyPatches || exit
+./gradlew reobfJar
+
+cd "$cwd" || exit
+unset -v cwd
