@@ -1,9 +1,6 @@
 package lt.vu.mif.it.paskui.paskui;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
@@ -17,45 +14,56 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_17_R1.scoreboard.CraftScoreboard;
 import org.bukkit.entity.Player;
 
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCManager {
 
-    private static List<EntityPlayer> NPC = new ArrayList<EntityPlayer>();
+    public static Map<Integer, EntityPlayer> npcs = new HashMap<>();
 
     public static void createNPC (Player player, String skin) {
-        MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer nmsWorld = ((CraftWorld) Bukkit.getWorld(player.getWorld().getName())).getHandle();
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + skin);
-        EntityPlayer npc = new EntityPlayer(nmsServer, nmsWorld, gameProfile);
-        PlayerInteractManager mng = new PlayerInteractManager(npc);
+
+        EntityPlayer craftPlayer = ((CraftPlayer)player).getHandle();
+
+        // NPC textures
+        //Property textures = (Property) craftPlayer.getProfile().getProperties().get("textures").toArray()[0];
+        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ""); //+ skin
+        //gameProfile.getProperties().put("textures", new Property("textures", textures.getValue(), textures.getSignature()));
+
+        EntityPlayer npc = new EntityPlayer(
+
+                ((CraftServer)Bukkit.getServer()).getServer(),
+                ((CraftWorld)player.getWorld()).getHandle(),
+                gameProfile);
 
         npc.setLocation(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getYaw(), player.getLocation().getPitch());
+        //String[] name = getSkin(player, skin);
+        //gameProfile.getProperties().put("textures", new Property("textures", name[0], name[1]));
 
-        String[] name = getSkin(player, skin);
-        gameProfile.getProperties().put("textures", new Property("textures", name[0], name[1]));
+        Arrays.stream(player.getInventory().getContents()).forEach(itemStack -> {
 
-        addNPCPacket(npc);
-        NPC.add(npc);
+            npc.getInventory().pickup(CraftItemStack.asNMSCopy(itemStack));
+
+        });
 
         // removes the name tag
 
-        ScoreboardTeam team = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), player.getName());
-        team.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.b);
-        PacketPlayOutScoreboardTeam score1 = PacketPlayOutScoreboardTeam.a(team);
-        PacketPlayOutScoreboardTeam score2 = PacketPlayOutScoreboardTeam.a(team, true);
-        PacketPlayOutScoreboardTeam score3 = PacketPlayOutScoreboardTeam.a(team, gameProfile.getName(), PacketPlayOutScoreboardTeam.a.a);
-        PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
-        connection.sendPacket(score1);
-        connection.sendPacket(score2);
-        connection.sendPacket(score3);
+        for (Player player1 : Bukkit.getOnlinePlayers()) {
+
+            ScoreboardTeam team = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), player.getName());
+            team.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.b);
+            PacketPlayOutScoreboardTeam score1 = PacketPlayOutScoreboardTeam.a(team);
+            PacketPlayOutScoreboardTeam score2 = PacketPlayOutScoreboardTeam.a(team, true);
+            PacketPlayOutScoreboardTeam score3 = PacketPlayOutScoreboardTeam.a(team, gameProfile.getName(), PacketPlayOutScoreboardTeam.a.a);
+            PlayerConnection connection = ((CraftPlayer) player1).getHandle().b;
+            connection.sendPacket(score1);
+            connection.sendPacket(score2);
+            connection.sendPacket(score3);
+
+        }
 
         int var = 1;
         if ( Main.data.getDataConfig().contains("data")) {
@@ -69,10 +77,16 @@ public class NPCManager {
             Main.getData().set("data." + var + ".y", player.getLocation().getYaw());
             Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
             Main.getData().set("data." + var + ".name", skin);
-            Main.getData().set("data." + var + ".tex", name[0]);
-            Main.getData().set("data." + var + ".signature", name[1]);
+            Main.getData().set("data." + var + ".tex", "");
+            Main.getData().set("data." + var + ".signature", "");
             Main.saveData();
         }
+
+        addNPCPacket(npc);
+        npcs.put(npc.getId(), npc);
+
+
+
 
     }
 
@@ -87,11 +101,11 @@ public class NPCManager {
         npc.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         addNPCPacket(npc);
-        NPC.add(npc);
+        npcs.put(npc.getId(), npc);
 
     }
 
-    private static String[] getSkin(Player player, String name) {
+    /*private static String[] getSkin(Player player, String name) {
 
         try {
 
@@ -116,7 +130,7 @@ public class NPCManager {
 
         }
 
-    }
+    }*/
 
     public static void addNPCPacket(EntityPlayer npc) {
 
@@ -125,30 +139,38 @@ public class NPCManager {
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc)); //creates tab list
             connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc)); //spawns npc
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc)); //removes tab list
-            connection.sendPacket(new PacketPlayOutEntityHeadRotation(npc, (byte) (npc.aY * 256 / 360)));
         }
     }
 
     public static void addJoinPacket(Player player) {
 
-        for (EntityPlayer npc : NPC) {
+        for (EntityPlayer npc : npcs.values()) {
 
             PlayerConnection connection = ((CraftPlayer)player).getHandle().b;
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, npc)); //creates tab list
             connection.sendPacket(new PacketPlayOutNamedEntitySpawn(npc)); //spawns npc
             connection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, npc)); //removes tab list
-            connection.sendPacket(new PacketPlayOutEntityHeadRotation(npc, (byte) (npc.aY * 256 / 360)));
+
+            ScoreboardTeam team = new ScoreboardTeam(((CraftScoreboard) Bukkit.getScoreboardManager().getMainScoreboard()).getHandle(), player.getName());
+            team.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.b);
+            PacketPlayOutScoreboardTeam score1 = PacketPlayOutScoreboardTeam.a(team);
+            PacketPlayOutScoreboardTeam score2 = PacketPlayOutScoreboardTeam.a(team, true);
+            PacketPlayOutScoreboardTeam score3 = PacketPlayOutScoreboardTeam.a(team, player.getName(), PacketPlayOutScoreboardTeam.a.a);
+            PlayerConnection connection1 = ((CraftPlayer) player).getHandle().b;
+            connection1.sendPacket(score1);
+            connection1.sendPacket(score2);
+            connection1.sendPacket(score3);
         }
     }
 
-    public  static void removeNPC(Player player, EntityPlayer npc) {
+    /*public  static void removeNPC(Player player, EntityPlayer npc) {
 
         PlayerConnection connection = ((CraftPlayer)player).getHandle().b;
         connection.sendPacket(new PacketPlayOutEntityDestroy(npc.getId()));
 
-    }
+    }*/
 
-    public static List<EntityPlayer> getNPCs() {
-        return NPC;
+    public static Map<Integer, EntityPlayer> getNPCs() {
+        return npcs;
     }
 }
