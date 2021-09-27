@@ -7,4 +7,11 @@
  * in the user manual at https://docs.gradle.org/7.1.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'Paskui'
+pluginManagement {
+    repositories {
+        maven("https://papermc.io/repo/repository/maven-public/")
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = "Paskui"
