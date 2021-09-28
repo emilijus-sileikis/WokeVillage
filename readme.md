@@ -34,7 +34,7 @@ Instalation:
 - 
 - Download the .ZIP file from "Paskui Solutions";
 - Extract the ".jar" file;
-- Copy the ".jar" file into the servers "/plugin" directory.
+- Copy the ".jar" file into the servers "/plugins" directory.
 
 Guide:
 - 
@@ -43,6 +43,10 @@ Guide:
 3. Find a job you want done and check its price right next to the job;
 4. Get the required items (NPC's job price) and click on the job;
 5. Wait for your items to be shipped into your inventory.
+
+For Developers:
+-
+Find more technical information in "documentation.md" in our git repository.
 
 
 If you have any additional questions or problems contact our email: paskuisolutions@gmail.com.
