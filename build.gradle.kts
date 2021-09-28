@@ -26,14 +26,15 @@ tasks {
     build {
         dependsOn(reobfJar)
     }
-    
+
     test {
         useJUnitPlatform()
     }
 
     processResources {
-        inputs.property("version") {
-            version
+        filteringCharset = "UTF-8"
+        filesMatching("plugin.yml") {
+            expand(project.properties)
         }
     }
 }
