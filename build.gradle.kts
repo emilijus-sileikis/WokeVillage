@@ -23,6 +23,10 @@ dependencies {
 }
 
 tasks {
+    build {
+        dependsOn(reobfJar)
+    }
+    
     test {
         useJUnitPlatform()
     }
