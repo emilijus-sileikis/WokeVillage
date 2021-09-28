@@ -11,7 +11,7 @@ NPC's have roles and personalities.<br> <br>
 
 
 Roles determine what type of resource the NPC will be willing to gather, which further decreases the chance of the player to accidentally stumble upon the needed NPC. This encourages traveling and adventuring instead of grinding resources.
-Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task.
+Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task (see pciture above).
 
 Setup
 -
@@ -19,7 +19,7 @@ These are instructions on how to build this project yourself:
 
 1. Clone this repo with `git clone https://git.mif.vu.lt/paskui/paskui-projektas.git`;
 
----
+
 **NOTE:**
 
 Alternatively you can run `git clone https://git.mif.vu.lt/paskui/paskui-projektas.git` and then run `git submodule update --init --recursive`.
@@ -28,7 +28,7 @@ And before building or editing source code, must run `./gradlew compilePaper`.
 
 **(Work currently only on `paper-nms` branch)**
 
----
+
 
 2. Run `./gradlew build` or `./gradlew jar` to get jar file compiled or just open the folder where the source was cloned with IntelliJ IDEA or other preferred IDE.
 
@@ -54,13 +54,13 @@ FAQ:
 <p> Currently this plugin will support 1.17.1 with a prospect to support older versions in the future. </p>
 
 - How can I access the NPC interface?
-<p> Right click the NPC while holding a stick in your hand. </p>
+<p> Right click the NPC with your hand. </p>
 
 - Is it possible to modify the plugin? 
 <p> Yes, this plugin is open source and it is possible to modify it to your liking. </p>
 
 - Can I change what skin an NPC has? 
-<p> Yes, link your desired skin with the NPC through the config file (Coming Soon). </p>
+<p> Current;y this functionality is unavailable. </p>
 
 Contacts:
 -
