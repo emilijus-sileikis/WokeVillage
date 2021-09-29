@@ -6,3 +6,6 @@ build
 
 # Ignore .idea folder
 .idea
+
+# Ignore run folder which contains easy to run Paper software
+run

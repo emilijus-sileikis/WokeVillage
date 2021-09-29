@@ -11,8 +11,9 @@ public class NPC_CMD implements CommandExecutor {
     private Main plugin = Main.getInstsance();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+                             @NotNull String label, @NotNull String[] args)
+    {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
