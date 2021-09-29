@@ -33,5 +33,14 @@ Emilijus Šileikis
 -2021-09-21:
    -6h, NPCs matomi visiem prisijungusiems zaidejams, NPCs islieka net jei visi atsijungia, Data.yml ir kelios naujos klases, Pradetas darbas del custom skins.
 
-Viso valandu: 31h.
-Viso valandu sia savaite: 9h.
+-2021-09-27:
+   -2h, Bandziau sutvarkyti nametag buga, keli pakeitimai kode.
+
+-2021-09-28:
+   -3h, Testavau kaip veikia papermc api, dirbau prie funkciju pakeitimo.
+
+-2021-09-29:
+   2h, Bandziau sutvarkyti click event buga, ruosiau savo pristatymo dali.
+
+Viso valandu: 38h.
+Viso valandu sia savaite: 7h.
