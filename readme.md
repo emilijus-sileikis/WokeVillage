@@ -16,22 +16,18 @@ NPC's have roles:
 Roles determine what type of resource the NPC will be willing to gather, which further decreases the chance of the player to accidentally stumble upon the needed NPC. This encourages traveling and adventuring instead of grinding resources.
 Further more they have personality traits, some of them generous, some of them lazy, which will impact the loot you get from their gatherings and the time it takes for them to complete the task.
 
-## Requirements:
+## System/Software Requirements:
 
-1. Editions: This plugin will run only on Minecraft: Java Edition.
+1. Java 16 (or OpenJRE 16, or OpenJDK 16).
 
-<em> Explanation: It can’t be used on Realms, Windows 10 Edition, Bedrock Edition, or Pocket Edition versions. These versions of Minecraft have limited or no mod support. Note that “Windows 10 Edition” refers to a specific Edition of Minecraft, not the Java Edition running on a Windows 10 computer. </em><br>
+> Usually **Minecraft: Java Edition** min requirement is Java 1.8,
+> but after 1.17 version **Mojang** switched over to Java 16.
 
-Priority: Must Have.
+2. **PaperMC** jar file.
 
-2. Servers: This plugin works only on server types mentioned below:<br>
-2.1 This plugin works in local games;<br>
-2.2 This plugin works in dedicated servers.<br>
- Priority: Must Have. <br>
+> To create and run server and support this pluign.
 
-3. Versions:This plugin works correctly only with the 1.17.1 version of Minecraft: Java Edition.<br>
- <em>Explanation: The plugin has been developed on Minecraft: Java Edition 1.17.1, therefore is the most stable. Use in earlier or later instalations of the game could result in crashes/bugs and is not recommended.</em><br>
- Priority: Highly Recommended.<br>
+These requirements also apply for developers too.
 
 ## Instalation:
 
@@ -49,6 +45,6 @@ Priority: Must Have.
 
 ## For Developers:
 
-Find more technical information in "documentation.md" in our git repository.
+Find more technical information in [documentation.md](./documentation.md) in our git repository.
 
 If you have any additional questions or problems contact our email: paskuisolutions@gmail.com.
