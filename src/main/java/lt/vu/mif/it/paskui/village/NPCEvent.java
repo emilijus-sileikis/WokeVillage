@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.paskui;
+package lt.vu.mif.it.paskui.village;
 
 import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.entity.Player;

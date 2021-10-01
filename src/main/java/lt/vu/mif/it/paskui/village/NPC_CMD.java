@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.paskui;
+package lt.vu.mif.it.paskui.village;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

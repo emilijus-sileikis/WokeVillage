@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.paskui;
+package lt.vu.mif.it.paskui.village;
 
 import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import io.netty.channel.Channel;

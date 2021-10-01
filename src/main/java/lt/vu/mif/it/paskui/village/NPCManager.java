@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.paskui;
+package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.network.Connection;

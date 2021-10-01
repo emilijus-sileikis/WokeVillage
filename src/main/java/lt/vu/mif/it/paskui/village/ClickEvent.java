@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.paskui;
+package lt.vu.mif.it.paskui.village;
 
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
