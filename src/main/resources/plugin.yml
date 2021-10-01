@@ -1,9 +1,8 @@
-name: Paskui
+name: Woke_Village
 author: Paskui Solutions
 main: lt.vu.mif.it.paskui.paskui.Main
 version: ${version}
 api-version: 1.17
 
 commands:
-  gui:
   npc:

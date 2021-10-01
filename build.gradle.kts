@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "lt.vu.mif.it.paskui"
-version = "0.01.0"
+version = "0.3"
 
 java {
     toolchain {

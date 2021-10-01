@@ -1,17 +1,17 @@
 package lt.vu.mif.it.paskui.paskui;
 
-import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 public class NPCEvent extends Event{
     private final Player player;
-    private final EntityPlayer npc;
+    private final ServerPlayer npc;
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public NPCEvent(Player player, EntityPlayer npc) {
+    public NPCEvent(Player player, ServerPlayer npc) {
         this.player = player;
         this.npc = npc;
     }
@@ -32,7 +32,7 @@ public class NPCEvent extends Event{
         return player;
     }
 
-    public EntityPlayer getNpc() {
+    public ServerPlayer getNpc() {
 
         return npc;
     }

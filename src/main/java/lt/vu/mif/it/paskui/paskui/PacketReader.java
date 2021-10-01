@@ -1,9 +1,9 @@
 package lt.vu.mif.it.paskui.paskui;
 
+import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
-import net.minecraft.network.protocol.game.PacketPlayInUseEntity;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -26,28 +26,27 @@ public class PacketReader {
     public boolean inject() {
 
         CraftPlayer nmsPlayer = (CraftPlayer) player;
-        Channel channel = nmsPlayer.getHandle().b.a.k;
+        Channel channel = nmsPlayer.getHandle().networkManager.channel;
 
         if (channel.pipeline().get("PacketInjector") != null)
             return false;
 
-        channel.pipeline().addAfter("decoder", "PacketInjector", new MessageToMessageDecoder<PacketPlayInUseEntity>() {
+        channel.pipeline().addAfter("decoder", "PacketInjector", new MessageToMessageDecoder<PlayerUseUnknownEntityEvent>() {
             @Override
-            protected void decode(ChannelHandlerContext channelHandlerContext, PacketPlayInUseEntity packetPlayInUseEntity,
-                                  List<Object> list) throws Exception {
-                list.add(packetPlayInUseEntity);
-                read(packetPlayInUseEntity);
+            protected void decode(ChannelHandlerContext ctx, PlayerUseUnknownEntityEvent msg, List<Object> out) throws Exception {
+                out.add(msg);
+                read(msg);
 
             }
         });
         return true;
     }
 
-    private void read(PacketPlayInUseEntity packetPlayInUseEntity) {
+    private void read(PlayerUseUnknownEntityEvent msg) {
         count++;
         if (count == 4) {
             count = 0;
-            int entityID = (int) getValue(packetPlayInUseEntity, "a");
+            int entityID = (int) getValue(msg, "a");
             //call event
             //if (!NPCManager.npcs.containsKey(entityID))
             //return;
