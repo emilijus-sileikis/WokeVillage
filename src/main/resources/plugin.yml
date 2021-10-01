@@ -1,4 +1,4 @@
-name: Woke_Village
+name: ${name}
 author: Paskui Solutions
 main: lt.vu.mif.it.paskui.paskui.Main
 version: ${version}

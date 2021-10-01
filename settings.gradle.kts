@@ -14,4 +14,4 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Woke_Village"
+rootProject.name = "WokeVillage"
