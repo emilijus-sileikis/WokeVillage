@@ -3,20 +3,50 @@ Robertas Timukas
 2021-09:
 - day 4:
     > 2h, papermc javadoc analizavimas, projekto analogu paieskos ir Citizens2 plugin source code analizavimas;
+
 - day 9:
     > 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet;
+
 - day 12:
     > 2h, team meeting;
     > 5h, darbas su gradle, projekto failu strukturos tvarkymas, MIF GIT grupes tvarkymas, Debian serverio pakurimas ant OpenNebula;
+
 - day 13:
     > 40m, projekto git repozitorijos sukurimas ir pradinis ikelimas;
 - day 14:
-    > 1h 10m, porting merging code from Emilis local repo to main project:
+    > 1h 10m, porting merging code from Emilis local repo to main project;
+
 - day 15:
     > 2h, Fixing project file misconfigurations and adding project versioning automation;
+
 - day 19:
     > 2h, group meeting;
     > 1h 30m, call with Emilijus to discuss about NMS integration methods;
+
 - days 20-21:
     > 3h, research of NMS and Citizens (plugin) inner-working;
     > 15m, managing project git repo;
+
+- day 22-24:
+    > 10m, updating 'paper-nms' branch with 'dev' commits;
+    > 30m, researching .gitmodules and adding papermc/Paper repo as module;
+    > 20m, checking up on Emilijus work on 'static-npc' and fixing issue #11;
+    > 2h, creating and testing bash/batch scripts for automating papermc/Paper build process;
+    > 8h, of research of gradle tasks and making gradle task 'compilePaper' more reliable across platforms;
+
+- day 28:
+    > 15m, consulting papermc devs and researching paperweight (gradle plugin for integrating paper-api + NMS);
+    > 10m, looking up 'run-paper' gradle plugin for faster and easier minecraft server debug run;
+    > 2h, cleaning up source environment (removing bash/batch scripts, remapping used libraries and etc. Check commits for more details.) with the help Emilijus;
+
+- day 29:
+    > 1h, manually merging and resolving conflicts while updating 'static-npc' with 'dev' branch via git merge;
+
+- day 30:
+    > 15 min, readme and documentation file slight revisions;
+    > 15 min, checking and structuring issues;
+    > 5 min, adding issue requesting to check and update readme and doc files.
+
+2021-10:
+- day 1:
+    > updating main branch time logs from time-logging branch;
