@@ -1,6 +1,10 @@
 package lt.vu.mif.it.paskui.village;
 
+import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,32 +23,38 @@ import java.util.List;
 
 public class ClickEvent implements Listener {
 
+    /** PlayerUseUnknownEntityEvent call counter */
+    private int pCount = 0;
+    
     @EventHandler
-    public void onInteract(NPCEvent event) {
-        //if (event.getNpc().getInventory().isEmpty())
-        //return;
+    public void onInteract(PlayerUseUnknownEntityEvent event) {
+        ++pCount;
+        if (pCount < 4) return;
+
+        ServerPlayer npc = NPCManager.npcs.get(event.getEntityId());
 
         createInv(Main.inv);
-        for (ItemStack item : event.getNpc().getInventory().getContents())
+        for (ItemStack item : npc.getInventory().getContents()) {
             Main.inv.addItem(CraftItemStack.asBukkitCopy(item));
+        }
 
         event.getPlayer().openInventory(Main.inv);
-
-        /*for (Player on : Bukkit.getOnlinePlayers()) {
-            PlayerConnection p = ((CraftPlayer)on).getHandle().b;
-            p.sendPacket(new PacketPlayOutEntityDestroy(event.getNpc().getId()));
-        }*/
-        //NPCManager.npcs.remove(event.getNpc().getId());
     }
 
     public static void createInv(Inventory inv) {
-
-        Main.inv = Bukkit.createInventory(null, InventoryType.BARREL, Component.text(ChatColor.AQUA + "" + ChatColor.BOLD + "Configuration Menu"));
+        Main.inv = Bukkit.createInventory(null, InventoryType.BARREL,
+                Component.text("Configuration Menu")
+                        .decorate(TextDecoration.BOLD)
+                        .color(NamedTextColor.AQUA)
+        );
         org.bukkit.inventory.ItemStack item = new org.bukkit.inventory.ItemStack(Material.AMETHYST_SHARD);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(ChatColor.DARK_GREEN + "Hello!"));
+        meta.displayName(
+                Component.text("Hello!").color(NamedTextColor.DARK_GREEN)
+                        .decoration(TextDecoration.ITALIC, false)
+        );
         List<Component> Lore = new ArrayList<>();
-        Lore.add(Component.text(ChatColor.GRAY + "Click to select"));
+        Lore.add( Component.text("Click to select").color(NamedTextColor.GRAY) );
         meta.lore(Lore);
         item.setItemMeta(meta);
         Main.inv.setItem(0, item);
@@ -53,7 +63,11 @@ public class ClickEvent implements Listener {
 
         //close button
         item.setType(Material.BARRIER);
-        meta.displayName(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Close"));
+        meta.displayName(Component.text("Close")
+                .color(NamedTextColor.RED)
+                .decorate(TextDecoration.BOLD)
+                .decoration(TextDecoration.ITALIC, false)
+        );
         Lore.clear();
         meta.lore(Lore);
         item.setItemMeta(meta);
