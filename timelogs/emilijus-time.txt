@@ -18,4 +18,29 @@ Emilijus Šileikis
 - 2021-09-15:
     - 2h, Meet (Darbu pasiskirstymas, testavimas, gitkraken setup).
 
-Viso valandu: 15h.
+- 2021-09-16:
+    - 1h, Padėjau komandos draugui galutinai išsiaiškinti git, pullinom/pushinom pirmą failą.
+
+- 2021-09-17:
+   - 3h, Pradėjau kurti NPC, ieškojau reikalingų bibliotekų.
+
+-2021-09-19:
+   - 3h, Meet (Nubraizytos dvejos schemos, aptarti NPC tipai, profesijos, perziureta dokumentacija).
+
+-2021-09-20:
+   - 3h, Padariau spawn NPC, panaikinau nametag, panaikinau ji is tab list.
+
+-2021-09-21:
+   -6h, NPCs matomi visiem prisijungusiems zaidejams, NPCs islieka net jei visi atsijungia, Data.yml ir kelios naujos klases, Pradetas darbas del custom skins.
+
+-2021-09-27:
+   -2h, Bandziau sutvarkyti nametag buga, keli pakeitimai kode.
+
+-2021-09-28:
+   -3h, Testavau kaip veikia papermc api, dirbau prie funkciju pakeitimo.
+
+-2021-09-29:
+   2h, Bandziau sutvarkyti click event buga, ruosiau savo pristatymo dali.
+
+Viso valandu: 38h.
+Viso valandu sia savaite: 7h.
