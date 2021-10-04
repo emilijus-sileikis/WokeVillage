@@ -1,3 +1,9 @@
 09-09 2h - papildomai aptariam viziją ir planuojam technologijų naudojimą
 09-12 7h - Mokinausi kaip efektyviai dirbti su Minecraft Plugins, pridejau InteliJ plugins, gradle ir sukuriau 24/7 hostinama Minecraft Server, kad testuoti rezultatus. Susitkimas su komanda.
 09-15 2h - Susitikimas su komanda, naujos plugino testavimas serveryje.
+09-19 3h - Dokumentacija, README ir licenzijos nustatymas.
+09-19 +3h - Susitikimas su komanda, grafiku braizymas.
+09-21 3h - dokumentacijos gerinimai remiantis Software Engineering, grafikų pridėjimas.
+09-26 3h - Susitikimas su komanda, projekto skaidrių ruošimas.
+09-30 2h - Kalbų repetavimas ir tobulinimas.
+10-04 5h - Report ruošimas su LaTeX, weekly report ruošimas SE paskaitai. Šie ruošimai susidarė iš analizės, grafikų, patobulintos vizijos (non)functional requirements bei pagrindai dizainui. Taip pat įvykdytas merge-request ir kodo analizavimas pereinant iš spigot į paper.
