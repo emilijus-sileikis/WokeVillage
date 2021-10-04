@@ -42,7 +42,7 @@ it takes for them to complete the task.
 
 ## For Admins
 
-### Preconfiguration
+### System Requirements
 
 1. Java 16 (or OpenJRE 16, or OpenJDK 16).
 
@@ -106,6 +106,22 @@ Q: Can I change what skin an NPC has?
 A: Currently this functionality is unavailable.
 
 ## For Developers
+
+### Requirements
+
+Besides requirements that are mentioned in [System Requirements](#system-requirements), for
+developers there is extra:
+
+- Must have **Minecraft: Java Edition** game client as the server software used to run the plugin
+does not support other **Minecraft** editions (ex. **Bedrock edition**);
+
+- Must have **Gradle** (or have IDE that supports it via plugins) as it is the
+main tool used to build the source code or run tests. Minimum required version
+is 7.1.1 as the project was started with this version;
+
+- Must have **OpenJDK** (or other build of Java) v16 as after introduction of
+**Minecraft: Java Edtion** v1.17, **Mojang** updated their required runtime to be
+Java 16 which now is reflected in server and client software.
 
 ### Build Instructions
 
