@@ -15,17 +15,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClickEvent implements Listener {
+public class EventListen implements Listener {
 
     /** PlayerUseUnknownEntityEvent call counter */
     private int pCount = 0;
-    
+
     @EventHandler
     public void onInteract(PlayerUseUnknownEntityEvent event) {
         ++pCount;
@@ -95,5 +97,27 @@ public class ClickEvent implements Listener {
 
             player.closeInventory();
         }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+
+        PacketReader reader = new PacketReader(event.getPlayer());
+        reader.inject();
+
+        if (NPCManager.getNPCs() == null)
+            return;
+        if (NPCManager.getNPCs().isEmpty())
+            return;
+
+        NPCManager.addJoinPacket(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+
+        //PacketReader reader = new PacketReader();
+        //reader.uninject(event.getPlayer());
+
     }
 }

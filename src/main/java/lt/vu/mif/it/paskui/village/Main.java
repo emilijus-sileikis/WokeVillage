@@ -31,8 +31,7 @@ public class Main extends JavaPlugin implements Listener {
     public void onEnable() {
 
         this.data = new DataManager(this);
-        this.getServer().getPluginManager().registerEvents(new Join(),this);
-        this.getServer().getPluginManager().registerEvents(new ClickEvent(),this);
+        this.getServer().getPluginManager().registerEvents(new EventListen(),this);
 
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
