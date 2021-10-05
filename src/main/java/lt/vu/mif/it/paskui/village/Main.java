@@ -66,7 +66,7 @@ public class Main extends JavaPlugin implements Listener {
             Location location = new Location(Bukkit.getWorld(file.getString("data." + npc + ".world")), file.getInt("data." + npc + ".x"), file.getInt("data." + npc + ".y"),
                     file.getInt("data." + npc + ".z"));
             location.setPitch((float) file.getDouble("data." + npc + ".p"));
-            location.setYaw((float) file.getDouble("data." + npc + ".y"));
+            location.setYaw((float) file.getDouble("data." + npc + ".yaw"));
 
             String name = file.getString("data." + npc + ".name");
             GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + name);

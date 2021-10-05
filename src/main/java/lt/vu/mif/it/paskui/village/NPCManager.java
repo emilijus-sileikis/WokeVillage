@@ -44,6 +44,9 @@ public class NPCManager {
         Arrays.stream(player.getInventory().getContents()).forEach(
                 itemStack -> npc.getInventory().setPickedItem(CraftItemStack.asNMSCopy(itemStack))
         );
+        // Instantiates NPC
+        addNPCPacket(npc);
+        npcs.put(npc.getId(), npc);
 
         if ( Main.data.getDataConfig().contains("data")) {
             int var = 1;
@@ -54,17 +57,13 @@ public class NPCManager {
             Main.getData().set("data." + var + ".y", (int) player.getLocation().getY());
             Main.getData().set("data." + var + ".z", (int) player.getLocation().getZ());
             Main.getData().set("data." + var + ".p", (int) player.getLocation().getPitch());
-            Main.getData().set("data." + var + ".y", player.getLocation().getYaw());
+            Main.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
             Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
             Main.getData().set("data." + var + ".name", skin);
             Main.getData().set("data." + var + ".tex", "");
             Main.getData().set("data." + var + ".signature", "");
             Main.saveData();
         }
-
-        // Instantiates NPC
-        addNPCPacket(npc);
-        npcs.put(npc.getId(), npc);
     }
 
     public static void loadNPC(Location location, GameProfile profile) {
