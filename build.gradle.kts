@@ -1,11 +1,11 @@
 plugins {
     java
-    id("io.papermc.paperweight.userdev") version "1.1.11"
+    id("io.papermc.paperweight.userdev") version "1.1.12"
     id("xyz.jpenilla.run-paper") version "1.0.4"
 }
 
 group = "lt.vu.mif.it.paskui"
-version = "0.01.0"
+version = "0.3"
 
 java {
     toolchain {
@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     paperDevBundle("1.17.1-R0.1-SNAPSHOT")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
 }
 
 tasks {
