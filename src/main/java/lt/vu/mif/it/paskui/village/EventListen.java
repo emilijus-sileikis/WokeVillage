@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -30,8 +31,11 @@ public class EventListen implements Listener {
 
     @EventHandler
     public void onInteract(PlayerUseUnknownEntityEvent event) {
-        ++pCount;
-        if (pCount < 4) return;
+        pCount += (event.getHand() == EquipmentSlot.OFF_HAND) ? 1 : 0;
+
+        if (pCount < 2) return;
+
+        pCount = 0;
 
         ServerPlayer npc = NPCManager.npcs.get(event.getEntityId());
 
