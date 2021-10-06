@@ -30,7 +30,7 @@ public class NPCManager {
     //TODO: fix error
     public static Map<Integer, ServerPlayer> npcs = new HashMap<>();
 
-    public static void createNPC (Player player, String skin) {
+    public static void createNPC (Player player) { //String skin
         Location location = player.getLocation();
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ""); //+ skin
 
@@ -62,7 +62,7 @@ public class NPCManager {
             Main.getData().set("data." + var + ".p", player.getLocation().getPitch());
             Main.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
             Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
-            Main.getData().set("data." + var + ".name", skin);
+            Main.getData().set("data." + var + ".name", ""); //+skin
             Main.getData().set("data." + var + ".tex", "");
             Main.getData().set("data." + var + ".signature", "");
             Main.saveData();

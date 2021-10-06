@@ -21,12 +21,12 @@ public class NPC_CMD implements CommandExecutor {
 
                 if (args.length == 0) {
 
-                    NPCManager.createNPC(player, player.getName());
+                    NPCManager.createNPC(player); //, player.getName()
                     //NPCManager.createNPC(player);
                     player.sendMessage("NPC CREATED");
                     return true;
                 }
-                NPCManager.createNPC(player, args[0]);
+                NPCManager.createNPC(player); //, args[0]
                 //NPCManager.createNPC(player);
                 player.sendMessage("NPC CREATED");
                 return true;
