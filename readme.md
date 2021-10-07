@@ -21,8 +21,8 @@ Plugin for adding extra Villager NPC types while running on PaperMC/Paper.
 
 Our main goal is creation of a functional NPC (Non Playable Character) plugin for
 “Minecraft: Java Edition”, using “PaperMC” server API. These NPC's sometimes spawn
-in vanilla Minecraft villages or by admins executing `'/npc create ...'` command
-and the NPC could trade resources based on its role (can only specialise in a signle
+in vanilla Minecraft villages or by admins executing `'/npc create ...'` command.
+The NPC could trade resources based on its role (can only specialise in a signle
 role) for a certain price. This should add some more interesting gameplay for the
 players while expanding NPC variation.
 
@@ -63,7 +63,7 @@ These requirements also apply for developers too.
 
 1. Download the `'.zip'` file from "Paskui Solutions";
 2. Extract the `'.zip'` file;
-3. Copy the `'.zip'` file, that got extracted from `'.zip'` into the servers "/plugins" directory.
+3. Copy the `'.jar'` file, that got extracted from `'.zip'` into the servers "/plugins" directory.
 
 ### Guide
 
