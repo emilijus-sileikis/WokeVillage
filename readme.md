@@ -28,13 +28,13 @@ players while expanding NPC variation.
 
 NPC's have roles and personalities.
 
-![NPC roles and personalities](pictures/rolepersonalitygraph.png)
+![NPC roles and personalities](doc/pictures/rolepersonalitygraph.png)
 
 Roles determine what type of resource the NPC will be willing to gather, which further
 decreases the chance of the player to accidentally stumble upon the needed NPC. This
 encourages traveling and adventuring instead of grinding resources.
 
-![Short role description](pictures/rolepersonality.png)
+![Short role description](doc/pictures/rolepersonality.png)
 
 Further more they have personality traits: some of them may be generous, while others
 might be lazy, which will impact the loot you get from their gatherings and the time
