@@ -1,6 +1,6 @@
-package lt.vu.mif.it.paskui.village.commands;
+package lt.vu.mif.it.paskui.village.command;
 
-import org.bukkit.plugin.PluginLogger;
+import lt.vu.mif.it.paskui.village.util.Logging;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public class CommandManager {
 
     /** Command execution method. WIP */
     public void execute() {
-        PluginLogger.getLogger("Test").log(Level.INFO, String.valueOf(commands.size()));
+        Logging.infoLog(String.valueOf(commands.size()));
 
         for (Method mth : commands.values()) {
             try {
@@ -48,5 +48,18 @@ public class CommandManager {
             // Registers Object the method belongs to:
             instances.put(mth, inj.getInstance());
         }
+    }
+
+    public void dump() {
+        final String logName = "WokeVillage";
+        final Level lvl = Level.INFO;
+
+        Logging.infoLog("Commands");
+
+        commands.forEach((String key, Method mth) -> Logging.infoLog("    %s : %s ;", key, mth));
+
+        Logging.infoLog("Instances");
+
+        instances.forEach((Method key, Object obj) -> Logging.infoLog("    %s : %s ;", key, obj));
     }
 }

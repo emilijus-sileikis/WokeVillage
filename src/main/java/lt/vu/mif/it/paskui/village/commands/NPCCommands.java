@@ -1,18 +1,19 @@
-package lt.vu.mif.it.paskui.village;
+package lt.vu.mif.it.paskui.village.commands;
 
+import lt.vu.mif.it.paskui.village.NPCManager;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class NPC_CMD implements CommandExecutor {
+public class NPCCommands {
 
-    private Main plugin = Main.getInstsance();
-
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
-                             @NotNull String label, @NotNull String[] args)
+    @lt.vu.mif.it.paskui.village.command.Command(
+            roots = { "npc" },
+            mod = { "create" },
+            perm = "wokevillage.npc.create")
+    public void create(@NotNull CommandSender sender, @NotNull Command command,
+                       @NotNull String label, @NotNull String[] args)
     {
         if (sender instanceof Player) {
             Player player = (Player) sender;
@@ -24,12 +25,12 @@ public class NPC_CMD implements CommandExecutor {
                     NPCManager.createNPC(player); //, player.getName()
                     //NPCManager.createNPC(player);
                     player.sendMessage("NPC CREATED");
-                    return true;
+//                    return true;
                 }
                 NPCManager.createNPC(player); //, args[0]
                 //NPCManager.createNPC(player);
                 player.sendMessage("NPC CREATED");
-                return true;
+//                return true;
             }
             //Todo: Possible way to remove npc?
             /*
@@ -39,6 +40,5 @@ public class NPC_CMD implements CommandExecutor {
                 return true;
             }*/
         }
-        return true;
     }
 }

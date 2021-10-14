@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.commands;
+package lt.vu.mif.it.paskui.village.command;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

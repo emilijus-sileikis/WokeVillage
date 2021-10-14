@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.commands;
+package lt.vu.mif.it.paskui.village.command;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
