@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.advancements.critereon.PlayerInteractTrigger;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddPlayerPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
@@ -15,6 +16,8 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,7 +30,7 @@ public class NPCManager {
     //TODO: fix error
     public static Map<Integer, ServerPlayer> npcs = new HashMap<>();
 
-    public static void createNPC (Player player, String skin) {
+    public static void createNPC (Player player) { //String skin
         Location location = player.getLocation();
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ""); //+ skin
 
@@ -47,29 +50,29 @@ public class NPCManager {
         // Instantiates NPC
         addNPCPacket(npc);
         npcs.put(npc.getId(), npc);
-
-        if ( Main.data.getDataConfig().contains("data")) {
-            int var = 1;
-            var += Objects.requireNonNull(Main.data.getDataConfig().getConfigurationSection("data")).
-                    getKeys(false).size();
+        //Todo:Maybe move this to DataManager class
+        int var = 1;
+        if ( Main.getData().contains("data"))
+            var = Objects.requireNonNull(Main.getData().getConfigurationSection("data")).
+                    getKeys(false).size() + 1;
 
             Main.getData().set("data." + var + ".x", (int) player.getLocation().getX());
             Main.getData().set("data." + var + ".y", (int) player.getLocation().getY());
             Main.getData().set("data." + var + ".z", (int) player.getLocation().getZ());
-            Main.getData().set("data." + var + ".p", (int) player.getLocation().getPitch());
+            Main.getData().set("data." + var + ".p", player.getLocation().getPitch());
             Main.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
             Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
-            Main.getData().set("data." + var + ".name", skin);
+            Main.getData().set("data." + var + ".name", ""); //+skin
             Main.getData().set("data." + var + ".tex", "");
             Main.getData().set("data." + var + ".signature", "");
             Main.saveData();
-        }
     }
 
     public static void loadNPC(Location location, GameProfile profile) {
         MinecraftServer nmsServer = ((CraftServer) Bukkit.getServer()).getServer();
         ServerLevel nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
-        ServerPlayer npc = new ServerPlayer(nmsServer, nmsWorld, profile);
+        GameProfile gameProfile = profile;
+        ServerPlayer npc = new ServerPlayer(nmsServer, nmsWorld, gameProfile);
 
         npc.setPos(location.getX(), location.getY(), location.getZ());
 

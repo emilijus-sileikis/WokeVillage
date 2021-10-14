@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.util.List;
+//Todo:Maybe fully remove this class?
 
 public class PacketReader {
 

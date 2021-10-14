@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,7 +31,7 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
 
-        this.data = new DataManager(this);
+        data = new DataManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListen(),this);
 
         if (!Bukkit.getOnlinePlayers().isEmpty()) {
@@ -40,20 +41,32 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
 
-        if(data.getDataConfig().contains("data"))
+        if(data.getConfig().contains("data"))
             loadNPC();
 
         setInstsance(this);
         this.getCommand("npc").setExecutor(new NPC_CMD());
+        //Todo:Maybe this will help with removing the npc?
+        //this.getCommand("remnpc").setExecutor(new NPC_CMD());
         this.npcManager = new NPCManager();
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+
+        /*for (Player player : Bukkit.getOnlinePlayers()) {
+            PacketReader reader = new PacketReader(player);
+            reader.uninject();
+            for (ServerPlayer npc : NPCManager.npcs.values()) {
+                NPCManager.removeNPC(player, npc);
+            }
+        }*/
+
+    }
 
 
     public static FileConfiguration getData() {
-        return data.getDataConfig();
+        return data.getConfig();
     }
 
     public static void saveData() {
@@ -61,8 +74,8 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void loadNPC() {
-        FileConfiguration file = data.getDataConfig();
-        data.getDataConfig().getConfigurationSection("data").getKeys(false).forEach(npc -> {
+        FileConfiguration file = data.getConfig();
+        data.getConfig().getConfigurationSection("data").getKeys(false).forEach(npc -> {
             Location location = new Location(Bukkit.getWorld(file.getString("data." + npc + ".world")), file.getInt("data." + npc + ".x"), file.getInt("data." + npc + ".y"),
                     file.getInt("data." + npc + ".z"));
             location.setPitch((float) file.getDouble("data." + npc + ".p"));
@@ -73,6 +86,5 @@ public class Main extends JavaPlugin implements Listener {
             gameProfile.getProperties().put("textures",new Property("textures", file.getString("data." + npc +".tex"), file.getString("data." + npc + ".signature")));
             NPCManager.loadNPC(location, gameProfile);
         });
-
     }
 }

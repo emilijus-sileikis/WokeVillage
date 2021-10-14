@@ -33,7 +33,8 @@ public class DataManager {
 
             }
         }
-        public FileConfiguration getDataConfig() {
+
+        public FileConfiguration getConfig() {
             if (this.dataConfig == null)
                 reloadConfig();
 
@@ -45,7 +46,7 @@ public class DataManager {
                 return;
 
             try {
-                this.getDataConfig().save(this.configFile);
+                this.getConfig().save(this.configFile);
             } catch (IOException e) {
                 plugin.getLogger().log(Level.SEVERE, "Can not save config to " + this.configFile, e);
             }
