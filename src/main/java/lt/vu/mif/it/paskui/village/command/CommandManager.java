@@ -12,12 +12,19 @@ public class CommandManager {
 
     private final Map<String, Method> commands;
     private final Map<Method, Object> instances;
+    private Injector injector;
 
     public CommandManager() {
         commands = new HashMap<>();
         instances = new HashMap<>();
     }
 
+    // Getters, setters
+    public void setInjector(Injector injector) {
+        this.injector = injector;
+    }
+
+    // Other
     /** Command execution method. WIP */
     public void execute() {
         Logging.infoLog(String.valueOf(commands.size()));
@@ -35,18 +42,18 @@ public class CommandManager {
      * @param clazz Class containing Command methods.
      */
     public void register(Class<?> clazz) {
-        CommandInjector inj = new CommandInjector(clazz);
+        Object obj = injector.getInstance(clazz);
 
-        //Checks whether Command methods where present in class:
-        if (inj.getMethods().length == 0) return;
+        for (Method mth : clazz.getMethods()) {
+            if (!mth.isAnnotationPresent(Command.class)) continue;
 
-        for (Method mth : inj.getMethods()) {
+            // Gets data stored in Command annotation
             Command cmd = mth.getAnnotation(Command.class);
 
             // Registers each modifier of that command in commands map:
             Arrays.stream(cmd.mod()).forEach(mod -> commands.put(mod, mth));
             // Registers Object the method belongs to:
-            instances.put(mth, inj.getInstance());
+            instances.put(mth, obj);
         }
     }
 

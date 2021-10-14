@@ -3,6 +3,7 @@ package lt.vu.mif.it.paskui.village;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
+import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
@@ -101,8 +102,11 @@ public class Main extends JavaPlugin implements Listener {
 
     private void registerCommands() {
         cmdMgr = new CommandManager();
+        cmdMgr.setInjector(new Injector(this));
 
         cmdMgr.register(NPCCommands.class);
+
         cmdMgr.dump();
+        cmdMgr.execute();
     }
 }
