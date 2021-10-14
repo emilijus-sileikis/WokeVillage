@@ -2,7 +2,6 @@ package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,21 +15,13 @@ import java.util.UUID;
 public class Main extends JavaPlugin implements Listener {
 
     public static DataManager data;
-    private static Main instance;
     public NPCManager npcManager;
     public static Inventory inv;
+    private static Main instance;
 
-    public static Main getInstsance() {
-        return instance;
-    }
-
-    public static void setInstsance(Main instsance) {
-        Main.instance = instsance;
-    }
-
+    // JavaPlugin Overrides
     @Override
     public void onEnable() {
-
         data = new DataManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListen(),this);
 
@@ -44,31 +35,23 @@ public class Main extends JavaPlugin implements Listener {
         if(data.getConfig().contains("data"))
             loadNPC();
 
-        setInstsance(this);
-        this.getCommand("npc").setExecutor(new NPC_CMD());
-        //Todo:Maybe this will help with removing the npc?
-        //this.getCommand("remnpc").setExecutor(new NPC_CMD());
         this.npcManager = new NPCManager();
+        instance = this;
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable() {}
 
-        /*for (Player player : Bukkit.getOnlinePlayers()) {
-            PacketReader reader = new PacketReader(player);
-            reader.uninject();
-            for (ServerPlayer npc : NPCManager.npcs.values()) {
-                NPCManager.removeNPC(player, npc);
-            }
-        }*/
-
-    }
-
-
+    // Getters, setters
     public static FileConfiguration getData() {
         return data.getConfig();
     }
 
+    public static Main getInstsance() {
+        return instance;
+    }
+
+    // Others
     public static void saveData() {
         data.saveConfig();
     }
