@@ -50,7 +50,7 @@ public class NPCManager {
         // Instantiates NPC
         addNPCPacket(npc);
         npcs.put(npc.getId(), npc);
-
+        //Todo:Maybe move this to DataManager class
         int var = 1;
         if ( Main.getData().contains("data"))
             var = Objects.requireNonNull(Main.getData().getConfigurationSection("data")).

@@ -46,6 +46,8 @@ public class Main extends JavaPlugin implements Listener {
 
         setInstsance(this);
         this.getCommand("npc").setExecutor(new NPC_CMD());
+        //Todo:Maybe this will help with removing the npc?
+        //this.getCommand("remnpc").setExecutor(new NPC_CMD());
         this.npcManager = new NPCManager();
     }
 
