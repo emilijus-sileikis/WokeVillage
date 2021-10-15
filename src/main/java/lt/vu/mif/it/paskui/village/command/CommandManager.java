@@ -51,7 +51,7 @@ public class CommandManager {
             Command cmd = mth.getAnnotation(Command.class);
 
             // Registers each modifier of that command in commands map:
-            Arrays.stream(cmd.mod()).forEach(mod -> commands.put(mod, mth));
+            Arrays.stream(cmd.mod()).forEach(mod -> commands.put(cmd.roots() + "." + mod, mth));
             // Registers Object the method belongs to:
             instances.put(mth, obj);
         }

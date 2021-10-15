@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Command {
 
-    String[] roots();
+    String roots();
 
     /** Modifiers
      * Root command modifier: /{@link #roots()} mod

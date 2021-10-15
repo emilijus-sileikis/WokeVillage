@@ -9,12 +9,14 @@ import org.jetbrains.annotations.NotNull;
 public class NPCCommands {
 
     @lt.vu.mif.it.paskui.village.command.Command(
-            roots = { "npc" },
+            roots = "npc",
             mod = { "create" },
             perm = "wokevillage.npc.create")
     public void create(@NotNull CommandSender sender, @NotNull Command command,
                        @NotNull String label, @NotNull String[] args)
     {
+        // TODO: reimplement this command
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
