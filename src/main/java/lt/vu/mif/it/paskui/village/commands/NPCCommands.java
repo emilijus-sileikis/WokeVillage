@@ -1,46 +1,39 @@
 package lt.vu.mif.it.paskui.village.commands;
 
 import lt.vu.mif.it.paskui.village.NPCManager;
-import org.bukkit.command.Command;
+import lt.vu.mif.it.paskui.village.command.Command;
+import lt.vu.mif.it.paskui.village.command.CommandContext;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class for storing and implement NPC commands logic.
+ */
 public class NPCCommands {
 
-    @lt.vu.mif.it.paskui.village.command.Command(
+    @Command(
             roots = "npc",
             mod = { "create" },
             perm = "wokevillage.npc.create")
-    public void create(@NotNull CommandSender sender, @NotNull Command command,
-                       @NotNull String label, @NotNull String[] args)
-    {
-        // TODO: reimplement this command
+    public void create(@NotNull CommandContext context) {
+        CommandSender sender = context.getSender();
+        Logging.infoLog("NPCCommands::create has been executed.");
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
+            // NOTE: These will be needed if we are going to implement skins
+            NPCManager.createNPC(player); //, player.getName()
+            player.sendMessage("NPC CREATED");
+            Logging.infoLog("NPC CREATED");
 
-            if (command.getName().equalsIgnoreCase("npc")) {
-                //Todo:These will be needed if we are going to implement skins
-                if (args.length == 0) {
-
-                    NPCManager.createNPC(player); //, player.getName()
-                    //NPCManager.createNPC(player);
-                    player.sendMessage("NPC CREATED");
-//                    return true;
-                }
-                NPCManager.createNPC(player); //, args[0]
-                //NPCManager.createNPC(player);
-                player.sendMessage("NPC CREATED");
-//                return true;
-            }
-            //Todo: Possible way to remove npc?
-            /*
-            if (command.getName().equalsIgnoreCase("remnpc")) {
-                NPCManager.removeNPC(player, NPCManager.npcs.get(1));
-                player.sendMessage("NPC REMOVED");
-                return true;
-            }*/
         }
+
+//         TODO: Implement commented code below as seperate Command Method.
+//            if (command.getName().equalsIgnoreCase("remnpc")) {
+//                NPCManager.removeNPC(player, NPCManager.npcs.get(1));
+//                player.sendMessage("NPC REMOVED");
+//                return true;
+//            }
     }
 }

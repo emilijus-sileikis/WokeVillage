@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village.command;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -26,15 +27,15 @@ public class CommandManager {
 
     // Other
     /** Command execution method. WIP */
-    public void execute() {
-        Logging.infoLog(String.valueOf(commands.size()));
-
-        for (Method mth : commands.values()) {
-            try {
-                mth.invoke(instances.get(mth));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void execute(@NotNull CommandContext context) {
+        try {
+            Method mth = commands.get(context.getCmd()); // gets command method (
+            mth.invoke(instances.get(mth), context);     // invokes the method
+        } catch (NullPointerException e) {
+            // TODO: Implement sending usage message back to CommandSender
+            Logging.severeLog("Command ( wokevillage.%s ) does not exist.", context.getCmd());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

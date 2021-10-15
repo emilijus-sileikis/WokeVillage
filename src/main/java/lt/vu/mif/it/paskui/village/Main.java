@@ -58,10 +58,9 @@ public class Main extends JavaPlugin implements Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args)
     {
-        // TODO: implement usage of CommandManager::execute method
         CommandContext context = new CommandContext(sender, command, args);
 
-        Logging.infoLog(context.toString());
+        cmdMgr.execute(context);
 
         return true;
     }
