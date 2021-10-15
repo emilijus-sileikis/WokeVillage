@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
@@ -57,16 +58,10 @@ public class Main extends JavaPlugin implements Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args)
     {
-        if (args.length < 1) {
-            Logging.severeLog("No command modifier");
-            return false;
-        }
+        // TODO: implement usage of CommandManager::execute method
+        CommandContext context = new CommandContext(sender, command, args);
 
-        StringBuilder strBuild = new StringBuilder();
-        Arrays.stream(args).forEach(arg -> strBuild.append(arg).append(", "));
-        String argStr = strBuild.substring(0, strBuild.length() - 2);
-
-        Logging.infoLog("%s: %s (%s) [%s]", sender, command, label, argStr);
+        Logging.infoLog(context.toString());
 
         return true;
     }
@@ -107,6 +102,5 @@ public class Main extends JavaPlugin implements Listener {
         cmdMgr.register(NPCCommands.class);
 
         cmdMgr.dump();
-        cmdMgr.execute();
     }
 }
