@@ -18,7 +18,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
@@ -58,9 +57,13 @@ public class Main extends JavaPlugin implements Listener {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args)
     {
-        CommandContext context = new CommandContext(sender, command, args);
-
-        cmdMgr.execute(context);
+        try {
+            CommandContext context = new CommandContext(sender, command, args);
+            cmdMgr.execute(context);
+        } catch (CommandContext.MissingQuotesException e) {
+            Logging.infoLog(e.getMessage());
+            return false;
+        }
 
         return true;
     }
