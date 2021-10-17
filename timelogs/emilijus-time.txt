@@ -56,5 +56,20 @@ modified Main class to match these changes.
   3h, Fixed the DataManager issue, made the NPC reload after the server shut down, solved issue #17,
 regarding NPCs having player nametags on server restart.
 
-Viso valandu: 49h.
-Viso valandu sia savaite: 9h.
+-2021-10-10:
+  2h, Preparing the speech for the seminar.
+
+-2021-10-11:
+  1h, Making the slides for the presentation.
+
+-2021-10-13:
+  3h, Trying to make the gravity and minimal movement. Compatibility issues.
+
+-2021-10-15:
+  2h, Looking through forums to find how others implement NPC movement.
+
+-2021-10-17:
+  2h, Minor code fixes + requirements documentation rework.
+
+Viso valandu: 59h.
+Viso valandu sia savaite: 10h.
