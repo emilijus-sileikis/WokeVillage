@@ -59,9 +59,6 @@ public class CommandManager {
     }
 
     public void dump() {
-        final String logName = "WokeVillage";
-        final Level lvl = Level.INFO;
-
         Logging.infoLog("Commands");
 
         commands.forEach((String key, Method mth) -> Logging.infoLog("    %s : %s ;", key, mth));
