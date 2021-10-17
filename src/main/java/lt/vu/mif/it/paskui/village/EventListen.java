@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +24,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
 
@@ -78,6 +81,18 @@ public class EventListen implements Listener {
         meta.lore(Lore);
         item.setItemMeta(meta);
         Main.inv.setItem(8, item);
+
+        //WoodChopping Button
+        item.setType(Material.STONE_AXE);
+        meta.displayName(Component.text("Wood Gathering")
+                .color(NamedTextColor.GREEN)
+                .decorate(TextDecoration.BOLD)
+                .decoration(TextDecoration.ITALIC, false)
+        );
+        Lore.clear();
+        meta.lore(Lore);
+        item.setItemMeta(meta);
+        Main.inv.setItem(1, item);
     }
 
     @EventHandler
@@ -97,8 +112,16 @@ public class EventListen implements Listener {
             player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Hello! Welcome to Paskui Plugin");
             player.closeInventory();
         }
-        if (event.getSlot() == 8) {
-
+        if (event.getSlot() == 1) {
+            ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+            ItemMeta meta = item.asBukkitCopy().getItemMeta();
+            item.asBukkitCopy().setItemMeta(meta);         // <--- needs checking kurie iš šitų lines būtini
+            if (player.getInventory().contains(Material.GOLD_INGOT))
+            {
+                player.getInventory().remove(Material.GOLD_INGOT);
+                player.updateInventory();
+                player.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
+            }
             player.closeInventory();
         }
     }
