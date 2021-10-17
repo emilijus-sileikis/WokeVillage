@@ -21,7 +21,14 @@ public class NPCCommands {
         CommandSender sender = context.getSender();
         Logging.infoLog("NPCCommands::create has been executed.");
 
-        if (sender instanceof Player player) {
+        Logging.infoLog(context.toString());
+
+        context.getArgs().forEach(
+                (String key, String val) -> Logging.infoLog("    %s : %s", key, val)
+        );
+
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             // NOTE: These will be needed if we are going to implement skins
             NPCManager.createNPC(player); //, player.getName()
             player.sendMessage("NPC CREATED");
