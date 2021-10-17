@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village.commands;
 
 import lt.vu.mif.it.paskui.village.NPCManager;
+import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.util.Logging;
@@ -24,7 +25,9 @@ public class NPCCommands {
         Logging.infoLog(context.toString());
 
         context.getArgs().forEach(
-                (String key, String val) -> Logging.infoLog("    %s : %s", key, val)
+                (String key, Argument<?> val) -> {
+                    Logging.infoLog("    %s : %s", key, val);
+                }
         );
 
         if (sender instanceof Player) {

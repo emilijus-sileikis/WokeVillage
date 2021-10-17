@@ -1,8 +1,10 @@
 package lt.vu.mif.it.paskui.village.command;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -14,7 +16,7 @@ public class CommandContext {
 
     private final CommandSender sender;
     private final String cmd;
-    private final HashMap<String, String> args;
+    private final HashMap<String, Argument<?>> args;
 
     public CommandContext(CommandSender sender, @NotNull Command cmd, String @NotNull [] args)
         throws MissingQuotesException
@@ -35,11 +37,11 @@ public class CommandContext {
         return cmd;
     }
 
-    public HashMap<String, String> getArgs() {
+    public HashMap<String, Argument<?>> getArgs() {
         return args;
     }
 
-    public String getArg(String flag) {
+    public Argument<?> getArg(String flag) {
         return args.get(flag);
     }
 
@@ -93,18 +95,23 @@ public class CommandContext {
                 flag.getFlag() + argCount :  // ARG_KEY = "ARG" + argCount (ex: ARG0)
                 flag.getFlag();
 
+        Argument<String> arg;
+
         if (args[offset].charAt(0) == '"' && args[offset].endsWith("\"")) {
             // Checks whether argument is encapsulated in "" and stores the argument with removed ""
-            this.args.put(ARG_KEY, args[offset].substring(1, args[offset].length() - 1));
+            arg = new Argument<>(
+                    args[offset].substring(1, args[offset].length() - 1),
+                    String.class
+            );
+            this.args.put(ARG_KEY, arg);
         }
         else if (args[offset].charAt(0) == '"') {
             // Only checks for argument starting with "
-            StringBuilder arg = new StringBuilder(args[offset].substring(1));
+            StringBuilder argStr = new StringBuilder(args[offset].substring(1));
 
             try {
                 for (++offset; args[offset].endsWith("\""); ++offset) {
-                    arg.append(" ");
-                    arg.append(args[offset]);
+                    argStr.append(" ").append(args[offset]);
                 }
             } catch (Exception e) {
                 /* this exception is called when for loop above tries accessing
@@ -114,12 +121,17 @@ public class CommandContext {
                 throw new MissingQuotesException();
             }
 
-            arg.append(args[offset], 0, args[offset].length() - 1);
-            this.args.put(ARG_KEY, arg.toString());
+            argStr.append(args[offset], 0, args[offset].length() - 1);
+            arg = new Argument<>(
+                    argStr.toString(),
+                    String.class
+            );
+            this.args.put(ARG_KEY, arg);
         }
         else {
             // Case for when no " are used
-            this.args.put(ARG_KEY, args[offset]);
+            arg = new Argument<>(args[offset], String.class);
+            this.args.put(ARG_KEY, arg);
         }
 
         return offset;
