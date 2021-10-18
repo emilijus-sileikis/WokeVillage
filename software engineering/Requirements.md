@@ -68,6 +68,6 @@ Architectural Decisions:
 
 **Illustration of Interaction**
 
-*Figure  SEQ Figure \\* ARABIC 1. Interaction Flowchart*
+![Illustration of Interaction](doc/pictures/activityflowchart.png)
 
 
