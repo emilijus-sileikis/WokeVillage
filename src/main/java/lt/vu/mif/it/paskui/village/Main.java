@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
@@ -94,17 +95,34 @@ public class Main extends JavaPlugin implements Listener {
 
     public void loadNPC() {
         FileConfiguration file = data.getConfig();
-        data.getConfig().getConfigurationSection("data").getKeys(false).forEach(npc -> {
-            Location location = new Location(Bukkit.getWorld(file.getString("data." + npc + ".world")), file.getInt("data." + npc + ".x"), file.getInt("data." + npc + ".y"),
-                    file.getInt("data." + npc + ".z"));
-            location.setPitch((float) file.getDouble("data." + npc + ".p"));
-            location.setYaw((float) file.getDouble("data." + npc + ".yaw"));
+        Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
+                .getKeys(false)
+                .forEach(npc -> {
+                    Location location = new Location(
+                            Bukkit.getWorld(file.getString("data." + npc + ".world")),
+                            file.getInt("data." + npc + ".x"),
+                            file.getInt("data." + npc + ".y"),
+                            file.getInt("data." + npc + ".z")
+                    );
 
-            String name = file.getString("data." + npc + ".name");
-            GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + name);
-            gameProfile.getProperties().put("textures",new Property("textures", file.getString("data." + npc +".tex"), file.getString("data." + npc + ".signature")));
-            NPCManager.loadNPC(location, gameProfile);
-        });
+                    location.setPitch((float) file.getDouble("data." + npc + ".p"));
+                    location.setYaw((float) file.getDouble("data." + npc + ".yaw"));
+
+                    String name = file.getString("data." + npc + ".name");
+
+                    GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + name);
+                    gameProfile.getProperties().put(
+                            "textures",
+                            new Property(
+                                    "textures",
+                                    file.getString("data." + npc +".tex"),
+                                    file.getString("data." + npc + ".signature")
+                            )
+                    );
+
+                    NPCManager.loadNPC(location, gameProfile);
+                }
+        );
     }
 
     private void registerCommands() {
