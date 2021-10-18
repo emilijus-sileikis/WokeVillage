@@ -25,9 +25,7 @@ public class NPCCommands {
         Logging.infoLog(context.toString());
 
         context.getArgs().forEach(
-                (String key, Argument<?> val) -> {
-                    Logging.infoLog("    %s : %s", key, val);
-                }
+                (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
         if (sender instanceof Player) {
