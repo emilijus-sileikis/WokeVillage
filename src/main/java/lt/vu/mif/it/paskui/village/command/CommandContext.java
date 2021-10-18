@@ -2,6 +2,8 @@ package lt.vu.mif.it.paskui.village.command;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,13 +16,14 @@ import java.util.HashMap;
  */
 public class CommandContext {
 
+    private final World overworld;
     private final CommandSender sender;
     private final String cmd;
     private final HashMap<String, Argument<?>> args;
 
-    public CommandContext(CommandSender sender, @NotNull Command cmd, String @NotNull [] args)
-        throws MissingQuotesException
-    {
+    public CommandContext(World overworld, CommandSender sender, @NotNull Command cmd, String @NotNull [] args)
+            throws MissingQuotesException {
+        this.overworld = overworld;
         this.sender = sender;
         this.cmd = cmd.getName() + "." + args[0];
         this.args = new HashMap<>();
@@ -55,7 +58,9 @@ public class CommandContext {
         );
     }
 
-    /** Parses "{@code String[] args}" and stores data contextually inside {@link #args}
+    /**
+     * Parses "{@code String[] args}" and stores data contextually inside {@link #args}
+     *
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
      */
@@ -66,7 +71,8 @@ public class CommandContext {
             CommandFlag flag = CommandFlag.fromString(args[i]);
 
             switch (flag) {
-                case NPC_NAME: ++i;
+                case NPC_NAME:
+                    ++i;
                 case CMD_ARGUMENT: {
                     i = parseStringArgument(argCount, flag, i, args);
                     break;
@@ -74,23 +80,25 @@ public class CommandContext {
                 case NPC_LOCATION:
                     // TODO: Implement location parsing
                     Logging.infoLog("NPC_LOCATION : detected");
+                    i = parseLocationArgument(flag, i, args);
                     break;
             }
         }
     }
 
-    /** Parses additional argument from "{@code String[] args}" as string and adds it to {@link #args}.
+    /**
+     * Parses additional argument from "{@code String[] args}" as string and adds it to {@link #args}.
      * Should only be used when argument is believed to be a string.
+     *
      * @param argCount count of occurrences CommandFlag.CMD_ARGUMENT has appeared
-     * @param flag parsed flag type
-     * @param offset current position of "{@code args}" array
-     * @param args array that stores additional raw arguments for commands
+     * @param flag     parsed flag type
+     * @param offset   current position of "{@code args}" array
+     * @param args     array that stores additional raw arguments for commands
      * @return updated position of args array
      * @throws MissingQuotesException missing ' " ' at end of argument.
      */
     private int parseStringArgument(int argCount, CommandFlag flag, int offset, String @NotNull [] args)
-            throws MissingQuotesException
-    {
+            throws MissingQuotesException {
         final String ARG_KEY = (flag == CommandFlag.CMD_ARGUMENT) ?
                 flag.getFlag() + argCount :  // ARG_KEY = "ARG" + argCount (ex: ARG0)
                 flag.getFlag();
@@ -104,8 +112,7 @@ public class CommandContext {
                     String.class
             );
             this.args.put(ARG_KEY, arg);
-        }
-        else if (args[offset].charAt(0) == '"') {
+        } else if (args[offset].charAt(0) == '"') {
             // Only checks for argument starting with "
             StringBuilder argStr = new StringBuilder(args[offset].substring(1));
 
@@ -127,12 +134,54 @@ public class CommandContext {
                     String.class
             );
             this.args.put(ARG_KEY, arg);
-        }
-        else {
+        } else {
             // Case for when no " are used
             arg = new Argument<>(args[offset], String.class);
             this.args.put(ARG_KEY, arg);
         }
+
+        return offset;
+    }
+
+    private int parseLocationArgument(CommandFlag flag, int offset, String @NotNull [] args) {
+        double[] xyz = new double[3];
+
+        ++offset;
+        for (int i = 0; i < flag.getArgCount() && offset < args.length; ++offset, ++i) {
+            String val = args[offset];
+
+            try {
+                xyz[i] = Double.parseDouble(val);
+            } catch (NumberFormatException e) {
+                Player parg = Bukkit.getPlayer(val);
+                if (parg != null && parg.getLocation().getWorld().equals(overworld)) {
+                    xyz = new double[]{
+                            parg.getLocation().getX(),
+                            parg.getLocation().getY(),
+                            parg.getLocation().getZ()
+                    };
+                    break;
+                } else if (val.equals("~")) {
+                    if (sender instanceof Player) {
+                        Player p = (Player) sender;
+                        switch (i) {
+                            case 0 -> xyz[0] = p.getLocation().getX();
+                            case 1 -> xyz[1] = p.getLocation().getY();
+                            case 2 -> xyz[2] = p.getLocation().getZ();
+                        }
+                    } else {
+                        xyz[i] = 0;
+                    }
+
+                }
+            }
+        }
+
+        Argument<Location> arg = new Argument<>(
+                new Location(overworld, xyz[0], xyz[1], xyz[2]),
+                Location.class
+        );
+        this.args.put(flag.getFlag(), arg);
 
         return offset;
     }

@@ -9,6 +9,7 @@ import lt.vu.mif.it.paskui.village.commands.NPCCommands;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 
+    private World overworld;
     public static DataManager data;
     public NPCManager npcManager;
     public static Inventory inv;
@@ -31,6 +33,14 @@ public class Main extends JavaPlugin implements Listener {
     // JavaPlugin Overrides
     @Override
     public void onEnable() {
+        Bukkit.getWorlds().forEach(
+                (World world) -> {
+                    if (world.getName().equals("world")) {
+                        overworld = world;
+                    }
+                }
+        );
+
         data = new DataManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListen(),this);
 
@@ -58,7 +68,7 @@ public class Main extends JavaPlugin implements Listener {
                              @NotNull String label, @NotNull String[] args)
     {
         try {
-            CommandContext context = new CommandContext(sender, command, args);
+            CommandContext context = new CommandContext(overworld, sender, command, args);
             cmdMgr.execute(context);
         } catch (CommandContext.MissingQuotesException e) {
             Logging.infoLog(e.getMessage());
