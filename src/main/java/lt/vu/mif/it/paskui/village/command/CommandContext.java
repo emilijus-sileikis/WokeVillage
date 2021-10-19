@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village.command;
 
-import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -82,7 +81,6 @@ public class CommandContext {
                 }
                 case NPC_LOCATION:
                     // TODO: Implement location parsing
-                    Logging.infoLog("NPC_LOCATION : detected");
                     i = parseLocationArgument(flag, i, args);
                     break;
             }
