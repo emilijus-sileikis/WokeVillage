@@ -11,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 /**
- * Represents context required for command executions (sender, command and necessary arguments/flags)
+ * Represents context required for command executions (sender, command and
+ * necessary arguments/flags)
  */
 public class CommandContext {
 
@@ -63,6 +64,7 @@ public class CommandContext {
      *
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
+     * @throws MissingArgumentDataException missing argument for flag.
      */
     private void parseArgs(String @NotNull [] args)
             throws MissingQuotesException, MissingArgumentDataException
@@ -80,7 +82,6 @@ public class CommandContext {
                     break;
                 }
                 case NPC_LOCATION:
-                    // TODO: Implement location parsing
                     i = parseLocationArgument(flag, i, args);
                     break;
             }
@@ -92,8 +93,8 @@ public class CommandContext {
     }
 
     /**
-     * Parses additional argument from "{@code String[] args}" as string and adds it to {@link #args}.
-     * Should only be used when argument is believed to be a string.
+     * Parses additional argument from "{@code String[] args}" as string and adds
+     * it to {@link #args}. Should only be used when argument is believed to be a string.
      *
      * @param argCount count of occurrences CommandFlag.CMD_ARGUMENT has appeared
      * @param flag     parsed flag type
@@ -101,6 +102,7 @@ public class CommandContext {
      * @param args     array that stores additional raw arguments for commands
      * @return updated position of args array
      * @throws MissingQuotesException missing ' " ' at end of argument.
+     * @throws MissingArgumentDataException missing argument for flag.
      */
     private int parseStringArgument(int argCount, CommandFlag flag, int offset, String @NotNull [] args)
             throws MissingQuotesException, MissingArgumentDataException {
@@ -197,7 +199,7 @@ public class CommandContext {
 
     // Classes
     /**
-     * Is used for when argument does not receive a value.
+     * Exception for when argument for a flag is missing.
      */
     public static class MissingArgumentDataException extends Exception {
         MissingArgumentDataException(CommandFlag flag, String wasGiven) {
@@ -205,6 +207,9 @@ public class CommandContext {
         }
     }
 
+    /**
+     * Exception for when ending quotes ('"') are missing.
+     */
     public static class MissingQuotesException extends Exception {
         MissingQuotesException() {
             super("One of arguments is missing closing \".");
