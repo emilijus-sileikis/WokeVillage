@@ -1,6 +1,6 @@
 package lt.vu.mif.it.paskui.village.commands;
 
-import lt.vu.mif.it.paskui.village.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;

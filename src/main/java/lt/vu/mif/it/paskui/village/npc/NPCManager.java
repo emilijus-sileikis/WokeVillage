@@ -1,7 +1,7 @@
-package lt.vu.mif.it.paskui.village;
+package lt.vu.mif.it.paskui.village.npc;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.advancements.critereon.PlayerInteractTrigger;
+import lt.vu.mif.it.paskui.village.Main;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundAddPlayerPacket;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoPacket;
@@ -16,8 +16,6 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,8 +26,14 @@ import java.util.UUID;
 public class NPCManager {
 
     //TODO: fix error
-    public static Map<Integer, ServerPlayer> npcs = new HashMap<>();
+    private static final Map<Integer, ServerPlayer> npcs = new HashMap<>();
 
+    // Getters, setters
+    public static Map<Integer, ServerPlayer> getNPCs() {
+        return npcs;
+    }
+
+    // Other methods
     public static void createNPC (Player player) { //String skin
         Location location = player.getLocation();
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), ""); //+ skin
@@ -122,9 +126,5 @@ public class NPCManager {
     public  static void removeNPC(Player player, ServerPlayer npc) {
         Connection connection = ((CraftPlayer)player).getHandle().networkManager;
         connection.send(new ClientboundRemoveEntitiesPacket(npc.getId()));
-    }
-
-    public static Map<Integer, ServerPlayer> getNPCs() {
-        return npcs;
     }
 }

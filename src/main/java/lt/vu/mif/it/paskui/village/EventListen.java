@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village;
 
 import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
+import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -37,7 +38,7 @@ public class EventListen implements Listener {
 
         pCount = 0;
 
-        ServerPlayer npc = NPCManager.npcs.get(event.getEntityId());
+        ServerPlayer npc = NPCManager.getNPCs().get(event.getEntityId());
 
         createInv(Main.inv);
         for (ItemStack item : npc.getInventory().getContents()) {
@@ -105,10 +106,6 @@ public class EventListen implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-
-        PacketReader reader = new PacketReader(event.getPlayer());
-        reader.inject();
-
         if (NPCManager.getNPCs() == null)
             return;
         if (NPCManager.getNPCs().isEmpty())

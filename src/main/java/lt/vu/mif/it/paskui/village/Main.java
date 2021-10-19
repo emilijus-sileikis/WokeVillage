@@ -6,6 +6,7 @@ import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
+import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,13 +45,6 @@ public class Main extends JavaPlugin implements Listener {
 
         data = new DataManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListen(),this);
-
-        if (!Bukkit.getOnlinePlayers().isEmpty()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                PacketReader reader = new PacketReader(player.getPlayer());
-                reader.inject();
-            }
-        }
 
         if(data.getConfig().contains("data"))
             loadNPC();
