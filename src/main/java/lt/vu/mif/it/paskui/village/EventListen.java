@@ -101,7 +101,7 @@ public class EventListen implements Listener {
         );
         //description for Pickaxe
         List<Component> loreMiner = new ArrayList<>();
-        loreMiner.add( Component.text("Task: 128 Stone").color(NamedTextColor.YELLOW) );
+        loreMiner.add( Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW) );
         loreMiner.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
         metaPickaxe.lore(loreMiner);
         item.setItemMeta(metaPickaxe);
@@ -175,10 +175,10 @@ public class EventListen implements Listener {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
+                if (p.getInventory().contains(Material.GOLD_INGOT, 20))
                 {
                     //payment
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
                     //receiving goods
@@ -205,7 +205,7 @@ public class EventListen implements Listener {
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
                     //receiving goods
-                    receiveItems(p.getInventory(), Material.COBBLESTONE, 128);
+                    receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
                 }
@@ -220,14 +220,14 @@ public class EventListen implements Listener {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT, 15))
+                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
                 {
                     //payment
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 15);
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
                     //receiving goods
-                    receiveItems(p.getInventory(), Material.COD, 128);
+                    receiveItems(p.getInventory(), Material.COD, 64);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
                 }
