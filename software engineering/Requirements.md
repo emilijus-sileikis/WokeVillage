@@ -56,15 +56,7 @@ Compatibility:
 
 Security:
 
-- The plugin does not collect any sensitive user data.
-- Only data collected is the NPC data, which is only saved locally.
-
-Architectural Decisions:
-
-- Coding language: Java.
-- Build tool: Gradle.
-- IDE: IntelliJ IDEA.
-- Data storage: SQLite.
+- The plugin does not collect any information of it's user.
 
 **Illustration of Interaction**
 
