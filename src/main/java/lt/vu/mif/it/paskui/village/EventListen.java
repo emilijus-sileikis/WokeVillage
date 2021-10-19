@@ -177,12 +177,16 @@ public class EventListen implements Listener {
                 {
                     //payment
                     Location loc = p.getLocation();
-                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
                     //receiving goods
-                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.spawnParticle(Particle.CRIT_MAGIC, loc,100);
+                    }
                     receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
@@ -203,12 +207,16 @@ public class EventListen implements Listener {
                 {
                     //payment
                     Location loc = p.getLocation();
-                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
                     //receiving goods
-                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                    }
                     receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
@@ -228,12 +236,16 @@ public class EventListen implements Listener {
                 {
                     //payment
                     Location loc = p.getLocation();
-                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
                     //receiving goods
-                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                    }
                     receiveItems(p.getInventory(), Material.COD, 64);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
