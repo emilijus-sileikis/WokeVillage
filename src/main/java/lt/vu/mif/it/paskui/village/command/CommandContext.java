@@ -83,6 +83,10 @@ public class CommandContext {
                     i = parseLocationArgument(flag, i, args);
                     break;
             }
+
+            if (this.args.containsKey(CommandFlag.CMD_ARGUMENT.getFlag() + argCount)) {
+                ++argCount;
+            }
         }
     }
 
