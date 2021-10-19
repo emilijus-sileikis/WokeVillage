@@ -70,7 +70,7 @@ public class Main extends JavaPlugin implements Listener {
         try {
             CommandContext context = new CommandContext(overworld, sender, command, args);
             cmdMgr.execute(context);
-        } catch (CommandContext.MissingQuotesException e) {
+        } catch (CommandContext.MissingQuotesException | CommandContext.MissingArgumentDataException e) {
             Logging.infoLog(e.getMessage());
             return false;
         }

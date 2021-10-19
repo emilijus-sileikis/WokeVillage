@@ -22,7 +22,8 @@ public class CommandContext {
     private final HashMap<String, Argument<?>> args;
 
     public CommandContext(World overworld, CommandSender sender, @NotNull Command cmd, String @NotNull [] args)
-            throws MissingQuotesException {
+            throws MissingQuotesException, MissingArgumentDataException
+    {
         this.overworld = overworld;
         this.sender = sender;
         this.cmd = cmd.getName() + "." + args[0];
@@ -64,7 +65,9 @@ public class CommandContext {
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
      */
-    private void parseArgs(String @NotNull [] args) throws MissingQuotesException {
+    private void parseArgs(String @NotNull [] args)
+            throws MissingQuotesException, MissingArgumentDataException
+    {
         int argCount = 0; // Counts number of CommandFlag.CMD_ARGUMENT
 
         for (int i = 1; i < args.length; ++i) {
@@ -102,7 +105,7 @@ public class CommandContext {
      * @throws MissingQuotesException missing ' " ' at end of argument.
      */
     private int parseStringArgument(int argCount, CommandFlag flag, int offset, String @NotNull [] args)
-            throws MissingQuotesException {
+            throws MissingQuotesException, MissingArgumentDataException {
         final String ARG_KEY = (flag == CommandFlag.CMD_ARGUMENT) ?
                 flag.getFlag() + argCount :  // ARG_KEY = "ARG" + argCount (ex: ARG0)
                 flag.getFlag();
@@ -140,6 +143,10 @@ public class CommandContext {
             this.args.put(ARG_KEY, arg);
         } else {
             // Case for when no " are used
+            if (args[offset].startsWith("-") || args[offset].startsWith("--")){
+                throw new MissingArgumentDataException(flag, CommandFlag.class.toString());
+            }
+
             arg = new Argument<>(args[offset], String.class);
             this.args.put(ARG_KEY, arg);
         }
@@ -191,6 +198,15 @@ public class CommandContext {
     }
 
     // Classes
+    /**
+     * Is used for when argument does not receive a value.
+     */
+    public static class MissingArgumentDataException extends Exception {
+        MissingArgumentDataException(CommandFlag flag, String wasGiven) {
+            super(String.format("Expected argument for %s, was given: %s", flag.getFlag(), wasGiven));
+        }
+    }
+
     public static class MissingQuotesException extends Exception {
         MissingQuotesException() {
             super("One of arguments is missing closing \".");
