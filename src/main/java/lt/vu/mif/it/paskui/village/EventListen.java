@@ -175,7 +175,7 @@ public class EventListen implements Listener {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT))
+                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
                 {
                     //payment
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
@@ -198,7 +198,7 @@ public class EventListen implements Listener {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT))
+                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
                 {
                     //payment
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
@@ -220,7 +220,7 @@ public class EventListen implements Listener {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT))
+                if (p.getInventory().contains(Material.GOLD_INGOT, 15))
                 {
                     //payment
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 15);
@@ -281,7 +281,7 @@ public class EventListen implements Listener {
 
         if(type == null || inventory == null)
             return -1;
-        if (amount <= 0)
+        if (amount <= 0 )
             return -1;
 
         if (amount == Integer.MAX_VALUE) {
