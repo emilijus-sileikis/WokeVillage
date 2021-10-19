@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +58,7 @@ public class EventListen implements Listener {
 
     public static void createInv(Inventory inv) {
         Main.inv = Bukkit.createInventory(null, InventoryType.HOPPER,
-                Component.text("Configuration Menu")
+                Component.text("Trading Menu")
                         .decorate(TextDecoration.BOLD)
                         .color(NamedTextColor.AQUA)
         );
@@ -79,14 +80,14 @@ public class EventListen implements Listener {
         //WoodChopping Button
         item.setType(Material.STONE_AXE);
         ItemMeta metaAxe = item.getItemMeta();
-        metaAxe.displayName(Component.text(ChatColor.DARK_PURPLE + "Wood Gathering")
+        metaAxe.displayName(Component.text(ChatColor.GOLD + "Wood Gathering")
                 .decorate(TextDecoration.BOLD)
                 .decoration(TextDecoration.ITALIC, false)
         );
         //description for Axe
         List<Component> loreLumberjack = new ArrayList<>();
-        loreLumberjack.add( Component.text("Task: 128 Spruce Logs").color(NamedTextColor.LIGHT_PURPLE) );
-        loreLumberjack.add( Component.text("Price: 20 gold ingot").color(NamedTextColor.LIGHT_PURPLE) );
+        loreLumberjack.add( Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW) );
+        loreLumberjack.add( Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW) );
         metaAxe.lore(loreLumberjack);
         item.setItemMeta(metaAxe);
         Main.inv.setItem(1, item);
@@ -94,14 +95,14 @@ public class EventListen implements Listener {
         //Miner Button
         item.setType(Material.STONE_PICKAXE);
         ItemMeta metaPickaxe = item.getItemMeta();
-        metaPickaxe.displayName(Component.text(ChatColor.DARK_PURPLE + "Mining")
+        metaPickaxe.displayName(Component.text(ChatColor.GOLD + "Mining")
                 .decorate(TextDecoration.BOLD)
                 .decoration(TextDecoration.ITALIC, false)
         );
         //description for Pickaxe
         List<Component> loreMiner = new ArrayList<>();
-        loreMiner.add( Component.text("Task: 128 Stone").color(NamedTextColor.LIGHT_PURPLE) );
-        loreMiner.add( Component.text("Price: 10 gold ingot").color(NamedTextColor.LIGHT_PURPLE) );
+        loreMiner.add( Component.text("Task: 128 Stone").color(NamedTextColor.YELLOW) );
+        loreMiner.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
         metaPickaxe.lore(loreMiner);
         item.setItemMeta(metaPickaxe);
         Main.inv.setItem(2, item);
@@ -109,14 +110,14 @@ public class EventListen implements Listener {
         //Fisher Button
         item.setType(Material.FISHING_ROD);
         ItemMeta metaFish = item.getItemMeta();
-        metaFish.displayName(Component.text(ChatColor.DARK_PURPLE + "Fishing")
+        metaFish.displayName(Component.text(ChatColor.GOLD + "Fishing")
                 .decorate(TextDecoration.BOLD)
                 .decoration(TextDecoration.ITALIC, false)
         );
         //description for Fishing Rod
         List<Component> loreFish = new ArrayList<>();
-        loreFish.add( Component.text("Task: 64 Fish").color(NamedTextColor.LIGHT_PURPLE) );
-        loreFish.add( Component.text("Price: 10 gold ingot").color(NamedTextColor.LIGHT_PURPLE) );
+        loreFish.add( Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW) );
+        loreFish.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
         metaFish.lore(loreFish);
         item.setItemMeta(metaFish);
         Main.inv.setItem(3, item);
@@ -176,11 +177,15 @@ public class EventListen implements Listener {
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT))
                 {
-                    //p.getInventory().remove(Material.GOLD_INGOT);
-                    //p.getInventory().removeItem(item);
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
+                    //payment
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
+                    //receiving goods
+                    receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
+
                 }
                 else {
                     p.sendMessage(ChatColor.RED + "You lack the required resources.");
@@ -195,11 +200,14 @@ public class EventListen implements Listener {
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT))
                 {
-                    //p.getInventory().remove(Material.GOLD_INGOT);
-                    //p.getInventory().removeItem(item);
+                    //payment
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
+                    //receiving goods
+                    receiveItems(p.getInventory(), Material.COBBLESTONE, 128);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
                 }
                 else {
                     p.sendMessage(ChatColor.RED + "You lack the required resources.");
@@ -214,11 +222,14 @@ public class EventListen implements Listener {
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT))
                 {
-                    //p.getInventory().remove(Material.GOLD_INGOT);
-                    //p.getInventory().removeItem(item);
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
+                    //payment
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 15);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
+                    //receiving goods
+                    receiveItems(p.getInventory(), Material.COD, 128);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
                 }
                 else {
                     p.sendMessage(ChatColor.RED + "You lack the required resources.");
@@ -235,6 +246,20 @@ public class EventListen implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    private static int receiveItems(Inventory inventory, Material type, int amount) {
+
+        if(type == null || inventory == null)
+            return -1;
+
+        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.addItem(new org.bukkit.inventory.ItemStack(type,amount));
+
+        int granted = 0;
+        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+            granted+=item.getAmount();
+        }
+        return granted;
     }
 
     @EventHandler
