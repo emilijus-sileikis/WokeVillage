@@ -255,6 +255,20 @@ public class EventListen implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+
+        PacketReader reader = new PacketReader(event.getPlayer());
+        reader.inject();
+
+        if (NPCManager.getNPCs() == null)
+            return;
+        if (NPCManager.getNPCs().isEmpty())
+            return;
+
+        NPCManager.addJoinPacket(event.getPlayer());
+    }
+
     private static int receiveItems(Inventory inventory, Material type, int amount) {
 
         if(type == null || inventory == null)
