@@ -7,9 +7,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -178,10 +176,13 @@ public class EventListen implements Listener {
                 if (p.getInventory().contains(Material.GOLD_INGOT, 20))
                 {
                     //payment
+                    Location loc = p.getLocation();
+                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
                     //receiving goods
+                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
                     receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
@@ -201,10 +202,13 @@ public class EventListen implements Listener {
                 if (p.getInventory().contains(Material.GOLD_INGOT, 10))
                 {
                     //payment
+                    Location loc = p.getLocation();
+                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
                     //receiving goods
+                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
                     receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
@@ -223,10 +227,13 @@ public class EventListen implements Listener {
                 if (p.getInventory().contains(Material.GOLD_INGOT, 10))
                 {
                     //payment
+                    Location loc = p.getLocation();
+                    p.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
                     removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
                     //receiving goods
+                    p.spawnParticle(Particle.CRIT_MAGIC, loc,100);
                     receiveItems(p.getInventory(), Material.COD, 64);
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
@@ -262,21 +269,6 @@ public class EventListen implements Listener {
         return granted;
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-
-        PacketReader reader = new PacketReader(event.getPlayer());
-        reader.inject();
-
-        if (NPCManager.getNPCs() == null)
-            return;
-        if (NPCManager.getNPCs().isEmpty())
-            return;
-
-        NPCManager.addJoinPacket(event.getPlayer());
-    }
-
-    @EventHandler
     public static int removeItems(Inventory inventory, Material type, int amount) {
 
         if(type == null || inventory == null)
