@@ -6,9 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +20,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
 
@@ -37,69 +38,121 @@ public class EventListen implements Listener {
 
         pCount = 0;
 
-        ServerPlayer npc = NPCManager.npcs.get(event.getEntityId());
-
-        createInv(Main.inv);
-        for (ItemStack item : npc.getInventory().getContents()) {
-            Main.inv.addItem(CraftItemStack.asBukkitCopy(item));
-        }
-
-        event.getPlayer().openInventory(Main.inv);
-    }
-
-    public static void createInv(Inventory inv) {
-        Main.inv = Bukkit.createInventory(null, InventoryType.BARREL,
-                Component.text("Configuration Menu")
-                        .decorate(TextDecoration.BOLD)
-                        .color(NamedTextColor.AQUA)
-        );
-        org.bukkit.inventory.ItemStack item = new org.bukkit.inventory.ItemStack(Material.AMETHYST_SHARD);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(
-                Component.text("Hello!").color(NamedTextColor.DARK_GREEN)
-                        .decoration(TextDecoration.ITALIC, false)
-        );
-        List<Component> Lore = new ArrayList<>();
-        Lore.add( Component.text("Click to select").color(NamedTextColor.GRAY) );
-        meta.lore(Lore);
-        item.setItemMeta(meta);
-        Main.inv.setItem(0, item);
-
-        //Copy paste kiek reik
-
-        //close button
-        item.setType(Material.BARRIER);
-        meta.displayName(Component.text("Close")
-                .color(NamedTextColor.RED)
-                .decorate(TextDecoration.BOLD)
-                .decoration(TextDecoration.ITALIC, false)
-        );
-        Lore.clear();
-        meta.lore(Lore);
-        item.setItemMeta(meta);
-        Main.inv.setItem(8, item);
+        Player player = event.getPlayer();
+        SelectionScreen gui = new SelectionScreen();
+        player.openInventory(gui.getInventory());
     }
 
     @EventHandler
     public static void onClick(InventoryClickEvent event) {
 
-        if (!event.getInventory().equals(Main.inv)) {return;}
-        if (event.getCurrentItem() == null) {return;}
-        if (event.getCurrentItem().getItemMeta() == null) {return;}
-        if (event.getCurrentItem().getItemMeta().displayName() == null) {return;}
-
-        event.setCancelled(true);
-
-        Player player = (Player) event.getWhoClicked();
-
-        if (event.getSlot() == 0) {
-
-            player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Hello! Welcome to Paskui Plugin");
-            player.closeInventory();
+        if (event.getClickedInventory() == null) {
+            return;
         }
-        if (event.getSlot() == 8) {
+        if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
 
-            player.closeInventory();
+            event.setCancelled(true);
+            Player p = (Player) event.getWhoClicked();
+
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+
+            if (event.getCurrentItem().getType() == Material.BOOK) {
+                p.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "The 'Help' function will be added later!");
+                p.closeInventory();
+            }
+
+            //Lumberjack
+            else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
+                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemMeta meta = item.asBukkitCopy().getItemMeta();
+                item.asBukkitCopy().setItemMeta(meta);
+                if (p.getInventory().contains(Material.GOLD_INGOT, 20))
+                {
+                    //payment
+                    Location loc = p.getLocation();
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
+                    //receiving goods
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.spawnParticle(Particle.CRIT_MAGIC, loc,100);
+                    }
+                    receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
+
+                }
+                else {
+                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
+                }
+                p.closeInventory();
+            }
+
+            else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
+                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemMeta meta = item.asBukkitCopy().getItemMeta();
+                item.asBukkitCopy().setItemMeta(meta);
+                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
+                {
+                    //payment
+                    Location loc = p.getLocation();
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
+                    //receiving goods
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                    }
+                    receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
+                }
+                else {
+                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
+                }
+                p.closeInventory();
+            }
+
+            else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
+                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemMeta meta = item.asBukkitCopy().getItemMeta();
+                item.asBukkitCopy().setItemMeta(meta);
+                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
+                {
+                    //payment
+                    Location loc = p.getLocation();
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    }
+                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
+                    //receiving goods
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                    }
+                    receiveItems(p.getInventory(), Material.COD, 64);
+                    p.updateInventory();
+                    p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
+                }
+                else {
+                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
+                }
+                p.closeInventory();
+            }
+
+            else if (event.getCurrentItem().getType() == Material.BARRIER) {
+                p.sendMessage("Inventory closed!");
+                p.closeInventory();
+            }
         }
     }
 
@@ -115,6 +168,41 @@ public class EventListen implements Listener {
             return;
 
         NPCManager.addJoinPacket(event.getPlayer());
+    }
+
+    private static int receiveItems(Inventory inventory, Material type, int amount) {
+
+        if(type == null || inventory == null)
+            return -1;
+
+        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.addItem(new org.bukkit.inventory.ItemStack(type,amount));
+
+        int granted = 0;
+        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+            granted+=item.getAmount();
+        }
+        return granted;
+    }
+
+    public static int removeItems(Inventory inventory, Material type, int amount) {
+
+        if(type == null || inventory == null)
+            return -1;
+        if (amount <= 0 )
+            return -1;
+
+        if (amount == Integer.MAX_VALUE) {
+            inventory.remove(type);
+            return 0;
+        }
+
+        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.removeItem(new org.bukkit.inventory.ItemStack(type,amount));
+
+        int notRemoved = 0;
+        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+            notRemoved+=item.getAmount();
+        }
+        return notRemoved;
     }
 
     @EventHandler
