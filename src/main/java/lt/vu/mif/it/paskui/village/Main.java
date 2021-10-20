@@ -2,34 +2,44 @@ package lt.vu.mif.it.paskui.village;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.server.level.ServerPlayer;
+import lt.vu.mif.it.paskui.village.command.CommandContext;
+import lt.vu.mif.it.paskui.village.command.CommandManager;
+import lt.vu.mif.it.paskui.village.command.Injector;
+import lt.vu.mif.it.paskui.village.commands.NPCCommands;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 
+    private World overworld;
     public static DataManager data;
-    private static Main instance;
     public NPCManager npcManager;
     public static Inventory inv;
+    private CommandManager cmdMgr;
+    private static Main instance;
 
-    public static Main getInstsance() {
-        return instance;
-    }
-
-    public static void setInstsance(Main instsance) {
-        Main.instance = instsance;
-    }
-
+    // JavaPlugin Overrides
     @Override
     public void onEnable() {
+        Bukkit.getWorlds().forEach(
+                (World world) -> {
+                    if (world.getName().equals("world")) {
+                        overworld = world;
+                    }
+                }
+        );
 
         data = new DataManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListen(),this);
@@ -44,31 +54,40 @@ public class Main extends JavaPlugin implements Listener {
         if(data.getConfig().contains("data"))
             loadNPC();
 
-        setInstsance(this);
-        this.getCommand("npc").setExecutor(new NPC_CMD());
-        //Todo:Maybe this will help with removing the npc?
-        //this.getCommand("remnpc").setExecutor(new NPC_CMD());
         this.npcManager = new NPCManager();
+
+        registerCommands();
+        instance = this;
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable() {}
 
-        /*for (Player player : Bukkit.getOnlinePlayers()) {
-            PacketReader reader = new PacketReader(player);
-            reader.uninject();
-            for (ServerPlayer npc : NPCManager.npcs.values()) {
-                NPCManager.removeNPC(player, npc);
-            }
-        }*/
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+                             @NotNull String label, @NotNull String[] args)
+    {
+        try {
+            CommandContext context = new CommandContext(overworld, sender, command, args);
+            cmdMgr.execute(context);
+        } catch (CommandContext.MissingQuotesException | CommandContext.MissingArgumentDataException e) {
+            Logging.infoLog(e.getMessage());
+            return false;
+        }
 
+        return true;
     }
 
-
+    // Getters, setters
     public static FileConfiguration getData() {
         return data.getConfig();
     }
 
+    public static Main getInstsance() {
+        return instance;
+    }
+
+    // Others
     public static void saveData() {
         data.saveConfig();
     }
@@ -86,5 +105,14 @@ public class Main extends JavaPlugin implements Listener {
             gameProfile.getProperties().put("textures",new Property("textures", file.getString("data." + npc +".tex"), file.getString("data." + npc + ".signature")));
             NPCManager.loadNPC(location, gameProfile);
         });
+    }
+
+    private void registerCommands() {
+        cmdMgr = new CommandManager();
+        cmdMgr.setInjector(new Injector(this));
+
+        cmdMgr.register(NPCCommands.class);
+
+        cmdMgr.dump();
     }
 }
