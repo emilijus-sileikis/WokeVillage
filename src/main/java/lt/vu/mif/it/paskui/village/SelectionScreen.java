@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -39,21 +38,21 @@ public class SelectionScreen implements InventoryHolder {
         List<Component> loreLumberjack = new ArrayList<>();
         loreLumberjack.add( Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW) );
         loreLumberjack.add( Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text(ChatColor.GOLD + "Wood Gathering").decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_AXE, loreLumberjack);
+        item = createItem(Component.text("Wood Gathering").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_AXE, loreLumberjack);
         inv.setItem(inv.firstEmpty(), item);
 
         //Miner
         List<Component> loreMiner = new ArrayList<>();
         loreMiner.add( Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW) );
         loreMiner.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text(ChatColor.GOLD + "Mining").decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_PICKAXE, loreMiner);
+        item = createItem(Component.text("Mining").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_PICKAXE, loreMiner);
         inv.setItem(inv.firstEmpty(), item);
 
         //Fisher
         List<Component> loreFish = new ArrayList<>();
         loreFish.add( Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW) );
         loreFish.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text(ChatColor.GOLD + "Fishing").decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.FISHING_ROD, loreFish);
+        item = createItem(Component.text("Fishing").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.FISHING_ROD, loreFish);
         inv.setItem(inv.firstEmpty(), item);
 
         //Right side
