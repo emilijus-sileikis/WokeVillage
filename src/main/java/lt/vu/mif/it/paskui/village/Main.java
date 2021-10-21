@@ -26,7 +26,6 @@ public class Main extends JavaPlugin implements Listener {
     private World overworld;
     public static DataManager data;
     public NPCManager npcManager;
-    public static Inventory inv;
     private CommandManager cmdMgr;
     private static Main instance;
 
