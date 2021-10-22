@@ -68,130 +68,20 @@ public class EventListen implements Listener {
 
             //Lumberjack
             else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
-                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
-                ItemStack sprucelogs_item = new ItemStack(getItem(Material.SPRUCE_LOG));
-                ItemMeta meta = item.asBukkitCopy().getItemMeta();
-                item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT, 20))
-                {
-                    //payment
-                    Location loc = p.getLocation();
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.playNote(loc,  Instrument.BANJO, Note.sharp(2, Note.Tone.F));
-                    }
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 20);
-                    p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
-                    //receiving goods
-                    for(int spruce_logs=0; spruce_logs<128; spruce_logs++) {
-                        switch(p.getInventory().firstEmpty()) {
-                            case -1:
-                                p.getWorld().dropItemNaturally(loc, sprucelogs_item.asBukkitCopy());
-                                break;
-                            default:
-                                //items are added 1 by 1 to avoid duping
-                                receiveItems(p.getInventory(), Material.SPRUCE_LOG, 1);
-                                p.updateInventory();
-                                break;
-                        }
-                    }
-
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.spawnParticle(Particle.CRIT_MAGIC, loc,100);
-                    }
-                    //receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
-                    //p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
-
-                }
-                else {
-                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
-                }
-                p.closeInventory();
+                Material spruce = Material.SPRUCE_LOG;
+                processTrade(event, p, 20, 128, spruce);
             }
 
             //Miner
             else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
-                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
-                ItemStack cobblestone_item = new ItemStack(getItem(Material.COBBLESTONE));
-                ItemMeta meta = item.asBukkitCopy().getItemMeta();
-                item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
-                {
-                    //payment
-                    Location loc = p.getLocation();
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
-                    }
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
-                    p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
-                    //receiving goods
-                    for(int cobblestone=0; cobblestone<96; cobblestone++) {
-                        switch(p.getInventory().firstEmpty()) {
-                            case -1:
-                                p.getWorld().dropItemNaturally(loc, cobblestone_item.asBukkitCopy());
-                                break;
-                            default:
-                                //items are added 1 by 1 to avoid duping
-                                receiveItems(p.getInventory(), Material.COBBLESTONE, 1);
-                                p.updateInventory();
-                                break;
-                        }
-                    }
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                    }
-                    //receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
-                    //p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
-                }
-                else {
-                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
-                }
-                p.closeInventory();
+                Material cobble = Material.COBBLESTONE;
+                processTrade(event, p, 15, 96, cobble);
             }
 
             //Fisher
             else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
-                ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
-                ItemStack cod_item = new ItemStack(getItem(Material.COD));
-                ItemMeta meta = item.asBukkitCopy().getItemMeta();
-                item.asBukkitCopy().setItemMeta(meta);
-                if (p.getInventory().contains(Material.GOLD_INGOT, 10))
-                {
-                    //payment
-                    Location loc = p.getLocation();
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
-                    }
-                    removeItems(p.getInventory(), Material.GOLD_INGOT, 10);
-                    p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
-                    //receiving goods
-                    for(int cod=0; cod<64; cod++) {
-                        switch(p.getInventory().firstEmpty()) {
-                            case -1:
-                                p.getWorld().dropItemNaturally(loc, cod_item.asBukkitCopy());
-                                break;
-                            default:
-                                //items are added 1 by 1 to avoid duping
-                                receiveItems(p.getInventory(), Material.COD, 1);
-                                p.updateInventory();
-                                break;
-                        }
-                    }
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                    }
-                    //receiveItems(p.getInventory(), Material.COD, 64);
-                    //p.updateInventory();
-                    p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
-                }
-                else {
-                    p.sendMessage(ChatColor.RED + "You lack the required resources.");
-                }
-                p.closeInventory();
+                Material cod = Material.COD;
+                processTrade(event, p, 10, 64, cod);
             }
 
             else if (event.getCurrentItem().getType() == Material.BARRIER) {
@@ -213,6 +103,44 @@ public class EventListen implements Listener {
             return;
 
         NPCManager.addJoinPacket(event.getPlayer());
+    }
+
+    private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
+
+            ItemStack itemReceived = new ItemStack(getItem(material));
+            if (p.getInventory().contains(Material.GOLD_INGOT, cost))
+            {
+                //payment
+                Location loc = p.getLocation();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                }
+                removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
+                p.updateInventory();
+                p.sendMessage(ChatColor.GREEN + "You have bought villagers services!");
+                //receiving goods
+                for(int i=0; i<goods; i++) {
+                    switch(p.getInventory().firstEmpty()) {
+                        case -1:
+                            p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
+                            break;
+                        default:
+                            //items are added 1 by 1 to avoid duping
+                            receiveItems(p.getInventory(), material, 1);
+                            p.updateInventory();
+                            break;
+                    }
+                }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                }
+                p.sendMessage(ChatColor.GREEN + "Your items have been delivered!");
+            }
+            else {
+                p.sendMessage(ChatColor.RED + "You lack the required resources.");
+            }
+            p.closeInventory();
+
     }
 
     private static int receiveItems(Inventory inventory, Material type, int amount) {
