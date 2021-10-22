@@ -59,13 +59,17 @@ public class EventListen implements Listener {
             }
 
             if (event.getCurrentItem().getType() == Material.BOOK) {
-                p.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "The 'Help' function will be added later!");
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!");
+                p.sendMessage(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. ");
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
                 p.closeInventory();
             }
 
             //Lumberjack
             else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemStack sprucelogs_item = new ItemStack(getItem(Material.SPRUCE_LOG));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT, 20))
@@ -79,11 +83,24 @@ public class EventListen implements Listener {
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought lumberjack services!");
                     //receiving goods
+                    for(int spruce_logs=0; spruce_logs<128; spruce_logs++) {
+                        switch(p.getInventory().firstEmpty()) {
+                            case -1:
+                                p.getWorld().dropItemNaturally(loc, sprucelogs_item.asBukkitCopy());
+                                break;
+                            default:
+                                //items are added 1 by 1 to avoid duping
+                                receiveItems(p.getInventory(), Material.SPRUCE_LOG, 1);
+                                p.updateInventory();
+                                break;
+                        }
+                    }
+
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.spawnParticle(Particle.CRIT_MAGIC, loc,100);
                     }
-                    receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
-                    p.updateInventory();
+                    //receiveItems(p.getInventory(), Material.SPRUCE_LOG, 128);
+                    //p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Spruce Logs have been delivered!");
 
                 }
@@ -93,8 +110,10 @@ public class EventListen implements Listener {
                 p.closeInventory();
             }
 
+            //Miner
             else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemStack cobblestone_item = new ItemStack(getItem(Material.COBBLESTONE));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT, 10))
@@ -108,11 +127,23 @@ public class EventListen implements Listener {
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought mining services!");
                     //receiving goods
+                    for(int cobblestone=0; cobblestone<96; cobblestone++) {
+                        switch(p.getInventory().firstEmpty()) {
+                            case -1:
+                                p.getWorld().dropItemNaturally(loc, cobblestone_item.asBukkitCopy());
+                                break;
+                            default:
+                                //items are added 1 by 1 to avoid duping
+                                receiveItems(p.getInventory(), Material.COBBLESTONE, 1);
+                                p.updateInventory();
+                                break;
+                        }
+                    }
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                     }
-                    receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
-                    p.updateInventory();
+                    //receiveItems(p.getInventory(), Material.COBBLESTONE, 96);
+                    //p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Stone have been delivered!");
                 }
                 else {
@@ -121,8 +152,10 @@ public class EventListen implements Listener {
                 p.closeInventory();
             }
 
+            //Fisher
             else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
                 ItemStack item = new ItemStack(getItem(Material.GOLD_INGOT));
+                ItemStack cod_item = new ItemStack(getItem(Material.COD));
                 ItemMeta meta = item.asBukkitCopy().getItemMeta();
                 item.asBukkitCopy().setItemMeta(meta);
                 if (p.getInventory().contains(Material.GOLD_INGOT, 10))
@@ -136,11 +169,23 @@ public class EventListen implements Listener {
                     p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "You have bought fishing services!");
                     //receiving goods
+                    for(int cod=0; cod<64; cod++) {
+                        switch(p.getInventory().firstEmpty()) {
+                            case -1:
+                                p.getWorld().dropItemNaturally(loc, cod_item.asBukkitCopy());
+                                break;
+                            default:
+                                //items are added 1 by 1 to avoid duping
+                                receiveItems(p.getInventory(), Material.COD, 1);
+                                p.updateInventory();
+                                break;
+                        }
+                    }
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                     }
-                    receiveItems(p.getInventory(), Material.COD, 64);
-                    p.updateInventory();
+                    //receiveItems(p.getInventory(), Material.COD, 64);
+                    //p.updateInventory();
                     p.sendMessage(ChatColor.GREEN + "Your Fish have been delivered!");
                 }
                 else {
