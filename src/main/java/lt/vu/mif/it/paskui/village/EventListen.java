@@ -178,6 +178,10 @@ public class EventListen implements Listener {
         return notRemoved;
     }
 
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
 
