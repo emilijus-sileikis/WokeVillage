@@ -118,6 +118,16 @@ NPC will have only one, randomly assigned when it spawns (Figure 5). Spawn rate 
 
 The Minecraft: Java Edition server accepts connections from TCP (transmission control protocol) clients and communicates with them by using packets. A packet is a sequence of bytes sent over the TCP connection. The packets are responsible for nearly everything the player does, interacts, or sees on the server. So in order to spawn the NPC, make it visible to every player on the server, to make him interact able and so on, we had to implement packet sending. In the graph (Figure 6, Graph section) an NPC, spawning via packets is shown. In order to add an NPC packet, we need to send three different packets to the Client. These include the *Player Info* (two times with different parameters), *Add Player* packets. In order to make them visible to all the players online, the server needs to repeat sending these packets for every new player who joins. In order to hide the NPC nametag we need three other packets: *Set Player Team Remove, Set Player* *Team Add and Set Player Team Add Player packets.*
 
+## **Command Execution (Figure 7, Graph section):**
+
+Command execution splits into three different functions - *onEnable()*, *registerCommands()* and *onCommand()*.
+
+- **onEnable()** - is responsible for everything that happens once the server is started. Initiates all the previous tasks as well as executes the *registerCommands()* function.
+
+- **registerCommands()** - creates an instance of the *CommandManager* class which is responsible for all the commands of the plugin by using the *new CommandManager()* call. Injects the new command manager and registers a command class (*NPCCommands*) for it.
+
+- **onCommand()** - is responsible for everything that happens when a command is executed. Combines all the arguments into one class and passes them for the execution. Then, if no exception is caught, executes the command and returns true. Otherwise, it informs the user about the bad command input and returns false, thus not executing the command.
+
 ## **Technologies and tools:**
 
 - **Coding language:** Java (version 16).
@@ -147,4 +157,8 @@ The Minecraft: Java Edition server accepts connections from TCP (transmission co
 ![Illustration of NPC spawning via packets](doc/pictures/npc-spawning-packets.png)
 
 *Figure 6 NPC Spawning via Packets*
+
+![Illustration of cmd lifecycle] (doc/pictures/cmd-lifecycle.png)
+
+*Figure 7 Command Lifecycle*
 
