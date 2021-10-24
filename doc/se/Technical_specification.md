@@ -31,7 +31,7 @@ location, UUID, skin, signature, etc.
 the plugin and has all the necessary dependencies in order for the plugin to function as well.
 These dependencies include: *io.papermc:paper-api, org.bukkit, org.spigot and *net.minecraft.server.*
 
-![Illustration of System Context](doc/pictures/SystemContext.png)
+![Illustration of System Context](../pictures/SystemContext.png)
 *Figure 1 System Context*
 
 ## **Deployment:**
@@ -51,7 +51,7 @@ either close it or pick a service. If a player decides to pick a service, he can
 (*player.getInventory().remove(Material)*) and wait the given time. After the time passes, the player
 can finally receive their goods and end the transaction.
 
-![Illustration of NPC Menu](doc/pictures/NPCMenu.png)
+![Illustration of NPC Menu](../pictures/NPCMenu.png)
 *Figure 4 NPC Menu*
 
 ## **Roles and Personalities:**
@@ -140,25 +140,25 @@ Command execution splits into three different functions - *onEnable()*, *registe
 
 ## **Graphs:**
 
-![Illustration of Deployment](doc/pictures/Deployment.png)
+![Illustration of Deployment](../pictures/Deployment.png)
 
 *Figure 2 Deployment diagram*
 
-![Illustration of Interaction](doc/pictures/Interaction_diagram.png)
+![Illustration of Interaction](../pictures/Interaction_diagram.png)
 
 *Figure 3 Interaction diagram*
 
 
-![Illustration of Roles and personalities](doc/pictures/rolepersonalitygraph.png)
+![Illustration of Roles and personalities](../pictures/rolepersonalitygraph.png)
 
 *Figure 5 Role and personality graph*
 
 
-![Illustration of NPC spawning via packets](doc/pictures/npc-spawning-packets.png)
+![Illustration of NPC spawning via packets](../pictures/npc-spawning-packets.png)
 
 *Figure 6 NPC Spawning via Packets*
 
-![Illustration of cmd-lifecycle](doc/pictures/cmd-lifecycle.png)
+![Illustration of cmd-lifecycle](../pictures/cmd-lifecycle.png)
 
 *Figure 7 Command Lifecycle*
 
