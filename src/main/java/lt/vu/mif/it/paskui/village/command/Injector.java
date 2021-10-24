@@ -18,7 +18,9 @@ public class Injector {
         this.args = args;
         this.argClasses = new Class<?>[args.length];
 
-        Arrays.stream(argClasses).forEach(cls -> cls = args.getClass());
+        for (int i = 0; i < args.length; ++i) {
+            this.argClasses[i] = args[i].getClass();
+        }
     }
 
     // Getters, setters
