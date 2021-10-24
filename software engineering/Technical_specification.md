@@ -158,7 +158,7 @@ Command execution splits into three different functions - *onEnable()*, *registe
 
 *Figure 6 NPC Spawning via Packets*
 
-![Illustration of cmd lifecycle] (doc/pictures/cmd-lifecycle.png)
+![Illustration of cmd-lifecycle](doc/pictures/cmd-lifecycle.png)
 
 *Figure 7 Command Lifecycle*
 
