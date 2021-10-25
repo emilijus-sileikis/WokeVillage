@@ -8,3 +8,9 @@
 09-30 2h - Kalbų repetavimas ir tobulinimas.
 10-04 5h - Report ruošimas su LaTeX, weekly report ruošimas SE paskaitai. Šie ruošimai susidarė iš analizės, grafikų, patobulintos vizijos (non)functional requirements bei pagrindai dizainui. Taip pat įvykdytas merge-request ir kodo analizavimas pereinant iš spigot į paper.
 10-06 4h - Report baigimas su LaTeX, pridėjimas activity flowchart, deployement graph, abiejų grafų paaiškinimas, algoritmo aprašymas, non(functional) requirements.
+10-10 3h - Naujų trades pridėjimas.
+10-14 2h - Prie trades pridėti Particles ir SoundEffects.
+10-17 3h - Naujos command systemos aptarimas, testavimas.
+10-21 6h - Trading system rehaul, item dropping feature, new function for trade creation.
+10-24 3h - Naujos entity systemos aptarimas, tyrinėjami galimi variantai integruoti NPC į server-side.
+10-25 2h - Skaidriu ruošimas pristatymui.
