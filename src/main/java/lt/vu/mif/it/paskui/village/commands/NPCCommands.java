@@ -1,11 +1,13 @@
 package lt.vu.mif.it.paskui.village.commands;
 
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +16,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NPCCommands {
 
+    private final NPCManager npcManager;
+
+    public NPCCommands(Main plugin) {
+        npcManager = plugin.getNPCManager();
+    }
+
+    // Commands
     @Command(
             roots = "npc",
             mod = { "create" },
@@ -31,7 +40,7 @@ public class NPCCommands {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             // NOTE: These will be needed if we are going to implement skins
-            NPCManager.createNPC(player); //, player.getName()
+            npcManager.createNPC(player, player.getLocation(), EntityType.PLAYER);
             player.sendMessage("NPC CREATED");
             Logging.infoLog("NPC CREATED");
 

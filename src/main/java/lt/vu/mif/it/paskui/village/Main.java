@@ -1,11 +1,10 @@
 package lt.vu.mif.it.paskui.village;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
@@ -14,23 +13,22 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Objects;
-import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 
-    private World overworld;
-    public static DataManager data;
-    public NPCManager npcManager;
-    public static Inventory inv;
-    private CommandManager cmdMgr;
     private static Main instance;
+    private NPCManager npcManager;
+    public static DataManager data;
+    public static Inventory inv;
+    private World overworld;
+    private CommandManager cmdMgr;
 
     // JavaPlugin Overrides
     @Override
@@ -43,20 +41,22 @@ public class Main extends JavaPlugin implements Listener {
                 }
         );
 
-        data = new DataManager(this);
-        this.getServer().getPluginManager().registerEvents(new EventListen(),this);
-
-        if(data.getConfig().contains("data"))
-            loadNPC();
+        this.getServer().getPluginManager().registerEvents(new EventListen(this),this);
 
         this.npcManager = new NPCManager();
+        Main.data = new DataManager(this);
+
+        if(data.getConfig().contains("data"))
+            spawnNPC();
 
         registerCommands();
         instance = this;
     }
 
     @Override
-    public void onDisable() {}
+    public void onDisable() {
+        despawnAllNPC();
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
@@ -73,7 +73,7 @@ public class Main extends JavaPlugin implements Listener {
         return true;
     }
 
-    // Getters, setters
+    // Getters
     public static FileConfiguration getData() {
         return data.getConfig();
     }
@@ -82,18 +82,24 @@ public class Main extends JavaPlugin implements Listener {
         return instance;
     }
 
-    // Others
+    public NPCManager getNPCManager() {
+        return npcManager;
+    }
+
+    // public
     public static void saveData() {
         data.saveConfig();
     }
 
-    public void loadNPC() {
+    public void spawnNPC() {
         FileConfiguration file = data.getConfig();
         Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
                 .getKeys(false)
                 .forEach(npc -> {
                     Location location = new Location(
-                            Bukkit.getWorld(file.getString("data." + npc + ".world")),
+                            Bukkit.getWorld(
+                                    Objects.requireNonNull(file.getString("data." + npc + ".world"))
+                            ),
                             file.getInt("data." + npc + ".x"),
                             file.getInt("data." + npc + ".y"),
                             file.getInt("data." + npc + ".z")
@@ -104,19 +110,19 @@ public class Main extends JavaPlugin implements Listener {
 
                     String name = file.getString("data." + npc + ".name");
 
-                    GameProfile gameProfile = new GameProfile(UUID.randomUUID(), "" + name);
-                    gameProfile.getProperties().put(
-                            "textures",
-                            new Property(
-                                    "textures",
-                                    file.getString("data." + npc +".tex"),
-                                    file.getString("data." + npc + ".signature")
-                            )
-                    );
-
-                    NPCManager.loadNPC(location, gameProfile);
+                    npcManager.loadNPC(location);
                 }
         );
+    }
+
+    // private
+    private void despawnAllNPC() {
+        Collection<NPC> npcs = npcManager.getNPCs().values();
+
+        for (NPC npc : npcs) {
+            Logging.infoLog("Removed npc: %s", npc.toString());
+            npc.remove();
+        }
     }
 
     private void registerCommands() {

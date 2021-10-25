@@ -1,11 +1,12 @@
 package lt.vu.mif.it.paskui.village;
 
 import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
+import lt.vu.mif.it.paskui.village.npc.CustomVillager;
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,9 +28,15 @@ import java.util.List;
 
 public class EventListen implements Listener {
 
+    private final NPCManager npcManager;
     /** PlayerUseUnknownEntityEvent call counter */
     private int pCount = 0;
 
+    public EventListen(Main plugin) {
+        npcManager = plugin.getNPCManager();
+    }
+
+    // EventHandlers
     @EventHandler
     public void onInteract(PlayerUseUnknownEntityEvent event) {
         pCount += (event.getHand() == EquipmentSlot.OFF_HAND) ? 1 : 0;
@@ -38,12 +45,12 @@ public class EventListen implements Listener {
 
         pCount = 0;
 
-        ServerPlayer npc = NPCManager.getNPCs().get(event.getEntityId());
+        NPC npc = npcManager.getNPCs().get(event.getEntityId());
 
-        createInv(Main.inv);
-        for (ItemStack item : npc.getInventory().getContents()) {
-            Main.inv.addItem(CraftItemStack.asBukkitCopy(item));
-        }
+//        createInv(Main.inv);
+//        for (ItemStack item : npc.getInventory().getContents()) {
+//            Main.inv.addItem(CraftItemStack.asBukkitCopy(item));
+//        }
 
         event.getPlayer().openInventory(Main.inv);
     }
@@ -82,7 +89,7 @@ public class EventListen implements Listener {
     }
 
     @EventHandler
-    public static void onClick(InventoryClickEvent event) {
+    public void onClick(InventoryClickEvent event) {
 
         if (!event.getInventory().equals(Main.inv)) {return;}
         if (event.getCurrentItem() == null) {return;}
@@ -102,16 +109,6 @@ public class EventListen implements Listener {
 
             player.closeInventory();
         }
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        if (NPCManager.getNPCs() == null)
-            return;
-        if (NPCManager.getNPCs().isEmpty())
-            return;
-
-        NPCManager.addJoinPacket(event.getPlayer());
     }
 
     @EventHandler
