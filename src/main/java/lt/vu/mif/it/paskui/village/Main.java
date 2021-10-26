@@ -26,7 +26,6 @@ public class Main extends JavaPlugin implements Listener {
     private static Main instance;
     private NPCManager npcManager;
     public static DataManager data;
-    public static Inventory inv;
     private World overworld;
     private CommandManager cmdMgr;
 
@@ -65,7 +64,7 @@ public class Main extends JavaPlugin implements Listener {
         try {
             CommandContext context = new CommandContext(overworld, sender, command, args);
             cmdMgr.execute(context);
-        } catch (CommandContext.MissingQuotesException e) {
+        } catch (CommandContext.MissingQuotesException | CommandContext.MissingArgumentDataException e) {
             Logging.infoLog(e.getMessage());
             return false;
         }

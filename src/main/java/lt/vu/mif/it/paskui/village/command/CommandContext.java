@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village.command;
 
-import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 /**
- * Represents context required for command executions (sender, command and necessary arguments/flags)
+ * Represents context required for command executions (sender, command and
+ * necessary arguments/flags)
  */
 public class CommandContext {
 
@@ -22,7 +22,8 @@ public class CommandContext {
     private final HashMap<String, Argument<?>> args;
 
     public CommandContext(World overworld, CommandSender sender, @NotNull Command cmd, String @NotNull [] args)
-            throws MissingQuotesException {
+            throws MissingQuotesException, MissingArgumentDataException
+    {
         this.overworld = overworld;
         this.sender = sender;
         this.cmd = cmd.getName() + "." + args[0];
@@ -63,8 +64,11 @@ public class CommandContext {
      *
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
+     * @throws MissingArgumentDataException missing argument for flag.
      */
-    private void parseArgs(String @NotNull [] args) throws MissingQuotesException {
+    private void parseArgs(String @NotNull [] args)
+            throws MissingQuotesException, MissingArgumentDataException
+    {
         int argCount = 0; // Counts number of CommandFlag.CMD_ARGUMENT
 
         for (int i = 1; i < args.length; ++i) {
@@ -78,17 +82,19 @@ public class CommandContext {
                     break;
                 }
                 case NPC_LOCATION:
-                    // TODO: Implement location parsing
-                    Logging.infoLog("NPC_LOCATION : detected");
                     i = parseLocationArgument(flag, i, args);
                     break;
+            }
+
+            if (this.args.containsKey(CommandFlag.CMD_ARGUMENT.getFlag() + argCount)) {
+                ++argCount;
             }
         }
     }
 
     /**
-     * Parses additional argument from "{@code String[] args}" as string and adds it to {@link #args}.
-     * Should only be used when argument is believed to be a string.
+     * Parses additional argument from "{@code String[] args}" as string and adds
+     * it to {@link #args}. Should only be used when argument is believed to be a string.
      *
      * @param argCount count of occurrences CommandFlag.CMD_ARGUMENT has appeared
      * @param flag     parsed flag type
@@ -96,9 +102,10 @@ public class CommandContext {
      * @param args     array that stores additional raw arguments for commands
      * @return updated position of args array
      * @throws MissingQuotesException missing ' " ' at end of argument.
+     * @throws MissingArgumentDataException missing argument for flag.
      */
     private int parseStringArgument(int argCount, CommandFlag flag, int offset, String @NotNull [] args)
-            throws MissingQuotesException {
+            throws MissingQuotesException, MissingArgumentDataException {
         final String ARG_KEY = (flag == CommandFlag.CMD_ARGUMENT) ?
                 flag.getFlag() + argCount :  // ARG_KEY = "ARG" + argCount (ex: ARG0)
                 flag.getFlag();
@@ -136,6 +143,10 @@ public class CommandContext {
             this.args.put(ARG_KEY, arg);
         } else {
             // Case for when no " are used
+            if (args[offset].startsWith("-") || args[offset].startsWith("--")){
+                throw new MissingArgumentDataException(flag, CommandFlag.class.toString());
+            }
+
             arg = new Argument<>(args[offset], String.class);
             this.args.put(ARG_KEY, arg);
         }
@@ -187,6 +198,18 @@ public class CommandContext {
     }
 
     // Classes
+    /**
+     * Exception for when argument for a flag is missing.
+     */
+    public static class MissingArgumentDataException extends Exception {
+        MissingArgumentDataException(CommandFlag flag, String wasGiven) {
+            super(String.format("Expected argument for %s, was given: %s", flag.getFlag(), wasGiven));
+        }
+    }
+
+    /**
+     * Exception for when ending quotes ('"') are missing.
+     */
     public static class MissingQuotesException extends Exception {
         MissingQuotesException() {
             super("One of arguments is missing closing \".");

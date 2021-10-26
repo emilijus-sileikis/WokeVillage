@@ -8,9 +8,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +22,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
 
@@ -45,70 +46,148 @@ public class EventListen implements Listener {
 
         pCount = 0;
 
-        NPC npc = npcManager.getNPCs().get(event.getEntityId());
-
-//        createInv(Main.inv);
-//        for (ItemStack item : npc.getInventory().getContents()) {
-//            Main.inv.addItem(CraftItemStack.asBukkitCopy(item));
-//        }
-
-        event.getPlayer().openInventory(Main.inv);
-    }
-
-    public static void createInv(Inventory inv) {
-        Main.inv = Bukkit.createInventory(null, InventoryType.BARREL,
-                Component.text("Configuration Menu")
-                        .decorate(TextDecoration.BOLD)
-                        .color(NamedTextColor.AQUA)
-        );
-        org.bukkit.inventory.ItemStack item = new org.bukkit.inventory.ItemStack(Material.AMETHYST_SHARD);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(
-                Component.text("Hello!").color(NamedTextColor.DARK_GREEN)
-                        .decoration(TextDecoration.ITALIC, false)
-        );
-        List<Component> Lore = new ArrayList<>();
-        Lore.add( Component.text("Click to select").color(NamedTextColor.GRAY) );
-        meta.lore(Lore);
-        item.setItemMeta(meta);
-        Main.inv.setItem(0, item);
-
-        //Copy paste kiek reik
-
-        //close button
-        item.setType(Material.BARRIER);
-        meta.displayName(Component.text("Close")
-                .color(NamedTextColor.RED)
-                .decorate(TextDecoration.BOLD)
-                .decoration(TextDecoration.ITALIC, false)
-        );
-        Lore.clear();
-        meta.lore(Lore);
-        item.setItemMeta(meta);
-        Main.inv.setItem(8, item);
+        Player player = event.getPlayer();
+        SelectionScreen gui = new SelectionScreen();
+        player.openInventory(gui.getInventory());
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent event) {
+    public static void onClick(InventoryClickEvent event) {
 
-        if (!event.getInventory().equals(Main.inv)) {return;}
-        if (event.getCurrentItem() == null) {return;}
-        if (event.getCurrentItem().getItemMeta() == null) {return;}
-        if (event.getCurrentItem().getItemMeta().displayName() == null) {return;}
-
-        event.setCancelled(true);
-
-        Player player = (Player) event.getWhoClicked();
-
-        if (event.getSlot() == 0) {
-
-            player.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Hello! Welcome to Paskui Plugin");
-            player.closeInventory();
+        if (event.getClickedInventory() == null) {
+            return;
         }
-        if (event.getSlot() == 8) {
+        if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
 
-            player.closeInventory();
+            event.setCancelled(true);
+            Player p = (Player) event.getWhoClicked();
+
+            if (event.getCurrentItem() == null) {
+                return;
+            }
+
+            if (event.getCurrentItem().getType() == Material.BOOK) {
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!");
+                p.sendMessage(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. ");
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
+                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
+                p.closeInventory();
+            }
+
+            //Lumberjack
+            else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
+                Material spruce = Material.SPRUCE_LOG;
+                processTrade(event, p, 20, 128, spruce);
+            }
+
+            //Miner
+            else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
+                Material cobble = Material.COBBLESTONE;
+                processTrade(event, p, 15, 96, cobble);
+            }
+
+            //Fisher
+            else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
+                Material cod = Material.COD;
+                processTrade(event, p, 10, 64, cod);
+            }
+
+            else if (event.getCurrentItem().getType() == Material.BARRIER) {
+                p.sendMessage("Inventory closed!");
+                p.closeInventory();
+            }
         }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+
+        PacketReader reader = new PacketReader(event.getPlayer());
+        reader.inject();
+
+        if (NPCManager.getNPCs() == null)
+            return;
+        if (NPCManager.getNPCs().isEmpty())
+            return;
+
+        NPCManager.addJoinPacket(event.getPlayer());
+    }
+
+    private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
+
+            ItemStack itemReceived = new ItemStack(getItem(material));
+            if (p.getInventory().contains(Material.GOLD_INGOT, cost))
+            {
+                //payment
+                Location loc = p.getLocation();
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                }
+                removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
+                p.updateInventory();
+                p.sendMessage(ChatColor.GREEN + "You have bought villagers services!");
+                //receiving goods
+                for(int i=0; i<goods; i++) {
+                    switch(p.getInventory().firstEmpty()) {
+                        case -1:
+                            p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
+                            break;
+                        default:
+                            //items are added 1 by 1 to avoid duping
+                            receiveItems(p.getInventory(), material, 1);
+                            p.updateInventory();
+                            break;
+                    }
+                }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                }
+                p.sendMessage(ChatColor.GREEN + "Your items have been delivered!");
+            }
+            else {
+                p.sendMessage(ChatColor.RED + "You lack the required resources.");
+            }
+            p.closeInventory();
+
+    }
+
+    private static int receiveItems(Inventory inventory, Material type, int amount) {
+
+        if(type == null || inventory == null)
+            return -1;
+
+        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.addItem(new org.bukkit.inventory.ItemStack(type,amount));
+
+        int granted = 0;
+        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+            granted+=item.getAmount();
+        }
+        return granted;
+    }
+
+    public static int removeItems(Inventory inventory, Material type, int amount) {
+
+        if(type == null || inventory == null)
+            return -1;
+        if (amount <= 0 )
+            return -1;
+
+        if (amount == Integer.MAX_VALUE) {
+            inventory.remove(type);
+            return 0;
+        }
+
+        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.removeItem(new org.bukkit.inventory.ItemStack(type,amount));
+
+        int notRemoved = 0;
+        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+            notRemoved+=item.getAmount();
+        }
+        return notRemoved;
+    }
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 
     @EventHandler
