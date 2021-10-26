@@ -99,7 +99,7 @@ public class EventListen implements Listener {
         }
     }
 
-    @EventHandler
+   /* @EventHandler
     public void onJoin(PlayerJoinEvent event) {
 
         PacketReader reader = new PacketReader(event.getPlayer());
@@ -112,6 +112,8 @@ public class EventListen implements Listener {
 
         NPCManager.addJoinPacket(event.getPlayer());
     }
+
+    */
 
     private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
 
