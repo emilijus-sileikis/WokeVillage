@@ -1,9 +1,20 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.command.Command;
+import lt.vu.mif.it.paskui.village.commands.NPCCommands;
+import net.kyori.adventure.text.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.item.ItemStack;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.entity.Item;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.UUID;
@@ -23,6 +34,9 @@ public class NPC {
         this.loc = loc;
         npcEntity = new CustomVillager(this, loc);
         npcEntity.setPos(loc.getX(), loc.getY(), loc.getZ());
+        //npcEntity.setCanPickUpLoot(true);
+        npcEntity.setCustomName(new TextComponent(this.getName()));
+        npcEntity.causeFallDamage(3, 0.5F, DamageSource.FALL);
     }
 
     // Getters
