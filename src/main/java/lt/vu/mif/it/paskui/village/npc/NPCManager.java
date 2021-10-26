@@ -1,22 +1,19 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.Main;
-import net.minecraft.network.Connection;
-import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
-import net.minecraft.server.level.ServerPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCManager {
 
     private final Map<UUID, NPC> npcs;
     private int var;
+    ArrayList<UUID> list = new ArrayList<>();
 
     public NPCManager() {
         npcs = new HashMap<>();
@@ -31,10 +28,13 @@ public class NPCManager {
     // other
     public void createNPC (Player player, Location loc, EntityType type) { //String skin
         NPC npc = new NPC("", loc);
+        list.add(npc.getUUID());
 
         if (!spawnNPC(npc)) {
             return;
         }
+
+
 
         //Todo:Maybe move this to DataManager class
         Main.getData().set("data." + var + ".x", (int) player.getLocation().getX());
@@ -44,6 +44,7 @@ public class NPCManager {
         Main.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
         Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
         Main.getData().set("data." + var + ".name", ""); //+skin
+        //Main.getData().set("data." + var + ".id", list.get(var-1));
         Main.getData().set("data." + var + ".tex", "");
         Main.getData().set("data." + var + ".signature", "");
         Main.saveData();
@@ -60,10 +61,20 @@ public class NPCManager {
         spawnNPC(npc);
     }
 
-    //TODO: implement usage of this method
-    public void removeNPC(Player player, ServerPlayer npc) {
-        Connection connection = ((CraftPlayer)player).getHandle().networkManager;
-        connection.send(new ClientboundRemoveEntitiesPacket(npc.getId()));
+    //TODO: make this method to delete data.yml data as well
+    public void removeNPC(CommandSender sender) {
+        Player player = (Player) sender;
+        if ((list.size()-1) < 0) {
+            player.sendMessage("There are no npcs to remove!");
+            return;
+        }
+
+        if (sender instanceof Player) {
+            UUID npc = list.get(list.size()-1);
+            player.sendMessage("NPC REMOVED");
+            Bukkit.getWorld("world").getEntity(npc).remove();
+            list.remove(list.size()-1);
+        }
     }
 
     // private
