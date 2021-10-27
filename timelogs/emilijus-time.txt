@@ -83,5 +83,14 @@ regarding NPCs having player nametags on server restart.
 -2021-10-25:
   5h, speech preparation, helping with slides, ServerPlayer and Zombie function research and skin implementation testing.
 
-Viso valandu: 74h.
-Viso valandu sia savaite: 5h.
+-2021-10-26:
+  -3h, NPC movement corrections, NPC attributes.
+  -3h, NPC remove command and polishment.
+
+-2021-10-27:
+  -2h, A Star template creation.
+  -1h, npc-rework testing and moevement adjustments.
+  -5h, Trying to implement CI/CD pipeline into our project.
+
+Viso valandu: 88h.
+Viso valandu sia savaite: 19h.
