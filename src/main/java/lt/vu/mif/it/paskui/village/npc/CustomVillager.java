@@ -1,7 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
-import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -83,7 +82,6 @@ public class CustomVillager extends Villager implements NPCAttach {
 
     @Override
     public void travel(@NotNull Vec3 movementInput) {
-        movementInput = new Vec3(movementInput.z, 0, 0);
         super.travel(movementInput);
     }
 }
