@@ -36,17 +36,95 @@ Robertas Timukas
 
 - day 28:
     > 15m, consulting papermc devs and researching paperweight (gradle plugin for integrating paper-api + NMS);
-    > 10m, looking up 'run-paper' gradle plugin for faster and easier minecraft server debug run;
+    > 10m, looking up 'run-paper' gradle plugin for faster and easiermecraft server debug run;
     > 2h, cleaning up source environment (removing bash/batch scripts, remapping used libraries and etc. Check commits for more details.) with the help Emilijus;
 
 - day 29:
     > 1h, manually merging and resolving conflicts while updating 'static-npc' with 'dev' branch via git merge;
 
 - day 30:
-    > 15 min, readme and documentation file slight revisions;
-    > 15 min, checking and structuring issues;
-    > 5 min, adding issue requesting to check and update readme and doc files.
+    > 15m, readme and documentation file slight revisions;
+    > 15m, checking and structuring issues;
+    > 5m, adding issue requesting to check and update readme and doc files.
 
 2021-10:
 - day 1:
-    > updating main branch time logs from time-logging branch;
+    > 15m, updating main branch time logs from time-logging branch;
+    > 2h, configuring, testing alert logging to discord from git.mif.vu.lt;
+
+- day 2:
+    > 12m, renamed project and changed project's package name;
+
+- day 3:
+    > 10m, updated dependency versions;
+    > 15m, added meeting notes for 2021-10-04;
+    >
+
+- day 4:
+    > 2h, meeting and document/report checkup;
+    > 10m, updated meeting notes;
+    > 30m, fixing onInteract() method;
+    > 30m, documenting issues and closing completed ones;
+    > 20m, searching for documentation links;
+    > 15m, opened static npc merge request;
+
+- day 5:
+    > 1h, refactored readme.md + documentation.md:
+    > 30m, documenting bugs and categorizing issues;
+    > 20m, fixing, testing and committing onInteract issue (check commit on 'dev' branch);
+
+- day 6:
+    > 20m, refactoring some issues and commenting locations their origin;
+
+- day 7:
+    > 15m, typo in readme fix;
+
+- day 12:
+    - 30m, reviewing slides for seminar;
+
+- day 13:
+    > 10m, final check up before 'doc-rev' merge;
+    > 10m, git repo clean up;
+    > 10m, closed documentation revision issue #14;
+    > 15m, opened new issue about npc spawning via packets;
+
+- day 14:
+    > 15m, new issue about 'cmd-rework';
+    > 30m, testing 'data' branch into dev;
+
+- day 15:
+    > 30m, designed Logging class;
+    > 30m, project code cleanup and class Injection tests;
+    > 2h, developing command registration and processing;
+
+- day 18:
+    > 3h, designing command argument processing;
+    > 30m, opened merge request !7 and closing issue #19;
+    > 15m, forked 'cmd-rework' branch into 'npc-rework';
+    > 15m, cleaning Main class for later work on 'npc-rework';
+
+- day 19:
+    > 1h, bug fixing on 'cmd-rework' branch (check commits for more details);
+
+- day 20:
+    > 30m, cleaned up code on cmd-rework branch;
+    > 30m, submitted merge request !7;
+    > 15m, closed cmd-rework issue #19;
+
+- day 22:
+    > 20m, repository clean up and update .gitignore;
+
+- day 24:
+    > 10m, repository folder structure check up;
+    > 3h, researching Citizens2 plugin code;
+
+- day 25:
+    > 30m, bug and NPCManager structure fixing;
+    > 4h, researching nms world inne-working and initial NPC insertion test;
+
+- day 26:
+    > 1h, refactoring Main class and ompitizing imports;
+
+- day 27:
+    > 5h, testing and programming on npc-rework
+    > 1h, researching and testing gitlab ci/cd;
