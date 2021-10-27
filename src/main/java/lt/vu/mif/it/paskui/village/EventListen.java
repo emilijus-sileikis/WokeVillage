@@ -1,50 +1,36 @@
 package lt.vu.mif.it.paskui.village;
 
-import com.destroystokyo.paper.event.player.PlayerUseUnknownEntityEvent;
-import lt.vu.mif.it.paskui.village.npc.CustomVillager;
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Note;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
 
     private final NPCManager npcManager;
-    /** PlayerUseUnknownEntityEvent call counter */
-    private int pCount = 0;
 
-    public EventListen(Main plugin) {
-        npcManager = plugin.getNPCManager();
+    public EventListen(NPCManager npcManager) {
+        this.npcManager = npcManager;
     }
 
     // EventHandlers
     @EventHandler
-    public void onInteract(PlayerUseUnknownEntityEvent event) {
-        pCount += (event.getHand() == EquipmentSlot.OFF_HAND) ? 1 : 0;
-
-        if (pCount < 2) return;
-
-        pCount = 0;
+    public void onInteract(NPCInteractEvent event) {
 
         Player player = event.getPlayer();
         SelectionScreen gui = new SelectionScreen();
@@ -98,22 +84,6 @@ public class EventListen implements Listener {
             }
         }
     }
-
-   /* @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-
-        PacketReader reader = new PacketReader(event.getPlayer());
-        reader.inject();
-
-        if (NPCManager.getNPCs() == null)
-            return;
-        if (NPCManager.getNPCs().isEmpty())
-            return;
-
-        NPCManager.addJoinPacket(event.getPlayer());
-    }
-
-    */
 
     private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
 
@@ -190,13 +160,5 @@ public class EventListen implements Listener {
 
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-
-        //PacketReader reader = new PacketReader();
-        //reader.uninject(event.getPlayer());
-
     }
 }

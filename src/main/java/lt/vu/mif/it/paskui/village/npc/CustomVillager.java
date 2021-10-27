@@ -1,5 +1,7 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -17,6 +19,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -66,12 +70,19 @@ public class CustomVillager extends Villager implements NPCAttach {
 
     // Villager
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        return super.mobInteract(player, hand);
+    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+        // TODO: Current implementation works, but might need more logic later on.
+        NPCInteractEvent event = new NPCInteractEvent(
+                ((CraftPlayer) player.getBukkitEntity()).getPlayer(),
+                npc
+        );
+        event.callEvent();
+
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void travel(Vec3 movementInput) {
+    public void travel(@NotNull Vec3 movementInput) {
         movementInput = new Vec3(movementInput.z, 0, 0);
         super.travel(movementInput);
     }

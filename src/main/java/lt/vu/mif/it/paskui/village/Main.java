@@ -43,7 +43,7 @@ public class Main extends JavaPlugin implements Listener {
         this.data = new DataManager(this);
         this.cmdMgr = new CommandManager();
 
-        this.getServer().getPluginManager().registerEvents(new EventListen(this),this);
+        this.getServer().getPluginManager().registerEvents(new EventListen(npcManager),this);
 
         if(data.getConfig().contains("data"))
             spawnNPC();
