@@ -7,7 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class NPCManager {
 
@@ -34,20 +37,19 @@ public class NPCManager {
             return;
         }
 
-
-
         //Todo:Maybe move this to DataManager class
-        Main.getData().set("data." + var + ".x", (int) player.getLocation().getX());
-        Main.getData().set("data." + var + ".y", (int) player.getLocation().getY());
-        Main.getData().set("data." + var + ".z", (int) player.getLocation().getZ());
-        Main.getData().set("data." + var + ".p", player.getLocation().getPitch());
-        Main.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
-        Main.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
-        Main.getData().set("data." + var + ".name", ""); //+skin
-        //Main.getData().set("data." + var + ".id", list.get(var-1));
-        Main.getData().set("data." + var + ".tex", "");
-        Main.getData().set("data." + var + ".signature", "");
-        Main.saveData();
+        Main ref = Main.getInstsance();
+        ref.getData().set("data." + var + ".x", (int) player.getLocation().getX());
+        ref.getData().set("data." + var + ".y", (int) player.getLocation().getY());
+        ref.getData().set("data." + var + ".z", (int) player.getLocation().getZ());
+        ref.getData().set("data." + var + ".p", player.getLocation().getPitch());
+        ref.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
+        ref.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
+        ref.getData().set("data." + var + ".name", ""); //+skin
+        //ref.getData().set("data." + var + ".id", list.get(var-1));
+        ref.getData().set("data." + var + ".tex", "");
+        ref.getData().set("data." + var + ".signature", "");
+        ref.saveData();
         ++var;
     }
 

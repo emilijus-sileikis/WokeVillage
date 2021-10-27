@@ -14,7 +14,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,8 +23,8 @@ import java.util.Objects;
 public class Main extends JavaPlugin implements Listener {
 
     private static Main instance;
+    public DataManager data;
     private NPCManager npcManager;
-    public static DataManager data;
     private World overworld;
     private CommandManager cmdMgr;
 
@@ -40,15 +39,17 @@ public class Main extends JavaPlugin implements Listener {
                 }
         );
 
-        this.getServer().getPluginManager().registerEvents(new EventListen(this),this);
-
         this.npcManager = new NPCManager();
-        Main.data = new DataManager(this);
+        this.data = new DataManager(this);
+        this.cmdMgr = new CommandManager();
+
+        this.getServer().getPluginManager().registerEvents(new EventListen(this),this);
 
         if(data.getConfig().contains("data"))
             spawnNPC();
 
         registerCommands();
+
         instance = this;
     }
 
@@ -72,13 +73,12 @@ public class Main extends JavaPlugin implements Listener {
         return true;
     }
 
-    // Getters
-    public static FileConfiguration getData() {
+    // getters
+    /** retrieves data.yml configuration
+     * @return {@link FileConfiguration} ref of data.yml
+     */
+    public FileConfiguration getData() {
         return data.getConfig();
-    }
-
-    public static Main getInstsance() {
-        return instance;
     }
 
     public NPCManager getNPCManager() {
@@ -86,10 +86,13 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     // public
-    public static void saveData() {
+    public void saveData() {
         data.saveConfig();
     }
 
+    /**
+     * Spawns NPCs' from data.yml file
+     */
     public void spawnNPC() {
         FileConfiguration file = data.getConfig();
         Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
@@ -114,6 +117,14 @@ public class Main extends JavaPlugin implements Listener {
         );
     }
 
+    // static
+    /** Retrieves a reference of plugin instanec
+     * @return ref of WokeVillage.Main plugin
+     */
+    public static Main getInstsance() {
+        return instance;
+    }
+
     // private
     private void despawnAllNPC() {
         Collection<NPC> npcs = npcManager.getNPCs().values();
@@ -125,7 +136,6 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        cmdMgr = new CommandManager();
         cmdMgr.setInjector(new Injector(this));
 
         cmdMgr.register(NPCCommands.class);
