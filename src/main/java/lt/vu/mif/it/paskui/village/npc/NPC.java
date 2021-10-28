@@ -24,15 +24,14 @@ public class NPC {
         this.loc = loc;
         npcEntity = new CustomVillager(this, loc);
         npcEntity.setPos(loc.getX(), loc.getY(), loc.getZ());
-        npcEntity.setCustomName(new TextComponent(this.getName()));
+
+        if (!name.isBlank()) {
+            npcEntity.setCustomName(new TextComponent(this.getName()));
+        }
     }
 
     public NPC(String name, Location loc, UUID uuid) {
-        this.name = name;
-        this.loc = loc;
-        npcEntity = new CustomVillager(this, loc);
-        npcEntity.setPos(loc.getX(), loc.getY(), loc.getZ());
-        npcEntity.setCustomName(new TextComponent(this.getName()));
+        this(name, loc);
         npcEntity.setUUID(uuid);
     }
 
