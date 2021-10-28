@@ -1,17 +1,18 @@
-package lt.vu.mif.it.paskui.village.npc;
+package lt.vu.mif.it.paskui.village.npc.entities;
 
-import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import lt.vu.mif.it.paskui.village.SelectionScreen;
+import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.NPCAttach;
+import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
+import lt.vu.mif.it.paskui.village.util.Logging;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -22,8 +23,9 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.UUID;
 
-public class CustomVillager extends Villager implements NPCAttach {
+public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
 
     private final NPC npc;
 
@@ -48,6 +50,34 @@ public class CustomVillager extends Villager implements NPCAttach {
        // getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3);
     }
 
+    // NPCEntity
+    @Override
+    public String getNameNPC() {
+        return Objects.requireNonNullElse(getCustomName().getString(), "");
+    }
+
+    @Override
+    public Entity getNMSEntity() {
+        return this;
+    }
+
+    @Override
+    public void setNameNPC(String name) {
+        if ( !(name.isBlank() || name.isEmpty()) ) {
+            this.setCustomName(new TextComponent(name));
+        }
+    }
+
+    @Override
+    public void setUUIDnpc(UUID npcUUID) {
+        this.uuid = npcUUID;
+    }
+
+    @Override
+    public void setInitialPos(Location loc) {
+        this.setPos(loc.getX(), loc.getY(), loc.getZ());
+    }
+
     @Override
     public void initPathfinder() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -61,6 +91,11 @@ public class CustomVillager extends Villager implements NPCAttach {
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
     }
 
+    @Override
+    public void remove() {
+        this.remove(Entity.RemovalReason.DISCARDED);
+    }
+
     // NPCAttach
     @Override
     public NPC getNPC() {
@@ -71,11 +106,17 @@ public class CustomVillager extends Villager implements NPCAttach {
     @Override
     public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
         // TODO: Current implementation works, but might need more logic later on.
-        NPCInteractEvent event = new NPCInteractEvent(
-                ((CraftPlayer) player.getBukkitEntity()).getPlayer(),
-                npc
-        );
-        event.callEvent();
+//        NPCInteractEvent event = new NPCInteractEvent(
+//                ((CraftPlayer) player.getBukkitEntity()).getPlayer(),
+//                npc
+//        );
+//        event.callEvent();
+        // TODO: test this implementation with more players.
+        org.bukkit.entity.Player p = ((CraftPlayer) player.getBukkitEntity()).getPlayer();
+        if (p != null) {
+            SelectionScreen gui = new SelectionScreen();
+            p.openInventory(gui.getInventory());
+        }
 
         return InteractionResult.SUCCESS;
     }
@@ -83,5 +124,11 @@ public class CustomVillager extends Villager implements NPCAttach {
     @Override
     public void travel(@NotNull Vec3 movementInput) {
         super.travel(movementInput);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        Logging.infoLog("NPC %s removed for %s", uuid, reason);
+        super.remove(reason);
     }
 }

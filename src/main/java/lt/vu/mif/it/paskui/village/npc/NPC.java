@@ -1,8 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc;
 
-import net.minecraft.network.chat.TextComponent;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -17,22 +17,19 @@ public class NPC {
 
     private String name;
     private Location loc;
-    private CustomVillager npcEntity;
+    private NPCEntity npcEntity;
 
     public NPC(String name, Location loc) {
         this.name = name;
         this.loc = loc;
         npcEntity = new CustomVillager(this, loc);
-        npcEntity.setPos(loc.getX(), loc.getY(), loc.getZ());
-
-        if (!name.isBlank()) {
-            npcEntity.setCustomName(new TextComponent(this.getName()));
-        }
+        npcEntity.setInitialPos(loc);
+        npcEntity.setNameNPC(name);
     }
 
     public NPC(String name, Location loc, UUID uuid) {
         this(name, loc);
-        npcEntity.setUUID(uuid);
+        npcEntity.setUUIDnpc(uuid);
     }
 
     // Getters
@@ -71,13 +68,13 @@ public class NPC {
      */
     public boolean spawn() {
         ServerLevel nmsWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        return nmsWorld.addEntity(npcEntity, CreatureSpawnEvent.SpawnReason.COMMAND);
+        return nmsWorld.addEntity(npcEntity.getNMSEntity(), CreatureSpawnEvent.SpawnReason.COMMAND);
     }
 
     /**
      * Removes npc entity from minecraft world.
      */
     public void remove() {
-        npcEntity.remove(Entity.RemovalReason.DISCARDED);
+        npcEntity.remove();
     }
 }
