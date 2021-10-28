@@ -60,4 +60,8 @@ public class DataManager {
                 this.plugin.saveResource("data.yml", false);
             }
         }
+
+        public void clearConfig() {
+            this.configFile.delete();
+        }
     }

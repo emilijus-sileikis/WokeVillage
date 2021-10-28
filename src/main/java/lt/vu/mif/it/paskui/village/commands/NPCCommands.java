@@ -78,4 +78,21 @@ public class NPCCommands {
 
         npcManager.removeNPC(sender);
     }
+
+    @Command(
+            roots = "npc",
+            mod = { "removeAll" },
+            perm = "wokevillage.npc.removeAll")
+    public void removeAll(@NotNull CommandContext context) {
+        CommandSender sender = context.getSender();
+        Logging.infoLog("NPCCommands::removeAll has been executed.");
+
+        Logging.infoLog(context.toString());
+
+        context.getArgs().forEach(
+                (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
+        );
+
+        npcManager.despawnAllNPC();
+    }
 }

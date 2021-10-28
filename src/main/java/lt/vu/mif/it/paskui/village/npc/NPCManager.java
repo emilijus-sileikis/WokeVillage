@@ -1,16 +1,16 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.Main;
+import lt.vu.mif.it.paskui.village.util.Logging;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.server.BroadcastMessageEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCManager {
 
@@ -61,21 +61,31 @@ public class NPCManager {
         NPC npc = new NPC("", location);
 
         spawnNPC(npc);
+        list.add(npc.getUUID());
     }
 
     //TODO: make this method to delete data.yml data as well
     public void removeNPC(CommandSender sender) {
         Player player = (Player) sender;
+        Main ref = Main.getInstsance();
         if ((list.size()-1) < 0) {
             player.sendMessage("There are no npcs to remove!");
             return;
         }
 
         if (sender instanceof Player) {
+            int i = list.size();
             UUID npc = list.get(list.size()-1);
             player.sendMessage("NPC REMOVED");
             Bukkit.getWorld("world").getEntity(npc).remove();
             list.remove(list.size()-1);
+            npcs.remove(list.size()-1);
+            ref.getData().set("data." + i, null);
+            ref.saveData();
+            if (i == 1) {
+                ref.data.clearConfig();
+            }
+            --i;
         }
     }
 
@@ -86,5 +96,22 @@ public class NPCManager {
         if (spawned) this.npcs.put(npc.getUUID(), npc);
 
         return spawned;
+    }
+
+    public void despawnAllNPC() {
+        Collection<NPC> npcs = getNPCs().values();
+
+        if (list.isEmpty()) {
+            Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
+            return;
+        }
+
+        for (NPC npc : npcs) {
+            Logging.infoLog("Removed npc: %s", npc.toString());
+            npc.remove();
+            list.clear();
+        }
+        Bukkit.broadcast(Component.text("All NPCs were removed!"));
+        Main.getInstsance().data.clearConfig();
     }
 }

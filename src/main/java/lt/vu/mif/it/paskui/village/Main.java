@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -45,8 +46,9 @@ public class Main extends JavaPlugin implements Listener {
 
         this.getServer().getPluginManager().registerEvents(new EventListen(npcManager),this);
 
-        if(data.getConfig().contains("data"))
+        if(data.getConfig().contains("data")) {
             spawnNPC();
+        }
 
         registerCommands();
 
@@ -55,7 +57,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        despawnAllNPC();
+        npcManager.despawnAllNPC();
     }
 
     @Override
@@ -98,6 +100,7 @@ public class Main extends JavaPlugin implements Listener {
         Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
                 .getKeys(false)
                 .forEach(npc -> {
+
                     Location location = new Location(
                             Bukkit.getWorld(
                                     Objects.requireNonNull(file.getString("data." + npc + ".world"))
@@ -123,16 +126,6 @@ public class Main extends JavaPlugin implements Listener {
      */
     public static Main getInstsance() {
         return instance;
-    }
-
-    // private
-    private void despawnAllNPC() {
-        Collection<NPC> npcs = npcManager.getNPCs().values();
-
-        for (NPC npc : npcs) {
-            Logging.infoLog("Removed npc: %s", npc.toString());
-            npc.remove();
-        }
     }
 
     private void registerCommands() {
