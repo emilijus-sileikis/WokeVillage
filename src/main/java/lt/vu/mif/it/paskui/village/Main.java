@@ -4,7 +4,6 @@ import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
@@ -17,9 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Main extends JavaPlugin implements Listener {
 
@@ -57,7 +55,7 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        npcManager.despawnAllNPC();
+        npcManager.removeAllNPC();
     }
 
     @Override
@@ -96,26 +94,34 @@ public class Main extends JavaPlugin implements Listener {
      * Spawns NPCs' from data.yml file
      */
     public void spawnNPC() {
+        // TODO: move npc reading to DataManager
         FileConfiguration file = data.getConfig();
         Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
                 .getKeys(false)
                 .forEach(npc -> {
+                    String npcData = "data." + npc;
+
+                    int id = file.getInt(npcData + ".id");
+
+                    UUID npcUUID = UUID.fromString(
+                            Objects.requireNonNull(file.getString(npcData + ".uuid"))
+                    );
+
+                    String name = file.getString(npcData + ".name");
 
                     Location location = new Location(
                             Bukkit.getWorld(
-                                    Objects.requireNonNull(file.getString("data." + npc + ".world"))
+                                    Objects.requireNonNull(file.getString(npcData + ".world"))
                             ),
-                            file.getInt("data." + npc + ".x"),
-                            file.getInt("data." + npc + ".y"),
-                            file.getInt("data." + npc + ".z")
+                            file.getInt(npcData + ".x"),
+                            file.getInt(npcData + ".y"),
+                            file.getInt(npcData + ".z")
                     );
 
-                    location.setPitch((float) file.getDouble("data." + npc + ".p"));
-                    location.setYaw((float) file.getDouble("data." + npc + ".yaw"));
+                    location.setPitch((float) file.getDouble(npcData + ".p"));
+                    location.setYaw((float) file.getDouble(npcData + ".yaw"));
 
-                    String name = file.getString("data." + npc + ".name");
-
-                    npcManager.loadNPC(location);
+                    npcManager.loadNPC(id, name, location, npcUUID);
                 }
         );
     }

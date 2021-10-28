@@ -8,13 +8,16 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.server.BroadcastMessageEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class NPCManager {
 
-    private final Map<UUID, NPC> npcs;
+    private final HashMap<Integer, NPC> npcs;
     private int var;
     ArrayList<UUID> list = new ArrayList<>();
 
@@ -24,44 +27,43 @@ public class NPCManager {
     }
 
     // getters
-    public Map<UUID, NPC> getNPCs() {
+    public Map<Integer, NPC> getNPCs() {
         return npcs;
     }
 
     // other
     public void createNPC (Player player, Location loc, EntityType type) { //String skin
         NPC npc = new NPC("", loc);
-        list.add(npc.getUUID());
 
-        if (!spawnNPC(npc)) {
+        if (!spawnNPC(var, npc)) {
             return;
         }
 
-        //Todo:Maybe move this to DataManager class
+        //Todo: move this to DataManager class
         Main ref = Main.getInstsance();
-        ref.getData().set("data." + var + ".x", (int) player.getLocation().getX());
-        ref.getData().set("data." + var + ".y", (int) player.getLocation().getY());
-        ref.getData().set("data." + var + ".z", (int) player.getLocation().getZ());
-        ref.getData().set("data." + var + ".p", player.getLocation().getPitch());
-        ref.getData().set("data." + var + ".yaw", player.getLocation().getYaw());
-        ref.getData().set("data." + var + ".world", player.getLocation().getWorld().getName());
-        ref.getData().set("data." + var + ".name", ""); //+skin
-        //ref.getData().set("data." + var + ".id", list.get(var-1));
-        ref.getData().set("data." + var + ".tex", "");
-        ref.getData().set("data." + var + ".signature", "");
+        String npcData = "data." + var;
+        ref.getData().set(npcData + ".id", var);
+        ref.getData().set(npcData + ".uuid", npc.getUUID().toString());
+        ref.getData().set(npcData + ".name", npc.getName());
+        ref.getData().set(npcData + ".x", (int) npc.getLoc().getX());
+        ref.getData().set(npcData + ".y", (int) npc.getLoc().getY());
+        ref.getData().set(npcData + ".z", (int) npc.getLoc().getZ());
+        ref.getData().set(npcData + ".p", npc.getLoc().getPitch());
+        ref.getData().set(npcData + ".yaw", npc.getLoc().getYaw());
+        ref.getData().set(npcData + ".world", npc.getLoc().getWorld().getName());
+//        ref.getData().set(npcData + ".tex", "");
+//        ref.getData().set(npcData + ".signature", "");
         ref.saveData();
-        ++var;
     }
 
 
     /** Loads npc into the world
      * @param location data where npc is located
      */
-    public void loadNPC(Location location) {
-        NPC npc = new NPC("", location);
+    public void loadNPC(int id, String name, Location location, UUID uuid) {
+        NPC npc = new NPC(name, location, uuid);
 
-        spawnNPC(npc);
-        list.add(npc.getUUID());
+        spawnNPC(id, npc);
     }
 
     //TODO: make this method to delete data.yml data as well
@@ -73,6 +75,7 @@ public class NPCManager {
             return;
         }
 
+        // TODO: read this through and clean it up.
         if (sender instanceof Player) {
             int i = list.size();
             UUID npc = list.get(list.size()-1);
@@ -89,16 +92,7 @@ public class NPCManager {
         }
     }
 
-    // private
-    private boolean spawnNPC(NPC npc) {
-        boolean spawned = npc.spawn();
-
-        if (spawned) this.npcs.put(npc.getUUID(), npc);
-
-        return spawned;
-    }
-
-    public void despawnAllNPC() {
+    public void removeAllNPC() {
         Collection<NPC> npcs = getNPCs().values();
 
         if (list.isEmpty()) {
@@ -113,5 +107,18 @@ public class NPCManager {
         }
         Bukkit.broadcast(Component.text("All NPCs were removed!"));
         Main.getInstsance().data.clearConfig();
+    }
+
+    // private
+    private boolean spawnNPC(int id, NPC npc) {
+        boolean spawned = npc.spawn();
+
+        if (!spawned) {
+            npcs.put(id, npc);
+            list.add(npc.getUUID());
+            var = id + 1;
+        }
+
+        return spawned;
     }
 }

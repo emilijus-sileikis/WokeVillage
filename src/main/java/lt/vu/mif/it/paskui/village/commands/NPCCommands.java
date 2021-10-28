@@ -1,23 +1,15 @@
 package lt.vu.mif.it.paskui.village.commands;
 
 import lt.vu.mif.it.paskui.village.Main;
-import lt.vu.mif.it.paskui.village.npc.CustomVillager;
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.UUID;
 
 /**
  * Class for storing and implement NPC commands logic.
@@ -93,6 +85,6 @@ public class NPCCommands {
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
-        npcManager.despawnAllNPC();
+        npcManager.removeAllNPC();
     }
 }
