@@ -66,12 +66,11 @@ public class NPCManager {
         spawnNPC(id, npc);
     }
 
-    //TODO: make this method to delete data.yml data as well
     public void removeNPC(CommandSender sender) {
         Player player = (Player) sender;
         Main ref = Main.getInstsance();
         if ((list.size()-1) < 0) {
-            player.sendMessage("There are no npcs to remove!");
+            player.sendMessage("There are no NPCs to remove!");
             return;
         }
 
@@ -85,6 +84,7 @@ public class NPCManager {
             npcs.remove(list.size()-1);
             ref.getData().set("data." + i, null);
             ref.saveData();
+            //ref.saveConfig();
             if (i == 1) {
                 ref.data.clearConfig();
             }
@@ -92,6 +92,7 @@ public class NPCManager {
         }
     }
 
+    //TODO: fix dis (with data.yml deletion)
     public void removeAllNPC() {
         Collection<NPC> npcs = getNPCs().values();
 
@@ -103,10 +104,12 @@ public class NPCManager {
         for (NPC npc : npcs) {
             Logging.infoLog("Removed npc: %s", npc.toString());
             npc.remove();
-            list.clear();
         }
         Bukkit.broadcast(Component.text("All NPCs were removed!"));
-        Main.getInstsance().data.clearConfig();
+        //Maybe one of these?
+        //Main.getInstsance().getData().set("data.", null);
+        //Main.getInstsance().data.clearConfig();
+        list.clear();
     }
 
     // private

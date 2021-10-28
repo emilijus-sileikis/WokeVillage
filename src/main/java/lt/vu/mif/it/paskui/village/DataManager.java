@@ -65,5 +65,6 @@ public class DataManager {
 
     public void clearConfig() {
         this.configFile.delete();
+        saveDefaultConfig();
     }
 }
