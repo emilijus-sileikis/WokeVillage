@@ -23,13 +23,13 @@ public class NPC {
         this.name = name;
         this.loc = loc;
         npcEntity = new CustomVillager(this, loc);
-        npcEntity.setInitialPos(loc);
-        npcEntity.setNameNPC(name);
+        npcEntity.setEntityPos(loc);
+        npcEntity.setEntityName(name);
     }
 
     public NPC(String name, Location loc, UUID uuid) {
         this(name, loc);
-        npcEntity.setUUIDnpc(uuid);
+        npcEntity.setEntityUUID(uuid);
     }
 
     // Getters
@@ -46,16 +46,18 @@ public class NPC {
     }
 
     public UUID getUUID() {
-        return npcEntity.getUUID();
+        return npcEntity.getEntityUUID();
     }
 
     // Setters
     public void setName(String name) {
         this.name = name;
+        this.npcEntity.setEntityName(name);
     }
 
     public void setLoc(Location loc) {
         this.loc = loc;
+        this.npcEntity.setEntityPos(loc);
     }
 
     public void setEntity(CustomVillager villager) {

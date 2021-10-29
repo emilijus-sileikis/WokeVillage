@@ -52,8 +52,13 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
 
     // NPCEntity
     @Override
-    public String getNameNPC() {
+    public String getEntityName() {
         return Objects.requireNonNullElse(getCustomName().getString(), "");
+    }
+
+    @Override
+    public UUID getEntityUUID() {
+        return this.uuid;
     }
 
     @Override
@@ -62,19 +67,19 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
     }
 
     @Override
-    public void setNameNPC(String name) {
+    public void setEntityName(String name) {
         if ( !(name.isBlank() || name.isEmpty()) ) {
             this.setCustomName(new TextComponent(name));
         }
     }
 
     @Override
-    public void setUUIDnpc(UUID npcUUID) {
+    public void setEntityUUID(UUID npcUUID) {
         this.uuid = npcUUID;
     }
 
     @Override
-    public void setInitialPos(Location loc) {
+    public void setEntityPos(Location loc) {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 

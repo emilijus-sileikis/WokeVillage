@@ -7,20 +7,20 @@ import java.util.UUID;
 
 public interface NPCEntity {
     // getters
-    String getNameNPC();
+    String getEntityName();
 
-    UUID getUUID();
+    UUID getEntityUUID();
 
     org.bukkit.entity.Entity getBukkitEntity();
 
     Entity getNMSEntity();
 
     // setters
-    void setNameNPC(String name);
+    void setEntityName(String name);
 
-    void setInitialPos(Location loc);
+    void setEntityPos(Location loc);
 
-    void setUUIDnpc(UUID npcUUID);
+    void setEntityUUID(UUID npcUUID);
 
     // public
     void initPathfinder();
