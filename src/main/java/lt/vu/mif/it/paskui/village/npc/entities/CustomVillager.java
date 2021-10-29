@@ -3,7 +3,6 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 import lt.vu.mif.it.paskui.village.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCAttach;
-import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
@@ -97,7 +96,7 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
     }
 
     @Override
-    public void remove() {
+    public void removeEntity() {
         this.remove(Entity.RemovalReason.DISCARDED);
     }
 

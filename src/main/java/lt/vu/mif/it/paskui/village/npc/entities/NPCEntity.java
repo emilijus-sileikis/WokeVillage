@@ -25,5 +25,5 @@ public interface NPCEntity {
     // public
     void initPathfinder();
 
-    void remove();
+    void removeEntity();
 }

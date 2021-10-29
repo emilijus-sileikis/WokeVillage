@@ -77,6 +77,6 @@ public class NPC {
      * Removes npc entity from minecraft world.
      */
     public void remove() {
-        npcEntity.remove();
+        npcEntity.removeEntity();
     }
 }
