@@ -9,21 +9,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
 public class NPCManager {
 
     private final HashMap<Integer, NPC> npcs;
-    private int var;
-    ArrayList<UUID> list = new ArrayList<>();
+    private final LinkedList<Integer> npcKeys;
 
     public NPCManager() {
         npcs = new HashMap<>();
-        var = 1;
+        npcKeys = new LinkedList<>();
     }
 
     // getters
@@ -34,15 +32,16 @@ public class NPCManager {
     // other
     public void createNPC (Player player, Location loc, EntityType type) { //String skin
         NPC npc = new NPC("", loc);
+        int id = npcKeys.isEmpty() ? 0 : npcKeys.getLast() + 1;
 
-        if (!spawnNPC(var, npc)) {
+        if (!spawnNPC(id, npc)) {
             return;
         }
 
         //Todo: move this to DataManager class
         Main ref = Main.getInstsance();
-        String npcData = "data." + var;
-        ref.getData().set(npcData + ".id", var);
+        String npcData = "data." + id;
+        ref.getData().set(npcData + ".id", id);
         ref.getData().set(npcData + ".uuid", npc.getUUID().toString());
         ref.getData().set(npcData + ".name", npc.getName());
         ref.getData().set(npcData + ".x", (int) npc.getLoc().getX());
@@ -66,60 +65,50 @@ public class NPCManager {
         spawnNPC(id, npc);
     }
 
+    /**
+     * removes newest NPC
+     */
     public void removeNPC(CommandSender sender) {
-        Player player = (Player) sender;
         Main ref = Main.getInstsance();
-        if ((list.size()-1) < 0) {
-            player.sendMessage("There are no NPCs to remove!");
+
+        if (npcKeys.isEmpty() || npcs.isEmpty()) {
+            sender.sendMessage("There are no NPCs to remove!");
             return;
         }
 
-        // TODO: read this through and clean it up.
-        if (sender instanceof Player) {
-            int i = list.size();
-            UUID npc = list.get(list.size()-1);
-            player.sendMessage("NPC REMOVED");
-            Bukkit.getWorld("world").getEntity(npc).remove();
-            list.remove(list.size()-1);
-            npcs.remove(list.size()-1);
-            ref.getData().set("data." + i, null);
-            ref.saveData();
-            //ref.saveConfig();
-            if (i == 1) {
-                ref.data.clearConfig();
-            }
-            --i;
-        }
+        int id = npcKeys.getLast();
+        npcs.get(id).remove();
+
+        ref.getData().set("data." + id, null);
+        ref.saveData();
+
+        npcs.remove(id);
+        npcKeys.removeLast();
+
+        sender.sendMessage(String.format("NPC %d was removed.", id));
     }
 
-    //TODO: fix dis (with data.yml deletion)
+    /**
+     * Removes all NPC entities.
+     */
     public void removeAllNPC() {
-        Collection<NPC> npcs = getNPCs().values();
-
-        if (list.isEmpty()) {
+        if (npcKeys.isEmpty() || this.npcs.isEmpty()) {
             Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             return;
         }
 
-        for (NPC npc : npcs) {
-            Logging.infoLog("Removed npc: %s", npc.toString());
-            npc.remove();
+        while (!npcKeys.isEmpty()) {
+            removeNPC(Bukkit.getConsoleSender());
         }
-        Bukkit.broadcast(Component.text("All NPCs were removed!"));
-        //Maybe one of these?
-        //Main.getInstsance().getData().set("data.", null);
-        //Main.getInstsance().data.clearConfig();
-        list.clear();
     }
 
     // private
     private boolean spawnNPC(int id, NPC npc) {
         boolean spawned = npc.spawn();
 
-        if (!spawned) {
+        if (spawned) {
             npcs.put(id, npc);
-            list.add(npc.getUUID());
-            var = id + 1;
+            npcKeys.add(id);
         }
 
         return spawned;
