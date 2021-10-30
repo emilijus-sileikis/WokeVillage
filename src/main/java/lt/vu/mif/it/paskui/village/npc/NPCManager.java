@@ -1,7 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
-import lt.vu.mif.it.paskui.village.Main;
-import lt.vu.mif.it.paskui.village.util.Logging;
+import lt.vu.mif.it.paskui.village.DataManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,10 +15,12 @@ import java.util.UUID;
 
 public class NPCManager {
 
+    private final DataManager dataManager;
     private final HashMap<Integer, NPC> npcs;
     private final LinkedList<Integer> npcKeys;
 
-    public NPCManager() {
+    public NPCManager(DataManager dataManager) {
+        this.dataManager = dataManager;
         npcs = new HashMap<>();
         npcKeys = new LinkedList<>();
     }
@@ -37,7 +38,7 @@ public class NPCManager {
         if (!spawnNPC(id, npc)) {
             return;
         }
-        Main.getInstsance().data.writeData(npc, id);
+        dataManager.writeData(npc, id);
     }
 
 
@@ -54,8 +55,6 @@ public class NPCManager {
      * removes newest NPC
      */
     public void removeNPC(CommandSender sender) {
-        Main ref = Main.getInstsance();
-
         if (npcKeys.isEmpty() || npcs.isEmpty()) {
             sender.sendMessage("There are no NPCs to remove!");
             return;
@@ -64,8 +63,8 @@ public class NPCManager {
         int id = npcKeys.getLast();
         npcs.get(id).remove();
 
-        ref.getData().set("data." + id, null);
-        ref.saveData();
+        dataManager.getConfig().set("data." + id, null);
+        dataManager.saveConfig();
 
         npcs.remove(id);
         npcKeys.removeLast();

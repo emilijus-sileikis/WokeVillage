@@ -121,7 +121,7 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
 //                npc
 //        );
 //        event.callEvent();
-        EventListen event = new EventListen(Main.getInstsance().getNPCManager());
+        EventListen event = new EventListen(Main.getInstance().getNPCManager());
         org.bukkit.entity.Player p = ((CraftPlayer) player.getBukkitEntity()).getPlayer();
         if (p != null) {
             SelectionScreen gui = new SelectionScreen();

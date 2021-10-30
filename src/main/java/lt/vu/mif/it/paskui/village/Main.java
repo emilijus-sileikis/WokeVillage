@@ -19,15 +19,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Main extends JavaPlugin implements Listener {
+public class Main extends JavaPlugin implements Listener, ManagerContainer {
 
     private static Main instance;
-    public DataManager data;
+    private CommandManager cmdMgr;
+    private DataManager data;
     private NPCManager npcManager;
     private World overworld;
-    private CommandManager cmdMgr;
 
-    // JavaPlugin Overrides
+    // JavaPlugin
     @Override
     public void onEnable() {
         Bukkit.getWorlds().forEach(
@@ -38,9 +38,9 @@ public class Main extends JavaPlugin implements Listener {
                 }
         );
 
-        this.npcManager = new NPCManager();
-        this.data = new DataManager(this);
         this.cmdMgr = new CommandManager();
+        this.data = new DataManager(this);
+        this.npcManager = new NPCManager(data);
 
         this.getServer().getPluginManager().registerEvents(new EventListen(npcManager),this);
 
@@ -73,23 +73,18 @@ public class Main extends JavaPlugin implements Listener {
         return true;
     }
 
-    // getters
-    /** retrieves data.yml configuration
-     * @return {@link FileConfiguration} ref of data.yml
-     */
-    public FileConfiguration getData() {
-        return data.getConfig();
-    }
-
+    // ManagerController
+    @Override
     public NPCManager getNPCManager() {
         return npcManager;
     }
 
-    // public
-    public void saveData() {
-        data.saveConfig();
+    @Override
+    public DataManager getDataManager() {
+        return data;
     }
 
+    // public
     /**
      * Spawns NPCs' from data.yml file
      */
@@ -130,10 +125,11 @@ public class Main extends JavaPlugin implements Listener {
     /** Retrieves a reference of plugin instanec
      * @return ref of WokeVillage.Main plugin
      */
-    public static Main getInstsance() {
+    public static Main getInstance() {
         return instance;
     }
 
+    // private
     private void registerCommands() {
         cmdMgr.setInjector(new Injector(this));
 
