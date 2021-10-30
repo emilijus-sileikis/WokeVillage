@@ -40,7 +40,7 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
 
         this.cmdMgr = new CommandManager();
         this.data = new DataManager(this);
-        this.npcManager = new NPCManager(data);
+        this.npcManager = new NPCManager();
 
         this.getServer().getPluginManager().registerEvents(new EventListen(npcManager),this);
 

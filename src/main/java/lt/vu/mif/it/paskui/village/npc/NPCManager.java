@@ -1,10 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc;
 
-import lt.vu.mif.it.paskui.village.DataManager;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -15,30 +13,39 @@ import java.util.UUID;
 
 public class NPCManager {
 
-    private final DataManager dataManager;
     private final HashMap<Integer, NPC> npcs;
-    private final LinkedList<Integer> npcKeys;
+    private final LinkedList<Integer> npcIds;
 
-    public NPCManager(DataManager dataManager) {
-        this.dataManager = dataManager;
+    public NPCManager() {
         npcs = new HashMap<>();
-        npcKeys = new LinkedList<>();
+        npcIds = new LinkedList<>();
     }
 
     // getters
+    public boolean npcsExist() {
+        return !(npcs.isEmpty() && npcIds.isEmpty());
+    }
+
     public Map<Integer, NPC> getNPCs() {
         return npcs;
     }
 
-    // other
-    public void createNPC (Player player, Location loc, EntityType type) { //String skin
-        NPC npc = new NPC("", loc);
-        int id = npcKeys.isEmpty() ? 0 : npcKeys.getLast() + 1;
+    public int getLastId() {
+        return npcIds.getLast();
+    }
 
-        if (!spawnNPC(id, npc)) {
-            return;
-        }
-        dataManager.writeData(npc, id);
+    // other
+    /** creates NPC and attempts to spawn it.
+     * @param player Player that spawns the NPC
+     * @param loc initial location of NPC and in which world.
+     * @param type NPC entity type
+     * @return Spawned NPC instance on success, null on fail.
+     */
+    public NPCTuple createNPC (Player player, Location loc, EntityType type) { //String skin
+        NPC npc = new NPC("", loc);
+        int id = npcIds.isEmpty() ? 0 : npcIds.getLast() + 1;
+
+        return spawnNPC(id, npc);
     }
 
 
@@ -51,51 +58,57 @@ public class NPCManager {
         spawnNPC(id, npc);
     }
 
-    /**
-     * removes newest NPC
+    /** removes NPC with given id.
+     * @param id valid id of npc.
      */
-    public void removeNPC(CommandSender sender) {
-        if (npcKeys.isEmpty() || npcs.isEmpty()) {
-            sender.sendMessage("There are no NPCs to remove!");
-            return;
-        }
-
-        int id = npcKeys.getLast();
+    public void removeNPC(int id) {
         npcs.get(id).remove();
 
-        dataManager.getConfig().set("data." + id, null);
-        dataManager.saveConfig();
-
         npcs.remove(id);
-        npcKeys.removeLast();
-
-        sender.sendMessage(String.format("NPC %d was removed.", id));
+        npcIds.remove(id);
     }
 
     /**
      * Removes all NPC entities.
      */
     public void removeAllNPC() {
-        if (npcKeys.isEmpty() || this.npcs.isEmpty()) {
+        if (npcIds.isEmpty() || this.npcs.isEmpty()) {
             Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             return;
         }
 
-        while (!npcKeys.isEmpty()) {
-            removeNPC(Bukkit.getConsoleSender());
-            Bukkit.broadcast(Component.text("All NPCs have been removed!"));
+        for (NPC npc : npcs.values()) {
+            npc.remove();
         }
+
+        npcs.clear();
+        npcIds.clear();
     }
 
     // private
-    private boolean spawnNPC(int id, NPC npc) {
+    /** Creates NPCEntity into world.
+     * @param id int type identifier on NPC.
+     * @param npc NPC to spawn.
+     * @return Instance of NPC on success, null on failure.
+     */
+    private NPCTuple spawnNPC(int id, NPC npc) {
         boolean spawned = npc.spawn();
 
         if (spawned) {
             npcs.put(id, npc);
-            npcKeys.add(id);
+            npcIds.add(id);
+            return new NPCTuple(id, npc);
         }
 
-        return spawned;
+        return null;
+    }
+
+    // other
+    public record NPCTuple(int id, NPC npc) {
+        @Override
+        public String toString() {
+            return "NPCTuple{ id : " + id +
+                    ", npc : " + npc + '}';
+        }
     }
 }
