@@ -37,7 +37,7 @@ public class NPCManager {
         if (!spawnNPC(id, npc)) {
             return;
         }
-        Main.getInstsance().data.writeData(loc, npc, id);
+        Main.getInstsance().data.writeData(npc, id);
     }
 
 

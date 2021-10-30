@@ -70,20 +70,19 @@ public class DataManager {
         saveDefaultConfig();
     }
 
-    public void writeData(Location loc, NPC npc, int id) {
-        Main ref = Main.getInstsance();
+    public void writeData(NPC npc, int id) {
         String npcData = "data." + id;
-        ref.getData().set(npcData + ".id", id);
-        ref.getData().set(npcData + ".uuid", npc.getUUID().toString());
-        ref.getData().set(npcData + ".name", npc.getName());
-        ref.getData().set(npcData + ".x", (int) npc.getLoc().getX());
-        ref.getData().set(npcData + ".y", (int) npc.getLoc().getY());
-        ref.getData().set(npcData + ".z", (int) npc.getLoc().getZ());
-        ref.getData().set(npcData + ".p", npc.getLoc().getPitch());
-        ref.getData().set(npcData + ".yaw", npc.getLoc().getYaw());
-        ref.getData().set(npcData + ".world", npc.getLoc().getWorld().getName());
-//        ref.getData().set(npcData + ".tex", "");
-//        ref.getData().set(npcData + ".signature", "");
-        ref.saveData();
+        dataConfig.set(npcData + ".id", id);
+        dataConfig.set(npcData + ".uuid", npc.getUUID().toString());
+        dataConfig.set(npcData + ".name", npc.getName());
+        dataConfig.set(npcData + ".x", (int) npc.getLoc().getX());
+        dataConfig.set(npcData + ".y", (int) npc.getLoc().getY());
+        dataConfig.set(npcData + ".z", (int) npc.getLoc().getZ());
+        dataConfig.set(npcData + ".p", npc.getLoc().getPitch());
+        dataConfig.set(npcData + ".yaw", npc.getLoc().getYaw());
+        dataConfig.set(npcData + ".world", npc.getLoc().getWorld().getName());
+//        this.dataConfig.set(npcData + ".tex", "");
+//        this.dataConfig.set(npcData + ".signature", "");
+        saveConfig();
     }
 }
