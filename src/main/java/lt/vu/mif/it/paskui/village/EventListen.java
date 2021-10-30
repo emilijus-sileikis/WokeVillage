@@ -1,7 +1,11 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -10,13 +14,18 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
@@ -83,6 +92,15 @@ public class EventListen implements Listener {
                 p.sendMessage("Inventory closed!");
                 p.closeInventory();
             }
+        }
+    }
+    //TODO: gal kazkas tokio kad istrint data, kai npc mirsta?
+    @EventHandler
+    public void onEDeath(EntityDeathEvent event) {
+        NPC npc = new NPC("", npcManager.getNPCs().get(0).getLoc());
+        if (event.getEntity().getKiller() != null && event.getEntity().equals(npc.getEntity())) {
+            Player player = event.getEntity().getKiller();
+            Bukkit.broadcast(Component.text("NPC was killed by " + player.getName()));
         }
     }
 
