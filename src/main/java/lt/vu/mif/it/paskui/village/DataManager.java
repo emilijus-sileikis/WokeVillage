@@ -1,5 +1,7 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -66,5 +68,22 @@ public class DataManager {
     public void clearConfig() {
         this.configFile.delete();
         saveDefaultConfig();
+    }
+
+    public void writeData(Location loc, NPC npc, int id) {
+        Main ref = Main.getInstsance();
+        String npcData = "data." + id;
+        ref.getData().set(npcData + ".id", id);
+        ref.getData().set(npcData + ".uuid", npc.getUUID().toString());
+        ref.getData().set(npcData + ".name", npc.getName());
+        ref.getData().set(npcData + ".x", (int) npc.getLoc().getX());
+        ref.getData().set(npcData + ".y", (int) npc.getLoc().getY());
+        ref.getData().set(npcData + ".z", (int) npc.getLoc().getZ());
+        ref.getData().set(npcData + ".p", npc.getLoc().getPitch());
+        ref.getData().set(npcData + ".yaw", npc.getLoc().getYaw());
+        ref.getData().set(npcData + ".world", npc.getLoc().getWorld().getName());
+//        ref.getData().set(npcData + ".tex", "");
+//        ref.getData().set(npcData + ".signature", "");
+        ref.saveData();
     }
 }

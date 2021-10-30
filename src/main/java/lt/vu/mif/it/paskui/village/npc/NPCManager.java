@@ -37,22 +37,7 @@ public class NPCManager {
         if (!spawnNPC(id, npc)) {
             return;
         }
-
-        //Todo: move this to DataManager class
-        Main ref = Main.getInstsance();
-        String npcData = "data." + id;
-        ref.getData().set(npcData + ".id", id);
-        ref.getData().set(npcData + ".uuid", npc.getUUID().toString());
-        ref.getData().set(npcData + ".name", npc.getName());
-        ref.getData().set(npcData + ".x", (int) npc.getLoc().getX());
-        ref.getData().set(npcData + ".y", (int) npc.getLoc().getY());
-        ref.getData().set(npcData + ".z", (int) npc.getLoc().getZ());
-        ref.getData().set(npcData + ".p", npc.getLoc().getPitch());
-        ref.getData().set(npcData + ".yaw", npc.getLoc().getYaw());
-        ref.getData().set(npcData + ".world", npc.getLoc().getWorld().getName());
-//        ref.getData().set(npcData + ".tex", "");
-//        ref.getData().set(npcData + ".signature", "");
-        ref.saveData();
+        Main.getInstsance().data.writeData(loc, npc, id);
     }
 
 
@@ -99,6 +84,7 @@ public class NPCManager {
 
         while (!npcKeys.isEmpty()) {
             removeNPC(Bukkit.getConsoleSender());
+            Bukkit.broadcast(Component.text("All NPCs have been removed!"));
         }
     }
 

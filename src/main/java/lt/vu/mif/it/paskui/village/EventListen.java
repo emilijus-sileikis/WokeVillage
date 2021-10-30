@@ -58,6 +58,7 @@ public class EventListen implements Listener {
                 p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
                 p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
                 p.closeInventory();
+                //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
             }
 
             //Lumberjack
