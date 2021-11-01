@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
 
@@ -14,6 +15,11 @@ public interface NPCEntity {
     org.bukkit.entity.Entity getBukkitEntity();
 
     Entity getNMSEntity();
+
+    /** Returns attached NPC to Entity
+     * @return NPC instance.
+     */
+    NPC getNPC();
 
     // setters
     void setEntityName(String name);

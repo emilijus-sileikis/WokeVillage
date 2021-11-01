@@ -4,8 +4,8 @@ import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.NPCAttach;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -24,13 +24,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
+public class CustomVillager extends Villager implements NPCEntity {
 
     private final NPC npc;
 
@@ -72,6 +76,11 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
     }
 
     @Override
+    public NPC getNPC() {
+        return npc;
+    }
+
+    @Override
     public void setEntityName(String name) {
         if ( !(name.isBlank() || name.isEmpty()) ) {
             this.setCustomName(new TextComponent(name));
@@ -106,12 +115,6 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
         this.remove(Entity.RemovalReason.DISCARDED);
     }
 
-    // NPCAttach
-    @Override
-    public NPC getNPC() {
-        return npc;
-    }
-
     // Villager
     @Override
     public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
@@ -126,16 +129,12 @@ public class CustomVillager extends Villager implements NPCAttach, NPCEntity {
         if (p != null) {
             SelectionScreen gui = new SelectionScreen();
             p.openInventory(gui.getInventory());
-            Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0);
+            //Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0);
         }
 
-        //TODO: add something to check if inventory is closed and then use resetSpeed(); maybe
+        //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 
         return InteractionResult.SUCCESS;
-    }
-    //TODO: implement this once the inventory is closed
-    public void resetSpeed() {
-        Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
     }
 
     @Override
