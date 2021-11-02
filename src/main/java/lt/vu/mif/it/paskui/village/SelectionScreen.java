@@ -32,32 +32,36 @@ public class SelectionScreen implements InventoryHolder {
         Logging.infoLog("create SelectionScreen{ role: %s ; personality: %s}", role, personality);
         //Left side
         //for (int i=0; i<2; i++) {
-        if(role == "LumberJack") {
-            item = createItem(Component.text("Help").color(NamedTextColor.GREEN), Material.BOOK, Collections.singletonList(Component.text("Click here for help")));
-            inv.setItem(inv.firstEmpty(), item);
-        }
+        item = createItem(Component.text("Help").color(NamedTextColor.GREEN), Material.BOOK, Collections.singletonList(Component.text("Click here for help")));
+        inv.setItem(inv.firstEmpty(), item);
         //}
 
         //Lumberjack
-        List<Component> loreLumberjack = new ArrayList<>();
-        loreLumberjack.add( Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW) );
-        loreLumberjack.add( Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text("Wood Gathering").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_AXE, loreLumberjack);
-        inv.setItem(inv.firstEmpty(), item);
+        if (role == "LumberJack") {
+            List<Component> loreLumberjack = new ArrayList<>();
+            loreLumberjack.add(Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW));
+            loreLumberjack.add(Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW));
+            item = createItem(Component.text("Wood Gathering").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_AXE, loreLumberjack);
+            inv.setItem(inv.firstEmpty(), item);
+        }
 
         //Miner
-        List<Component> loreMiner = new ArrayList<>();
-        loreMiner.add( Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW) );
-        loreMiner.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text("Mining").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_PICKAXE, loreMiner);
-        inv.setItem(inv.firstEmpty(), item);
+        if (role == "Miner") {
+            List<Component> loreMiner = new ArrayList<>();
+            loreMiner.add(Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW));
+            loreMiner.add(Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW));
+            item = createItem(Component.text("Mining").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.STONE_PICKAXE, loreMiner);
+            inv.setItem(inv.firstEmpty(), item);
+        }
 
         //Fisher
-        List<Component> loreFish = new ArrayList<>();
-        loreFish.add( Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW) );
-        loreFish.add( Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW) );
-        item = createItem(Component.text("Fishing").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.FISHING_ROD, loreFish);
-        inv.setItem(inv.firstEmpty(), item);
+            if (role == "Fisher") {
+                List<Component> loreFish = new ArrayList<>();
+                loreFish.add(Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW));
+                loreFish.add(Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW));
+                item = createItem(Component.text("Fishing").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC), Material.FISHING_ROD, loreFish);
+                inv.setItem(inv.firstEmpty(), item);
+            }
 
         //Right side
         //for (int i=3; i<=4; i++) {
