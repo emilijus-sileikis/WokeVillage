@@ -81,49 +81,12 @@ public class DataManager {
         dataConfig.set(npcData + ".p", npc.getLoc().getPitch());
         dataConfig.set(npcData + ".yaw", npc.getLoc().getYaw());
         dataConfig.set(npcData + ".world", npc.getLoc().getWorld().getName());
-        dataConfig.set(npcData + ".role", getRandomRole());
-        dataConfig.set(npcData + ".personality", getRandomPersonality());
+        dataConfig.set(npcData + ".role", npc.getRole());
+        dataConfig.set(npcData + ".personality", npc.getPersonality());
 //        this.dataConfig.set(npcData + ".tex", "");
 //        this.dataConfig.set(npcData + ".signature", "");
         saveConfig();
     }
 
-    private Object getRandomPersonality() {
-        int a = getRandomNumber(1, 7);
-        switch (a)
-        {
-            case 1:
-                return "Hardworking";
-            case 2:
-                return "Lazy";
-            case 3:
-                return "Reliable";
-            case 4:
-                return "Clumsy";
-            case 5:
-                return "Generous";
-            case 6:
-                return "Greedy";
-            default:
-                return "Error";
-        }
-    }
 
-    private String getRandomRole() {
-        int a = getRandomNumber(1, 4);
-        switch (a)
-        {
-            case 1:
-                return "LumberJack";
-            case 2:
-                return "Miner";
-            case 3:
-                return "Fisher";
-            default:
-                return "Error";
-        }
-    }
-    public int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
 }

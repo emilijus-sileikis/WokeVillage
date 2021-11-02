@@ -36,30 +36,39 @@ public class NPCManager {
     }
 
     // other
-    /** creates NPC and attempts to spawn it.
+
+    /**
+     * creates NPC and attempts to spawn it.
+     *
      * @param player Player that spawns the NPC
-     * @param loc initial location of NPC and in which world.
-     * @param type NPC entity type
+     * @param loc    initial location of NPC and in which world.
+     * @param type   NPC entity type
      * @return Spawned NPC instance on success, null on fail.
      */
-    public NPCTuple createNPC (Player player, Location loc, EntityType type) { //String skin
-        NPC npc = new NPC("", loc);
+    public NPCTuple createNPC(Player player, Location loc, EntityType type) { //String skin
+        NPC npc = new NPC("", loc, getRandomRole(), getRandomPersonality());
         int id = npcIds.isEmpty() ? 0 : npcIds.getLast() + 1;
 
         return spawnNPC(id, npc);
     }
 
 
-    /** Loads npc into the world
-     * @param location data where npc is located
+    /**
+     * Loads npc into the world
+     *
+     * @param location    data where npc is located
+     * @param role
+     * @param personality
      */
-    public void loadNPC(int id, String name, Location location, UUID uuid) {
-        NPC npc = new NPC(name, location, uuid);
+    public void loadNPC(int id, String name, Location location, UUID uuid, String role, String personality) {
+        NPC npc = new NPC(name, location, uuid, role, personality);
 
         spawnNPC(id, npc);
     }
 
-    /** removes NPC with given id.
+    /**
+     * removes NPC with given id.
+     *
      * @param id valid id of npc.
      */
     public void removeNPC(int id) {
@@ -90,8 +99,11 @@ public class NPCManager {
     }
 
     // private
-    /** Creates NPCEntity into world.
-     * @param id int type identifier on NPC.
+
+    /**
+     * Creates NPCEntity into world.
+     *
+     * @param id  int type identifier on NPC.
      * @param npc NPC to spawn.
      * @return Instance of NPC on success, null on failure.
      */
@@ -114,5 +126,44 @@ public class NPCManager {
             return "NPCTuple{ id : " + id +
                     ", npc : " + npc + '}';
         }
+    }
+
+    private String getRandomPersonality() {
+        int a = getRandomNumber(1, 7);
+        switch (a) {
+            case 1:
+                return "Hardworking";
+            case 2:
+                return "Lazy";
+            case 3:
+                return "Reliable";
+            case 4:
+                return "Clumsy";
+            case 5:
+                return "Generous";
+            case 6:
+                return "Greedy";
+            default:
+                return "Error";
+        }
+    }
+
+    private String getRandomRole() {
+        int a = getRandomNumber(1, 4);
+        switch (a) {
+            case 1:
+                return "LumberJack";
+            case 2:
+                return "Miner";
+            case 3:
+                return "Fisher";
+            default:
+                return "Error";
+        }
+    }
+
+
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 }
