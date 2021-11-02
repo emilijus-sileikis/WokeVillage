@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -20,18 +21,21 @@ public class SelectionScreen implements InventoryHolder {
 
     private Inventory inv;
 
-    public SelectionScreen() {
+    public SelectionScreen(String role, String personality) {
         inv = Bukkit.createInventory(this, InventoryType.HOPPER, Component.text("Trading Menu").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA));
-        init();
+        init(role, personality);
     }
 
-    private void init() {
+    private void init(String role, String personality) {
         ItemStack item;
 
+        Logging.infoLog("create SelectionScreen{ role: %s ; personality: %s}", role, personality);
         //Left side
         //for (int i=0; i<2; i++) {
-        item = createItem(Component.text("Help").color(NamedTextColor.GREEN), Material.BOOK, Collections.singletonList(Component.text("Click here for help")));
-        inv.setItem(inv.firstEmpty(), item);
+        if(role == "LumberJack") {
+            item = createItem(Component.text("Help").color(NamedTextColor.GREEN), Material.BOOK, Collections.singletonList(Component.text("Click here for help")));
+            inv.setItem(inv.firstEmpty(), item);
+        }
         //}
 
         //Lumberjack

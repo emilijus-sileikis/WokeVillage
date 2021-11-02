@@ -39,8 +39,8 @@ public class EventListen implements Listener {
     public void onInteract(NPCInteractEvent event) {
 
         Player player = event.getPlayer();
-        SelectionScreen gui = new SelectionScreen();
-        player.openInventory(gui.getInventory());
+        //SelectionScreen gui = new SelectionScreen();
+        //player.openInventory(gui.getInventory());
     }
 
     @EventHandler

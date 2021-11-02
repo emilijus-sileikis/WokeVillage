@@ -117,8 +117,9 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
                     location.setYaw((float) file.getDouble(npcData + ".yaw"));
 
                     String role = file.getString(npcData + ".role");
+                    String personality = file.getString(npcData + ".personality");
 
-                    npcManager.loadNPC(id, name, location, npcUUID);
+                    npcManager.loadNPC(id, name, location, npcUUID, role, personality);
                 }
         );
     }

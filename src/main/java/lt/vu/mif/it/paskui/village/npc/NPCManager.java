@@ -52,9 +52,11 @@ public class NPCManager {
 
     /** Loads npc into the world
      * @param location data where npc is located
+     * @param role
+     * @param personality
      */
-    public void loadNPC(int id, String name, Location location, UUID uuid) {
-        NPC npc = new NPC(name, location, uuid);
+    public void loadNPC(int id, String name, Location location, UUID uuid, String role, String personality) {
+        NPC npc = new NPC(name, location, uuid, role, personality);
 
         spawnNPC(id, npc);
     }

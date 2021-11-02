@@ -17,6 +17,8 @@ public class NPC {
 
     private String name;
     private Location loc;
+    private String NPCrole;
+    private String NPCpersonality;
     private NPCEntity npcEntity;
 
     public NPC(String name, Location loc) {
@@ -27,8 +29,10 @@ public class NPC {
         npcEntity.setEntityName(name);
     }
 
-    public NPC(String name, Location loc, UUID uuid) {
+    public NPC(String name, Location loc, UUID uuid, String role, String personality) {
         this(name, loc);
+        NPCrole = role;
+        NPCpersonality = personality;
         npcEntity.setEntityUUID(uuid);
     }
 
@@ -48,6 +52,8 @@ public class NPC {
     public UUID getUUID() {
         return npcEntity.getEntityUUID();
     }
+    public String getRole() { return NPCrole; }
+    public String getPersonality() { return NPCpersonality; }
 
     // Setters
     public void setName(String name) {
