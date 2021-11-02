@@ -1,13 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
-import lt.vu.mif.it.paskui.village.EventListen;
-import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.NPCManager;
-import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -20,15 +15,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
-import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -124,13 +112,9 @@ public class CustomVillager extends Villager implements NPCEntity {
 //                npc
 //        );
 //        event.callEvent();
-        EventListen event = new EventListen(Main.getInstance().getNPCManager());
-        org.bukkit.entity.Player p = ((CraftPlayer) player.getBukkitEntity()).getPlayer();
-        if (p != null) {
-            SelectionScreen gui = new SelectionScreen(npc.getRole(), npc.getPersonality());
-            p.openInventory(gui.getInventory());
-            //Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0);
-        }
+
+        SelectionScreen gui = new SelectionScreen(npc.getRole(), npc.getPersonality());
+        player.getBukkitEntity().openInventory(gui.getInventory());
 
         //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 

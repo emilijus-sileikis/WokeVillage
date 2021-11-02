@@ -1,8 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.Main;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
-import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -24,6 +24,9 @@ public class NPCManager {
     }
 
     // getters
+    /** Checks whether there is any NPCs existing.
+     * @return True if npc hashmap and npc id list are not empty.
+     */
     public boolean npcsExist() {
         return !(npcs.isEmpty() && npcIds.isEmpty());
     }
@@ -38,9 +41,7 @@ public class NPCManager {
 
     // other
 
-    /**
-     * creates NPC and attempts to spawn it.
-     *
+    /** Attempts creating NPC and spawning it in Minecraft world.
      * @param player Player that spawns the NPC
      * @param loc    initial location of NPC and in which world.
      * @param type   NPC entity type
@@ -54,29 +55,27 @@ public class NPCManager {
     }
 
 
-    /**
-     * Loads npc into the world
-     *
-     * @param location    data where npc is located
-     * @param role
-     * @param personality
+    /** Loads npc into the world from parsed database.
+     * @param location data where npc is located
+     * @param role NPC role type in String
+     * @param personality NPC personality type in String
      */
     public void loadNPC(int id, String name, Location location, UUID uuid, String role, String personality) {
         NPC npc = new NPC(name, location, uuid, role, personality);
 
-        spawnNPC(id, npc);
+        if (spawnNPC(id, npc) == null) {
+            Logging.infoLog("Unable to spawn NPC %d", id);
+        }
     }
 
-    /**
-     * removes NPC with given id.
-     *
+    /** Removes NPC with given id.
      * @param id valid id of npc.
      */
     public void removeNPC(int id) {
         npcs.get(id).remove();
 
         npcs.remove(id);
-        npcIds.remove(id);
+        npcIds.removeFirstOccurrence(id);
 
         Bukkit.broadcast(Component.text("NPC was removed!"));
     }
@@ -105,9 +104,7 @@ public class NPCManager {
 
     // private
 
-    /**
-     * Creates NPCEntity into world.
-     *
+    /** Creates NPCEntity into world.
      * @param id  int type identifier on NPC.
      * @param npc NPC to spawn.
      * @return Instance of NPC on success, null on failure.
@@ -133,6 +130,9 @@ public class NPCManager {
         }
     }
 
+    /** Function for randomly getting NPC personality type.
+     * @return randomly selected personality type String.
+     */
     private String getRandomPersonality() {
         int a = getRandomNumber(1, 7);
         switch (a) {
@@ -153,6 +153,9 @@ public class NPCManager {
         }
     }
 
+    /** Function for randomly getting NPC role type.
+     * @return randomly selected role type String.
+     */
     private String getRandomRole() {
         int a = getRandomNumber(1, 4);
         switch (a) {
