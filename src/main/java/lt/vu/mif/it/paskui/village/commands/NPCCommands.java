@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village.commands;
 
 import lt.vu.mif.it.paskui.village.DataManager;
 import lt.vu.mif.it.paskui.village.Main;
+import lt.vu.mif.it.paskui.village.command.CommandFlag;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.NPCManager.NPCTuple;
 import lt.vu.mif.it.paskui.village.command.Argument;
@@ -54,13 +55,10 @@ public class NPCCommands {
                 Logging.infoLog("NPC CREATED");
             }
         }
-
-//         TODO: Implement commented code below as seperate Command Method.
-//            if (command.getName().equalsIgnoreCase("remnpc")) {
-//                NPCManager.removeNPC(player, NPCManager.npcs.get(1));
-//                player.sendMessage("NPC REMOVED");
-//                return true;
-//            }
+        else if (context.getArg(CommandFlag.NPC_LOCATION.getFlag()) == null) {
+                Logging.infoLog("Can not create the NPC!");
+                Logging.infoLog("The console MUST use the -l argument!");
+        }
     }
 
     @Command(

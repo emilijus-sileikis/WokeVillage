@@ -5,7 +5,7 @@ import org.bukkit.Location;
 /**
  * Enum for storing necessary information about command flags
  */
-enum CommandFlag {
+public enum CommandFlag {
     CMD_ARGUMENT("ARG", 0, String.class),
     NPC_LOCATION("-l", 3, Location.class),
     NPC_NAME("--name", "-n", 1, String.class);
