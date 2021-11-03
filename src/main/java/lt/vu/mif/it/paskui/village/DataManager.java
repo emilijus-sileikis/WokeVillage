@@ -65,11 +65,6 @@ public class DataManager {
         }
     }
 
-    public void clearConfig() {
-        this.configFile.delete();
-        saveDefaultConfig();
-    }
-
     public void writeData(NPC npc, int id) {
         String npcData = "data." + id;
         dataConfig.set(npcData + ".id", id);

@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.Main;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
@@ -91,6 +92,10 @@ public class NPCManager {
 
         for (NPC npc : npcs.values()) {
             npc.remove();
+            for (int i=0; i<npcs.size(); i++) {
+                Main.getInstance().getDataManager().getConfig().set("data." + i, null);
+                Main.getInstance().getDataManager().saveConfig();
+            }
         }
         Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
 

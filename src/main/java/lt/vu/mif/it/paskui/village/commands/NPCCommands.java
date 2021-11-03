@@ -111,6 +111,5 @@ public class NPCCommands {
         );
 
         npcManager.removeAllNPC();
-        dataManager.clearConfig();
     }
 }

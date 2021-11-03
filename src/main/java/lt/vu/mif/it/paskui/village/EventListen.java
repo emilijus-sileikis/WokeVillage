@@ -17,9 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -49,6 +47,7 @@ public class EventListen implements Listener {
         if (event.getClickedInventory() == null) {
             return;
         }
+
         if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
 
             event.setCancelled(true);
@@ -102,8 +101,14 @@ public class EventListen implements Listener {
     }
 
  */
-
-
+    @EventHandler
+    public static void onMove(InventoryMoveItemEvent event) {
+        SelectionScreen gui = new SelectionScreen("", "");
+        if (event.getInitiator().equals(gui)) {
+            //event.setCancelled(true);
+            return;
+        }
+    }
 
     private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
 
