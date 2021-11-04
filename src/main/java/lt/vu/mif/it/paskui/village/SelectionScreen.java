@@ -1,5 +1,7 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -21,12 +23,12 @@ public class SelectionScreen implements InventoryHolder {
 
     private Inventory inv;
 
-    public SelectionScreen(String role, String personality) {
+    public SelectionScreen(Role role, Personality personality) {
         inv = Bukkit.createInventory(this, InventoryType.HOPPER, Component.text("Trading Menu").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA));
         init(role, personality);
     }
 
-    private void init(String role, String personality) {
+    private void init(Role role, Personality personality) {
         ItemStack item;
 
         Logging.infoLog("create SelectionScreen{ role: %s ; personality: %s}", role, personality);
@@ -40,7 +42,7 @@ public class SelectionScreen implements InventoryHolder {
         //}
 
         //Lumberjack
-        if (role.equals("LUMBERJACK")) {
+        if (role == Role.LUMBERJACK) {
             List<Component> loreLumberjack = new ArrayList<>();
             loreLumberjack.add(Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW));
             loreLumberjack.add(Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW));
@@ -49,7 +51,7 @@ public class SelectionScreen implements InventoryHolder {
         }
 
         //Miner
-        if (role.equals("MINER")) {
+        if (role == Role.MINER) {
             List<Component> loreMiner = new ArrayList<>();
             loreMiner.add(Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW));
             loreMiner.add(Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW));
@@ -58,7 +60,7 @@ public class SelectionScreen implements InventoryHolder {
         }
 
         //Fisher
-        if (role.equals("FISHER")) {
+        if (role == Role.FISHER) {
             List<Component> loreFish = new ArrayList<>();
             loreFish.add(Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW));
             loreFish.add(Component.text("Price: 10 Gold Ingots").color(NamedTextColor.YELLOW));

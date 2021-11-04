@@ -1,23 +1,14 @@
 package lt.vu.mif.it.paskui.village;
 
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
-import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Note;
-import org.bukkit.Particle;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.inventory.*;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -103,7 +94,7 @@ public class EventListen implements Listener {
  */
     @EventHandler
     public static void onMove(InventoryMoveItemEvent event) {
-        SelectionScreen gui = new SelectionScreen("", "");
+        SelectionScreen gui = new SelectionScreen(null, null);
         if (event.getInitiator().equals(gui)) {
             event.setCancelled(true);
         }

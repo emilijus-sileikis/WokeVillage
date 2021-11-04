@@ -5,6 +5,8 @@ import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -88,7 +90,7 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
     /**
      * Spawns NPCs' from data.yml file
      */
-    public void spawnNPC() {
+    private void spawnNPC() {
         // TODO: move npc reading to DataManager
         FileConfiguration file = data.getConfig();
         Objects.requireNonNull(data.getConfig().getConfigurationSection("data"))
@@ -116,8 +118,10 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
                     location.setPitch((float) file.getDouble(npcData + ".p"));
                     location.setYaw((float) file.getDouble(npcData + ".yaw"));
 
-                    String role = file.getString(npcData + ".role");
-                    String personality = file.getString(npcData + ".personality");
+                    Role role = Role.fromString( file.getString(npcData + ".role") );
+                    Personality personality = Personality.fromString(
+                            file.getString(npcData + ".personality")
+                    );
 
                     npcManager.loadNPC(id, name, location, npcUUID, role, personality);
                 }

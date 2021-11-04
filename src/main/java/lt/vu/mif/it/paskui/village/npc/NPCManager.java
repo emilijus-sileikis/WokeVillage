@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 public class NPCManager {
@@ -22,6 +24,9 @@ public class NPCManager {
     }
 
     // getters
+    /** Checks whether there is any NPCs existing.
+     * @return True if npc hashmap and npc id list are not empty.
+     */
     public boolean npcsExist() {
         return !(npcs.isEmpty() && npcIds.isEmpty());
     }
@@ -35,7 +40,6 @@ public class NPCManager {
     }
 
     // other
-
     /**
      * creates NPC and attempts to spawn it.
      *
@@ -51,18 +55,22 @@ public class NPCManager {
         return spawnNPC(id, npc);
     }
 
-
     /**
      * Loads npc into the world
      *
-     * @param location    data where npc is located
-     * @param role
-     * @param personality
+     * @param id unique npc id number
+     * @param name name npc is called
+     * @param location data where npc is located
+     * @param uuid unique npc id in NMS World
+     * @param role npc occupation
+     * @param personality npc persona type
      */
-    public void loadNPC(int id, String name, Location location, UUID uuid, String role, String personality) {
+    public void loadNPC(int id, String name, Location location, UUID uuid, Role role, Personality personality) {
         NPC npc = new NPC(name, location, uuid, role, personality);
 
-        spawnNPC(id, npc);
+        if (spawnNPC(id, npc) == null) {
+            Logging.infoLog("Unable to spawn NPC %d", id);
+        }
     }
 
     /**
@@ -128,48 +136,24 @@ public class NPCManager {
         }
     }
 
-    private enum RandomPersonality {
-        HARDWORKING,
-        LAZY,
-        RELIABLE,
-        CLUMSY,
-        GENEROUS,
-        GREEDY,
-        ERROR;
-    }
-
-    private enum RandomRole {
-        LUMBERJACK,
-        MINER,
-        FISHER,
-        ERROR;
-    }
-
-    private String getRandomPersonality() {
-        int a = getRandomNumber(1, 7);
-        return switch (a) {
-            case 1 -> RandomPersonality.HARDWORKING.toString();
-            case 2 -> RandomPersonality.LAZY.toString();
-            case 3 -> RandomPersonality.RELIABLE.toString();
-            case 4 -> RandomPersonality.CLUMSY.toString();
-            case 5 -> RandomPersonality.GENEROUS.toString();
-            case 6 -> RandomPersonality.GREEDY.toString();
-            default -> RandomPersonality.ERROR.toString();
+    private Personality getRandomPersonality() {
+        int r = new Random().nextInt(6);
+        return switch (r) {
+            case 0 -> Personality.HARDWORKING;
+            case 1 -> Personality.LAZY;
+            case 2 -> Personality.RELIABLE;
+            case 3 -> Personality.CLUMSY;
+            case 4 -> Personality.GENEROUS;
+            default -> Personality.GREEDY;
         };
     }
 
-    private String getRandomRole() {
-        int a = getRandomNumber(1, 4);
-        return switch (a) {
-            case 1 -> RandomRole.LUMBERJACK.toString();
-            case 2 -> RandomRole.MINER.toString();
-            case 3 -> RandomRole.FISHER.toString();
-            default -> RandomRole.ERROR.toString();
+    private Role getRandomRole() {
+        int r = new Random().nextInt(3);
+        return switch (r) {
+            case 0 -> Role.LUMBERJACK;
+            case 1 -> Role.MINER;
+            default -> Role.FISHER;
         };
-    }
-
-
-    public static int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
     }
 }

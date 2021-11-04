@@ -17,24 +17,22 @@ public class NPC {
 
     private String name;
     private Location loc;
-    private String NPCrole;
-    private String NPCpersonality;
+    private Role role;
+    private Personality personality;
     private NPCEntity npcEntity;
 
-    public NPC(String name, Location loc, String role, String personality) {
+    public NPC(String name, Location loc, Role role, Personality personality) {
         this.name = name;
         this.loc = loc;
-        NPCrole = role;
-        NPCpersonality = personality;
+        this.role = role;
+        this.personality = personality;
         npcEntity = new CustomVillager(this, loc);
         npcEntity.setEntityPos(loc);
         npcEntity.setEntityName(name);
     }
 
-    public NPC(String name, Location loc, UUID uuid, String role, String personality) {
+    public NPC(String name, Location loc, UUID uuid, Role role, Personality personality) {
         this(name, loc, role, personality);
-        NPCrole = role;
-        NPCpersonality = personality;
         npcEntity.setEntityUUID(uuid);
     }
 
@@ -54,8 +52,14 @@ public class NPC {
     public UUID getUUID() {
         return npcEntity.getEntityUUID();
     }
-    public String getRole() { return NPCrole; }
-    public String getPersonality() { return NPCpersonality; }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public Personality getPersonality() {
+        return personality;
+    }
 
     // Setters
     public void setName(String name) {

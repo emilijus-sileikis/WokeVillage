@@ -76,8 +76,8 @@ public class DataManager {
         dataConfig.set(npcData + ".p", npc.getLoc().getPitch());
         dataConfig.set(npcData + ".yaw", npc.getLoc().getYaw());
         dataConfig.set(npcData + ".world", npc.getLoc().getWorld().getName());
-        dataConfig.set(npcData + ".role", npc.getRole());
-        dataConfig.set(npcData + ".personality", npc.getPersonality());
+        dataConfig.set(npcData + ".role", npc.getRole().toString());
+        dataConfig.set(npcData + ".personality", npc.getPersonality().toString());
 //        this.dataConfig.set(npcData + ".tex", "");
 //        this.dataConfig.set(npcData + ".signature", "");
         saveConfig();
