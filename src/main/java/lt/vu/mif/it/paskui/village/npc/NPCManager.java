@@ -1,8 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.Main;
-import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Entity;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -24,9 +24,6 @@ public class NPCManager {
     }
 
     // getters
-    /** Checks whether there is any NPCs existing.
-     * @return True if npc hashmap and npc id list are not empty.
-     */
     public boolean npcsExist() {
         return !(npcs.isEmpty() && npcIds.isEmpty());
     }
@@ -41,7 +38,9 @@ public class NPCManager {
 
     // other
 
-    /** Attempts creating NPC and spawning it in Minecraft world.
+    /**
+     * creates NPC and attempts to spawn it.
+     *
      * @param player Player that spawns the NPC
      * @param loc    initial location of NPC and in which world.
      * @param type   NPC entity type
@@ -55,27 +54,29 @@ public class NPCManager {
     }
 
 
-    /** Loads npc into the world from parsed database.
-     * @param location data where npc is located
-     * @param role NPC role type in String
-     * @param personality NPC personality type in String
+    /**
+     * Loads npc into the world
+     *
+     * @param location    data where npc is located
+     * @param role
+     * @param personality
      */
     public void loadNPC(int id, String name, Location location, UUID uuid, String role, String personality) {
         NPC npc = new NPC(name, location, uuid, role, personality);
 
-        if (spawnNPC(id, npc) == null) {
-            Logging.infoLog("Unable to spawn NPC %d", id);
-        }
+        spawnNPC(id, npc);
     }
 
-    /** Removes NPC with given id.
+    /**
+     * removes NPC with given id.
+     *
      * @param id valid id of npc.
      */
     public void removeNPC(int id) {
         npcs.get(id).remove();
 
         npcs.remove(id);
-        npcIds.removeFirstOccurrence(id);
+        npcIds.remove(id);
 
         Bukkit.broadcast(Component.text("NPC was removed!"));
     }
@@ -89,13 +90,14 @@ public class NPCManager {
             return;
         }
 
-        int i = 0;
         for (NPC npc : npcs.values()) {
             npc.remove();
-            ++i;
+            for (int i=0; i<npcs.size(); i++) {
+                Main.getInstance().getDataManager().getConfig().set("data." + i, null);
+                Main.getInstance().getDataManager().saveConfig();
+            }
         }
-
-        Bukkit.broadcast(Component.text("Total of " + i + " NPCs were removed!"));
+        Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
 
         npcs.clear();
         npcIds.clear();
@@ -103,7 +105,9 @@ public class NPCManager {
 
     // private
 
-    /** Creates NPCEntity into world.
+    /**
+     * Creates NPCEntity into world.
+     *
      * @param id  int type identifier on NPC.
      * @param npc NPC to spawn.
      * @return Instance of NPC on success, null on failure.
@@ -129,48 +133,48 @@ public class NPCManager {
         }
     }
 
-    /** Function for randomly getting NPC personality type.
-     * @return randomly selected personality type String.
-     */
+    private enum RandomPersonality {
+        HARDWORKING,
+        LAZY,
+        RELIABLE,
+        CLUMSY,
+        GENEROUS,
+        GREEDY,
+        ERROR;
+    }
+
+    private enum RandomRole {
+        LUMBERJACK,
+        MINER,
+        FISHER,
+        ERROR;
+    }
+
     private String getRandomPersonality() {
         int a = getRandomNumber(1, 7);
-        switch (a) {
-            case 1:
-                return "Hardworking";
-            case 2:
-                return "Lazy";
-            case 3:
-                return "Reliable";
-            case 4:
-                return "Clumsy";
-            case 5:
-                return "Generous";
-            case 6:
-                return "Greedy";
-            default:
-                return "Error";
-        }
+        return switch (a) {
+            case 1 -> RandomPersonality.HARDWORKING.toString();
+            case 2 -> RandomPersonality.LAZY.toString();
+            case 3 -> RandomPersonality.RELIABLE.toString();
+            case 4 -> RandomPersonality.CLUMSY.toString();
+            case 5 -> RandomPersonality.GENEROUS.toString();
+            case 6 -> RandomPersonality.GREEDY.toString();
+            default -> RandomPersonality.ERROR.toString();
+        };
     }
 
-    /** Function for randomly getting NPC role type.
-     * @return randomly selected role type String.
-     */
     private String getRandomRole() {
         int a = getRandomNumber(1, 4);
-        switch (a) {
-            case 1:
-                return "LumberJack";
-            case 2:
-                return "Miner";
-            case 3:
-                return "Fisher";
-            default:
-                return "Error";
-        }
+        return switch (a) {
+            case 1 -> RandomRole.LUMBERJACK.toString();
+            case 2 -> RandomRole.MINER.toString();
+            case 3 -> RandomRole.FISHER.toString();
+            default -> RandomRole.ERROR.toString();
+        };
     }
 
 
-    public int getRandomNumber(int min, int max) {
+    public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 }

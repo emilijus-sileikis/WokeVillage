@@ -105,8 +105,7 @@ public class EventListen implements Listener {
     public static void onMove(InventoryMoveItemEvent event) {
         SelectionScreen gui = new SelectionScreen("", "");
         if (event.getInitiator().equals(gui)) {
-            //event.setCancelled(true);
-            return;
+            event.setCancelled(true);
         }
     }
 
