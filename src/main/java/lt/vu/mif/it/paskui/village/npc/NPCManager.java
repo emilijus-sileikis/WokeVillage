@@ -89,14 +89,13 @@ public class NPCManager {
             return;
         }
 
+        int i = 0;
         for (NPC npc : npcs.values()) {
             npc.remove();
-            for (int i=0; i<npcs.size(); i++) {
-                Main.getInstance().getDataManager().getConfig().set("data." + i, null);
-                Main.getInstance().getDataManager().saveConfig();
-            }
+            ++i;
         }
-        Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
+
+        Bukkit.broadcast(Component.text("Total of " + i + " NPCs were removed!"));
 
         npcs.clear();
         npcIds.clear();
