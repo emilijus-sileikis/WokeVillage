@@ -1,7 +1,7 @@
 package lt.vu.mif.it.paskui.village.command;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
-import net.fabricmc.mappings.model.CommentEntry;
+//import net.fabricmc.mappings.model.CommentEntry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;

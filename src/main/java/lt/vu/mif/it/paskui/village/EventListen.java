@@ -1,7 +1,14 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -9,9 +16,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
@@ -28,8 +37,6 @@ public class EventListen implements Listener {
     public void onInteract(NPCInteractEvent event) {
 
         Player player = event.getPlayer();
-        //SelectionScreen gui = new SelectionScreen();
-        //player.openInventory(gui.getInventory());
     }
 
     @EventHandler
@@ -102,17 +109,62 @@ public class EventListen implements Listener {
 
     private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
 
-            ItemStack itemReceived = new ItemStack(getItem(material));
-            if (p.getInventory().contains(Material.GOLD_INGOT, cost))
+        ItemStack itemReceived = new ItemStack(getItem(material));
+        if (p.getInventory().contains(Material.GOLD_INGOT, cost))
+        {
+            int failureChance = 5; //future functionality for failure
+            int timeElapsed = 500; //future functionality for time elapsed while gathering
+
+            Personality personality = Personality.GENEROUS;
+            //personality check
+            switch(personality)
             {
-                //payment
-                Location loc = p.getLocation();
+                case HARDWORKING:
+                    timeElapsed -= random_int(0, 240);
+                    break;
+                case LAZY:
+                    timeElapsed += random_int(0, 240);
+                    break;
+                case RELIABLE:
+                    failureChance -= random_int(0, 5);
+                    break;
+                case CLUMSY:
+                    failureChance += random_int(0, 15);
+                    break;
+                case GENEROUS:
+                    cost *= random_double(0.5, 0.9);
+                    break;
+                case GREEDY:
+                    cost *= random_double(1, 2);
+                    break;
+                default:
+                    p.sendMessage(ChatColor.RED + "Plugin ERROR: processTrade");
+                    break;
+            }
+            //payment
+            Location loc = p.getLocation();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+            }
+            removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
+            p.updateInventory();
+            p.sendMessage(ChatColor.GREEN + "You have bought villagers services!");
+
+
+            //TODO: insert here init to pathfind the resources(possible through CustomVillager)
+            // but, use 'timeElapsed' to force NPC to comeback to player
+
+
+            //failure check
+            if(random_int(0, 100) < failureChance)
+            {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
-                p.updateInventory();
-                p.sendMessage(ChatColor.GREEN + "You have bought villagers services!");
+                p.sendMessage(ChatColor.RED + "Your items have been lost! The trader suffered an accident...");
+            }
+            else
+            {
                 //receiving goods
                 for(int i=0; i<goods; i++) {
                     switch(p.getInventory().firstEmpty()) {
@@ -126,15 +178,18 @@ public class EventListen implements Listener {
                             break;
                     }
                 }
+
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
                 p.sendMessage(ChatColor.GREEN + "Your items have been delivered!");
             }
-            else {
-                p.sendMessage(ChatColor.RED + "You lack the required resources.");
-            }
-            p.closeInventory();
+
+        }
+        else {
+            p.sendMessage(ChatColor.RED + "You lack the required resources.");
+        }
+        p.closeInventory();
 
     }
 
@@ -171,6 +226,14 @@ public class EventListen implements Listener {
             notRemoved+=item.getAmount();
         }
         return notRemoved;
+    }
+
+    public static double random_double(double Min, double Max) {
+        return (ThreadLocalRandom.current().nextDouble() * (Max - Min)) + Min;
+    }
+    public static int random_int(int Min, int Max)
+    {
+        return (int) (Math.random()*(Max-Min))+Min;
     }
 
 
