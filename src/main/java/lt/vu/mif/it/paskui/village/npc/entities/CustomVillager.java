@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.util.Logging;
@@ -15,7 +16,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Location;
+import org.bukkit.Location;;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -96,6 +97,11 @@ public class CustomVillager extends Villager implements NPCEntity {
         //this.goalSelector.addGoal(7, new TryFindWaterGoal(this));
         //this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 5, true));
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
+    }
+
+    public void moveTo() {
+        this.goalSelector.removeAllGoals();
+        this.moveTo(Main.getInstance().getNPCManager().getCuboid());
     }
 
     @Override

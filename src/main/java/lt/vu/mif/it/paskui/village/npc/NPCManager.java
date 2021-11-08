@@ -2,16 +2,15 @@ package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class NPCManager {
 
@@ -155,5 +154,44 @@ public class NPCManager {
             case 1 -> Role.MINER;
             default -> Role.FISHER;
         };
+    }
+
+    /**
+     * Checks if there is a specific block in a radius
+     *
+     * @int count - checks if the required log was found.
+     * @float radius - the radius of the cuboid.
+     * @Block b - the block which we need (Spruce in this case).
+     * @return returns the vector which the NPC will use for walking to the log.
+     */
+    public Vec3 getCuboid() {
+        int count = 0;
+        NPC npc = npcs.get(npcIds.getLast());
+        Location center = npc.getLoc();
+        float radius = 8;
+        Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
+        Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
+        Block b;
+        Vec3 v = null;
+
+        for(int x = minimum.getBlockX(); x <= maximum.getBlockX(); x++) {
+            for(int y = minimum.getBlockY(); y <= maximum.getBlockY(); y++) {
+                for(int z = minimum.getBlockZ(); z <= maximum.getBlockZ(); z++) {
+                    b = new Location(center.getWorld(), x, y, z).getBlock();
+                    if (b.getType() == Material.SPRUCE_LOG) {
+                        Bukkit.broadcast(Component.text("Spruce Log Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
+                        v = new Vec3(x, y, z);
+                        Bukkit.broadcast(Component.text("Move to: " + v));
+                        ++count;
+                    }
+                }
+            }
+        }
+
+        if (count == 0) {
+            Bukkit.broadcast(Component.text("No Spruce Logs found"));
+        }
+
+        return v;
     }
 }

@@ -1,14 +1,8 @@
 package lt.vu.mif.it.paskui.village;
 
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
-import lt.vu.mif.it.paskui.village.npc.Role;
-import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -16,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -68,6 +61,7 @@ public class EventListen implements Listener {
             else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
                 Material spruce = Material.SPRUCE_LOG;
                 processTrade(event, p, 20, 128, spruce);
+                //TODO: Kvieciam moveTo is CustomVillager.
             }
 
             //Miner
