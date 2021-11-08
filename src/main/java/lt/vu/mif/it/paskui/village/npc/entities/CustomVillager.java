@@ -119,7 +119,7 @@ public class CustomVillager extends Villager implements NPCEntity {
 //        );
 //        event.callEvent();
 
-        SelectionScreen gui = new SelectionScreen(npc.getRole(), npc.getPersonality());
+        SelectionScreen gui = new SelectionScreen(npc);
         player.getBukkitEntity().openInventory(gui.getInventory());
 
         //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe

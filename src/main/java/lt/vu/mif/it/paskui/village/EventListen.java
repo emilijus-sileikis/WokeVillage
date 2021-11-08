@@ -40,7 +40,7 @@ public class EventListen implements Listener {
         }
 
         if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
-
+            SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
             event.setCancelled(true);
             Player p = (Player) event.getWhoClicked();
 
@@ -60,20 +60,20 @@ public class EventListen implements Listener {
             //Lumberjack
             else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
                 Material spruce = Material.SPRUCE_LOG;
-                processTrade(event, p, 20, 128, spruce);
+                processTrade(screen, p, 20, 128, spruce);
                 //TODO: Kvieciam moveTo is CustomVillager.
             }
 
             //Miner
             else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
                 Material cobble = Material.COBBLESTONE;
-                processTrade(event, p, 15, 96, cobble);
+                processTrade(screen, p, 15, 96, cobble);
             }
 
             //Fisher
             else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
                 Material cod = Material.COD;
-                processTrade(event, p, 10, 64, cod);
+                processTrade(screen, p, 10, 64, cod);
             }
 
             else if (event.getCurrentItem().getType() == Material.BARRIER) {
@@ -95,13 +95,13 @@ public class EventListen implements Listener {
  */
     @EventHandler
     public static void onMove(InventoryMoveItemEvent event) {
-        SelectionScreen gui = new SelectionScreen(null, null);
+        SelectionScreen gui = new SelectionScreen(null);
         if (event.getInitiator().equals(gui)) {
             event.setCancelled(true);
         }
     }
 
-    private static void processTrade(InventoryClickEvent event, Player p, int cost, int goods, Material material){
+    private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
 
         ItemStack itemReceived = new ItemStack(getItem(material));
         if (p.getInventory().contains(Material.GOLD_INGOT, cost))
@@ -109,9 +109,9 @@ public class EventListen implements Listener {
             int failureChance = 5; //future functionality for failure
             int timeElapsed = 500; //future functionality for time elapsed while gathering
 
-            Personality personality = Personality.GENEROUS;
+
             //personality check
-            switch(personality)
+            switch(screen.getPersonality())
             {
                 case HARDWORKING:
                     timeElapsed -= random_int(0, 240);

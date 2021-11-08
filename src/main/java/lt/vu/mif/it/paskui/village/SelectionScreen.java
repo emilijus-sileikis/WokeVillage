@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
@@ -22,10 +23,22 @@ import java.util.List;
 public class SelectionScreen implements InventoryHolder {
 
     private Inventory inv;
+    private NPC npc;
 
-    public SelectionScreen(Role role, Personality personality) {
+    public SelectionScreen(NPC npc) {
         inv = Bukkit.createInventory(this, InventoryType.HOPPER, Component.text("Trading Menu").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA));
-        init(role, personality);
+        init(npc.getRole(), npc.getPersonality());
+        this.npc = npc;
+    }
+
+    public Role getRole() {
+        return npc.getRole();
+    }
+
+    public Personality getPersonality() { return npc.getPersonality(); }
+
+    public NPC getNPC() {
+        return npc;
     }
 
     private void init(Role role, Personality personality) {
