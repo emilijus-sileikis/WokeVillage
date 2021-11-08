@@ -57,28 +57,55 @@ public class EventListen implements Listener {
                 //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
             }
 
-            //Lumberjack
-            else if (event.getCurrentItem().getType() == Material.STONE_AXE) {
-                Material spruce = Material.SPRUCE_LOG;
-                processTrade(screen, p, 20, 128, spruce);
-                //TODO: Kvieciam moveTo is CustomVillager.
-            }
-
-            //Miner
-            else if (event.getCurrentItem().getType() == Material.STONE_PICKAXE) {
-                Material cobble = Material.COBBLESTONE;
-                processTrade(screen, p, 15, 96, cobble);
-            }
-
-            //Fisher
-            else if (event.getCurrentItem().getType() == Material.FISHING_ROD) {
-                Material cod = Material.COD;
-                processTrade(screen, p, 10, 64, cod);
-            }
-
-            else if (event.getCurrentItem().getType() == Material.BARRIER) {
-                p.sendMessage("Inventory closed!");
-                p.closeInventory();
+            switch(event.getCurrentItem().getType())
+            {
+                //LumberJack
+                case STONE_AXE:
+                    Material spruce = Material.SPRUCE_LOG;
+                    processTrade(screen, p, 20, 128, spruce);
+                    break;
+                case APPLE:
+                    Material apple = Material.APPLE;
+                    processTrade(screen, p, 10, 64, apple);
+                    break;
+                case OAK_SAPLING:
+                    Material sapling = Material.OAK_SAPLING;
+                    processTrade(screen, p, 2, 16, sapling);
+                    break;
+                    //Miner
+                case STONE_PICKAXE:
+                    Material cobble = Material.COBBLESTONE;
+                    processTrade(screen, p, 10, 96, cobble);
+                    break;
+                case IRON_PICKAXE:
+                    Material iron = Material.IRON_ORE;
+                    processTrade(screen, p, 16, 32, iron);
+                    break;
+                case WOODEN_PICKAXE:
+                    Material coal = Material.COAL;
+                    processTrade(screen, p, 10, 64, coal);
+                    break;
+                    //Fisher
+                case FISHING_ROD:
+                    Material cod = Material.COD;
+                    processTrade(screen, p, 10, 64, cod);
+                    break;
+                case ENCHANTED_BOOK:
+                    Material enchBook = Material.ENCHANTED_BOOK;
+                    processTrade(screen, p, 5, 1, enchBook);
+                    break;
+                case FILLED_MAP:
+                    Material treasure = Material.GOLD_INGOT;
+                    processTrade(screen, p, 10, 10, treasure);
+                    break;
+                    //Close
+                case BARRIER:
+                    p.sendMessage("Inventory closed!");
+                    p.closeInventory();
+                    break;
+                default:
+                    p.sendMessage("Plugin ERROR: OnClick");
+                    break;
             }
         }
     }
