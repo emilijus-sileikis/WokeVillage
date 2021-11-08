@@ -35,6 +35,8 @@ public class EventListen implements Listener {
     @EventHandler
     public static void onClick(InventoryClickEvent event) {
 
+        int temp;
+
         if (event.getClickedInventory() == null) {
             return;
         }
@@ -91,12 +93,42 @@ public class EventListen implements Listener {
                     processTrade(screen, p, 10, 64, cod);
                     break;
                 case ENCHANTED_BOOK:
-                    Material enchBook = Material.ENCHANTED_BOOK;
-                    processTrade(screen, p, 5, 1, enchBook);
+                    temp = random_int(1, 10);
+                    if(temp>=6) {
+                        Material kelp = Material.KELP;
+                        processTrade(screen, p, 5, 4, kelp);
+                    }
+                    else if(temp == 5) {
+                        Material helm = Material.LEATHER_HELMET;
+                        processTrade(screen, p, 5, 1, helm);
+                    }
+                    else if(temp == 4) {
+                        Material chest = Material.LEATHER_CHESTPLATE;
+                        processTrade(screen, p, 5, 1, chest);
+                    }
+                    else if(temp == 3) {
+                        Material leg = Material.LEATHER_LEGGINGS;
+                        processTrade(screen, p, 5, 1, leg);
+                    }
+                    else if(temp == 2) {
+                        Material boot = Material.LEATHER_BOOTS;
+                        processTrade(screen, p, 5, 1, boot);
+                    }
+                    else {
+                        Material enchBook = Material.ENCHANTED_BOOK;
+                        processTrade(screen, p, 5, 1, enchBook);
+                    }
                     break;
                 case FILLED_MAP:
-                    Material treasure = Material.GOLD_INGOT;
-                    processTrade(screen, p, 10, 10, treasure);
+                    temp = random_int(1, 10);
+                    if(temp >= 2) {
+                        Material treasureFail = Material.GOLD_NUGGET;
+                        processTrade(screen, p, 10, 7, treasureFail);
+                    }
+                    else {
+                        Material treasure = Material.GOLD_INGOT;
+                        processTrade(screen, p, 10, 100, treasure);
+                    }
                     break;
                     //Close
                 case BARRIER:
