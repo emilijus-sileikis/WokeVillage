@@ -4,6 +4,7 @@ import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -53,19 +54,18 @@ public class EventListen implements Listener {
             switch(event.getCurrentItem().getType())
             {
                 case BOOK:
-                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!");
-                    p.sendMessage(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. ");
-                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
-                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
+                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!"));
+                    p.sendMessage(Component.text(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. "));
+                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items."));
+                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service."));
                     p.closeInventory();
                 //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
+                    break;
 
                 //LumberJack
                 case STONE_AXE:
                     Material spruce = Material.SPRUCE_LOG;
                     processTrade(screen, p, 20, 128, spruce);
-                    CustomVillager customVillager = new CustomVillager(screen.getNPC(), screen.getNPC().getLoc());
-                    customVillager.moveTo();
                     break;
                 case APPLE:
                     Material apple = Material.APPLE;
@@ -133,11 +133,11 @@ public class EventListen implements Listener {
                     break;
                     //Close
                 case BARRIER:
-                    p.sendMessage("Inventory closed!");
+                    p.sendMessage(Component.text("Inventory closed!"));
                     p.closeInventory();
                     break;
                 default:
-                    p.sendMessage("Plugin ERROR: OnClick");
+                    p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: OnClick"));
                     break;
             }
         }
@@ -192,7 +192,7 @@ public class EventListen implements Listener {
                     cost *= random_double(1, 2);
                     break;
                 default:
-                    p.sendMessage(ChatColor.RED + "Plugin ERROR: processTrade");
+                    p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: processTrade"));
                     break;
             }
             //payment
@@ -202,7 +202,7 @@ public class EventListen implements Listener {
             }
             removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
             p.updateInventory();
-            p.sendMessage(ChatColor.GREEN + "You have bought villagers services!");
+            p.sendMessage(Component.text(ChatColor.GREEN + "You have bought villagers services!"));
 
 
             //TODO: insert here init to pathfind the resources(possible through CustomVillager)
@@ -215,7 +215,7 @@ public class EventListen implements Listener {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(ChatColor.RED + "Your items have been lost! The trader suffered an accident...");
+                p.sendMessage(Component.text(ChatColor.RED + "Your items have been lost! The trader suffered an accident..."));
             }
             else
             {
@@ -236,12 +236,12 @@ public class EventListen implements Listener {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(ChatColor.GREEN + "Your items have been delivered!");
+                p.sendMessage(Component.text(ChatColor.GREEN + "Your items have been delivered!"));
             }
 
         }
         else {
-            p.sendMessage(ChatColor.RED + "You lack the required resources.");
+            p.sendMessage(Component.text(ChatColor.RED + "You lack the required resources."));
         }
         p.closeInventory();
 
