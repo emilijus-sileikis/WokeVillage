@@ -122,18 +122,18 @@ public class EventListen implements Listener {
                     }
                     break;
                 case FILLED_MAP:
-                    temp = random_int(1, 12);
+                    temp = random_int(1, 10);
                     if(temp >= 3) {
                         Material treasureFail = Material.GOLD_NUGGET;
                         processTrade(screen, p, 10, 7, treasureFail);
                     }
                     else if(temp == 2){
                         Material treasure = Material.GOLD_INGOT;
-                        processTrade(screen, p, 10, 100, treasure);
+                        processTrade(screen, p, 10, 32, treasure);
                     }
                     else {
-                        Material treasureplus = Material.DIAMOND;
-                        processTrade(screen, p, 10, 1, treasureplus);
+                        LootTable treasure = LootTable.fromInt(random_int(0,LootTable.values().length));
+                        processTrade(screen, p, treasure.getCost(), treasure.getGoods(), treasure.getItem());
                     }
                     break;
                     //Close
