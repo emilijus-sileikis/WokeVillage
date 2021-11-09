@@ -14,3 +14,6 @@
 10-21 6h - Trading system rehaul, item dropping feature, new function for trade creation.
 10-24 3h - Naujos entity systemos aptarimas, tyrinėjami galimi variantai integruoti NPC į server-side.
 10-25 2h - Skaidriu ruošimas pristatymui.
+10-28 3h - Aptarimas NPC personalities, sistemos ateities planavimas
+11-09 4h - Prideti papildomi darbai visiems NPC, if struktūros pakeistos su switch.
+11-10 2h - Pagerintas trading procesas, pridėta daugiau produktų, gaunamų iš atliktų NPC darbų.
