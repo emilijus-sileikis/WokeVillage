@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.*;
@@ -43,28 +44,28 @@ public class EventListen implements Listener {
 
         if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
             SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
-            event.setCancelled(true);
             Player p = (Player) event.getWhoClicked();
 
             if (event.getCurrentItem() == null) {
                 return;
             }
 
-            if (event.getCurrentItem().getType() == Material.BOOK) {
-                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!");
-                p.sendMessage(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. ");
-                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
-                p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
-                p.closeInventory();
-                //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
-            }
-
             switch(event.getCurrentItem().getType())
             {
+                case BOOK:
+                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!");
+                    p.sendMessage(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. ");
+                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items.");
+                    p.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service.");
+                    p.closeInventory();
+                //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
+
                 //LumberJack
                 case STONE_AXE:
                     Material spruce = Material.SPRUCE_LOG;
                     processTrade(screen, p, 20, 128, spruce);
+                    CustomVillager customVillager = new CustomVillager(screen.getNPC(), screen.getNPC().getLoc());
+                    customVillager.moveTo();
                     break;
                 case APPLE:
                     Material apple = Material.APPLE;
