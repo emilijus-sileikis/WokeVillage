@@ -36,12 +36,12 @@ The purpose of this NPC plugin is to bring more variety into the NPC system, to 
 
 Roles are titles, which define what type of resource gathering the NPC will be capable of. There
 are five different roles and every NPC will have only one, randomly assigned when it spawns
-(Figure 5, Graph section). Spawn rate of every role is the same and the determining formula is: 
+(Figure 1). Spawn rate of every role is the same and the determining formula is: 
 *NPC spawn rate while entering a village (100%) / Number of roles (5) = 20%*
 
 ![Illustration of Roles and personalities](../pictures/rolepersonalitygraph.png)
 
-*Figure 5 Role and personality graph*
+*Figure 1 Role and personality graph*
 
 **Every role in depth:**
 

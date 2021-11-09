@@ -37,7 +37,7 @@ These dependencies include: *io.papermc:paper-api, org.bukkit, org.spigot and *n
 ## **Deployment:**
 
 This project is built on more dependencies, than a regular one, because we are adding functionality
-"on top" of an already existing project. In the graph (Figure 2, Graph section), we can see the
+"on top" of an already existing project. In the graph (Figure 2), we can see the
 services we use. The Minecraft: Java Edition game server (later Paper) is configured and ran by
 the game administrator using Paper.jar file on which this project (WokeVillage.jar) depends on
 and is launched by. Paper looks for plugins folder, located in the server files directory, in which
@@ -47,7 +47,7 @@ our plugin will be installed and using JavaPlugin interface, Paper will launch i
 
 *Figure 2 Deployment diagram*
 
-## **NPC Interaction (Figure 3, Graph section):**
+## **NPC Interaction (Figure 3):**
 
 ![Illustration of Interaction](../pictures/Interaction_diagram.png)
 
@@ -62,11 +62,11 @@ can finally receive their goods and end the transaction.
 ![Illustration of NPC Menu](../pictures/NPCMenu.png)
 *Figure 4 NPC Menu*
 
-## **Command Execution (Figure 7, Graph section):**
+## **Command Execution (Figure 5):**
 
 ![Illustration of cmd-lifecycle](../pictures/cmd-lifecycle.png)
 
-*Figure 7 Command Lifecycle*
+*Figure 5 Command Lifecycle*
 
 Command execution splits into three different functions - *onEnable()*, *registerCommands()* and *onCommand()*.
 
