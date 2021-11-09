@@ -62,14 +62,6 @@ can finally receive their goods and end the transaction.
 ![Illustration of NPC Menu](../pictures/NPCMenu.png)
 *Figure 4 NPC Menu*
 
-## **Connection Packets:**
-
-The Minecraft: Java Edition server accepts connections from TCP (transmission control protocol) clients and communicates with them by using packets. A packet is a sequence of bytes sent over the TCP connection. The packets are responsible for nearly everything the player does, interacts, or sees on the server. So in order to spawn the NPC, make it visible to every player on the server, to make him interact able and so on, we had to implement packet sending. In the graph (Figure 6, Graph section) an NPC, spawning via packets is shown. In order to add an NPC packet, we need to send three different packets to the Client. These include the *Player Info* (two times with different parameters), *Add Player* packets. In order to make them visible to all the players online, the server needs to repeat sending these packets for every new player who joins. In order to hide the NPC nametag we need three other packets: *Set Player Team Remove, Set Player* *Team Add and Set Player Team Add Player packets.*
-
-![Illustration of NPC spawning via packets](../pictures/npc-spawning-packets.png)
-
-*Figure 6 NPC Spawning via Packets*
-
 ## **Command Execution (Figure 7, Graph section):**
 
 ![Illustration of cmd-lifecycle](../pictures/cmd-lifecycle.png)
