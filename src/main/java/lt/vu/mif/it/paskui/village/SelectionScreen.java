@@ -26,9 +26,12 @@ public class SelectionScreen implements InventoryHolder {
     private NPC npc;
 
     public SelectionScreen(NPC npc) {
-        inv = Bukkit.createInventory(this, InventoryType.HOPPER, Component.text("Trading Menu").decorate(TextDecoration.BOLD).color(NamedTextColor.AQUA));
-        init(npc.getRole(), npc.getPersonality());
         this.npc = npc;
+        inv = Bukkit.createInventory(this,
+                InventoryType.HOPPER,
+                Component.text(getRole().toString() + " " + getPersonality().toString()).decorate(TextDecoration.BOLD).color(NamedTextColor.RED)
+        );
+        init(npc.getRole(), npc.getPersonality());
     }
 
     public Role getRole() {
