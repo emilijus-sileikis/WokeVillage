@@ -1,4 +1,4 @@
-﻿# **Requirements Specification**
+# **Requirements Specification**
 
 ## **Project Name:**
 
@@ -167,7 +167,7 @@ Availability:
 
 Maintainability:
 
-- The pluign should be maintained by the developers or other contributors who decide to work on the project as well.
+- The plugin should be maintained by the developers or other contributors who decide to work on the project as well.
 - The release version should be changed once updated.
 
 Usability:
