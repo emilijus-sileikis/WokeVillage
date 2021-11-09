@@ -7,6 +7,7 @@ import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -116,19 +117,23 @@ public class EventListen implements Listener {
                         processTrade(screen, p, 5, 1, boot);
                     }
                     else {
-                        Material enchBook = Material.ENCHANTED_BOOK;
-                        processTrade(screen, p, 5, 1, enchBook);
+                        Material nameTg = Material.NAME_TAG;
+                        processTrade(screen, p, 5, 1, nameTg);
                     }
                     break;
                 case FILLED_MAP:
-                    temp = random_int(1, 10);
-                    if(temp >= 2) {
+                    temp = random_int(1, 12);
+                    if(temp >= 3) {
                         Material treasureFail = Material.GOLD_NUGGET;
                         processTrade(screen, p, 10, 7, treasureFail);
                     }
-                    else {
+                    else if(temp == 2){
                         Material treasure = Material.GOLD_INGOT;
                         processTrade(screen, p, 10, 100, treasure);
+                    }
+                    else {
+                        Material treasureplus = Material.DIAMOND;
+                        processTrade(screen, p, 10, 1, treasureplus);
                     }
                     break;
                     //Close
