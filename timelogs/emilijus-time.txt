@@ -92,5 +92,18 @@ regarding NPCs having player nametags on server restart.
   -1h, npc-rework testing and moevement adjustments.
   -5h, Trying to implement CI/CD pipeline into our project.
 
-Viso valandu: 88h.
-Viso valandu sia savaite: 19h.
+-2021-10-28:
+  -3h, NPC remove all function + bug testing + few adjustments.
+
+-2021-11-01:
+  -2h, Moved everything from NPCAttach to NPCEntity and CustomVillager + Tried to figure out how to make the NPC continue moving after inventory was closed + count how many NPCs were removed.
+
+-2021-11-03:
+  -2h, RemoveAll fix + console must have -l flag.
+
+-2021-11-08:
+  -6h, Scan surrounding area for a specific block function + trying to implement it for the Lumberjack role.
+  
+
+Viso valandu: 101h.
+Viso valandu sia savaite: 6h.
