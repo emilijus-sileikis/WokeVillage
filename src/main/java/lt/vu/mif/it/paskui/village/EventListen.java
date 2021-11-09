@@ -132,7 +132,7 @@ public class EventListen implements Listener {
                         processTrade(screen, p, 10, 32, treasure);
                     }
                     else {
-                        LootTable treasure = LootTable.fromInt(random_int(0,LootTable.values().length));
+                        LootTableFisher treasure = LootTableFisher.fromInt(random_int(0,LootTableFisher.values().length));
                         processTrade(screen, p, treasure.getCost(), treasure.getGoods(), treasure.getItem());
                     }
                     break;

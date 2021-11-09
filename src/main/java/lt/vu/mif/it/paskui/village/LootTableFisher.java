@@ -2,7 +2,7 @@ package lt.vu.mif.it.paskui.village;
 
 import org.bukkit.Material;
 
-public enum LootTable {
+public enum LootTableFisher {
 
     DIAMOND (Material.DIAMOND,10,1),
     SPYGLASS (Material.SPYGLASS, 10,1),
@@ -16,7 +16,9 @@ public enum LootTable {
     MUSIC_DISC_13 (Material.MUSIC_DISC_13,10,1),
     MUSIC_DISC_WAIT (Material.MUSIC_DISC_WAIT,10,1 ),
     MUSIC_DISC_PIGSTEP (Material.MUSIC_DISC_PIGSTEP,10,1),
-    GOLDEN_APPLE (Material.GOLDEN_APPLE,10,4);
+    GOLDEN_APPLE (Material.GOLDEN_APPLE,10,4),
+    COMPASS (Material.COMPASS, 10, 1),
+    LEAD (Material.LEAD, 10, 1);
 
     private Material item;
     private int cost;
@@ -32,18 +34,18 @@ public enum LootTable {
         return goods;
     }
 
-    LootTable(Material item, int cost, int goods)
+    LootTableFisher(Material item, int cost, int goods)
     {
         this.item = item;
         this.cost = cost;
         this.goods = goods;
     }
 
-    public static LootTable fromInt(int itemId)
+    public static LootTableFisher fromInt(int itemId)
     {
-        if(itemId < LootTable.values().length)
-            return LootTable.values()[itemId];
-       return LootTable.SADLLE;
+        if(itemId < LootTableFisher.values().length)
+            return LootTableFisher.values()[itemId];
+       return LootTableFisher.SADLLE;
     }
 
 }
