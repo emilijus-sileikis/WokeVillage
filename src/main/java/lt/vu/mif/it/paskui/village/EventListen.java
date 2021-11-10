@@ -16,6 +16,7 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
@@ -54,6 +55,11 @@ public class EventListen implements Listener {
             Player p = (Player) event.getWhoClicked();
 
             if (event.getCurrentItem() == null) {
+                return;
+            }
+
+            if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) || event.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
+                event.setCancelled(true);
                 return;
             }
 
@@ -168,13 +174,6 @@ public class EventListen implements Listener {
     }
 
  */
-    @EventHandler
-    public static void onMove(InventoryMoveItemEvent event) {
-        SelectionScreen gui = new SelectionScreen(null);
-        if (event.getInitiator().equals(gui)) {
-            event.setCancelled(true);
-        }
-    }
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
 

@@ -165,14 +165,13 @@ public class NPCManager {
      * @return returns the vector which the NPC will use for walking to the log.
      */
     public Vec3 getCuboid() {
-        int count = 0;
         NPC npc = npcs.get(npcIds.getLast());
         Location center = npc.getLoc();
         float radius = 8;
         Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
         Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
         Block b;
-        Vec3 v = null;
+        Vec3 v;
 
         for(int x = minimum.getBlockX(); x <= maximum.getBlockX(); x++) {
             for(int y = minimum.getBlockY(); y <= maximum.getBlockY(); y++) {
@@ -182,16 +181,12 @@ public class NPCManager {
                         Bukkit.broadcast(Component.text("Spruce Log Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
                         v = new Vec3(x, y, z);
                         Bukkit.broadcast(Component.text("Move to: " + v));
-                        ++count;
+                        return v;
                     }
                 }
             }
         }
-
-        if (count == 0) {
-            Bukkit.broadcast(Component.text("No Spruce Logs found"));
-        }
-
-        return v;
+        Bukkit.broadcast(Component.text("No Spruce Logs found"));
+        return null;
     }
 }

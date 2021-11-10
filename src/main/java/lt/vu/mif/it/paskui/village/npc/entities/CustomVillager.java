@@ -1,8 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.Main;
-import lt.vu.mif.it.paskui.village.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
