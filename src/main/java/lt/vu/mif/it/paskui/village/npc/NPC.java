@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
+import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -19,6 +20,7 @@ public class NPC {
     private Location loc;
     private Role role;
     private Personality personality;
+    private SelectionScreen services;
     private NPCEntity npcEntity;
 
     public NPC(String name, Location loc, Role role, Personality personality) {
@@ -26,6 +28,7 @@ public class NPC {
         this.loc = loc;
         this.role = role;
         this.personality = personality;
+        this.services = null;
         npcEntity = new CustomVillager(this, loc);
         npcEntity.setEntityPos(loc);
         npcEntity.setEntityName(name);
@@ -59,6 +62,14 @@ public class NPC {
 
     public Personality getPersonality() {
         return personality;
+    }
+
+    public SelectionScreen getServices() {
+        return services;
+    }
+
+    public void setServices(SelectionScreen services) {
+        this.services = services;
     }
 
     // Setters

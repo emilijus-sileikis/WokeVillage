@@ -11,12 +11,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Location;;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.jetbrains.annotations.NotNull;
 
@@ -118,9 +123,16 @@ public class CustomVillager extends Villager implements NPCEntity {
 //                npc
 //        );
 //        event.callEvent();
+        SelectionScreen services = npc.getServices();
 
-        SelectionScreen gui = new SelectionScreen(npc);
-        player.getBukkitEntity().openInventory(gui.getInventory());
+        if (services == null) {
+            services = new SelectionScreen(npc);
+            npc.setServices(services);
+        }
+        player.getBukkitEntity().openInventory(services.getInventory());
+        this.setTradingPlayer(player);
+
+        Logging.infoLog("NPC profession: %s", this.getVillagerData().getProfession()); // Is kept for debug logging.
 
         //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 
