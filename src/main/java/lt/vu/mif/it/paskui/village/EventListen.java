@@ -1,13 +1,18 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
-import lt.vu.mif.it.paskui.village.npc.Personality;
-import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
+import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
-import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Instrument;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Note;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -132,7 +137,12 @@ public class EventListen implements Listener {
                         processTrade(screen, p, 10, 32, treasure);
                     }
                     else {
-                        LootTableFisher treasure = LootTableFisher.fromInt(random_int(0,LootTableFisher.values().length));
+                        FisherLootTable treasure = FisherLootTable.fromInt(
+                                random_int(
+                                        0,
+                                        FisherLootTable.values().length
+                                )
+                        );
                         processTrade(screen, p, treasure.getCost(), treasure.getGoods(), treasure.getItem());
                     }
                     break;

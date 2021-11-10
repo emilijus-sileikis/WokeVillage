@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village;
+package lt.vu.mif.it.paskui.village.npc.services;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
