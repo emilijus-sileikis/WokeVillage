@@ -3,6 +3,7 @@ package lt.vu.mif.it.paskui.village;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.item.ItemStack;
@@ -76,16 +77,26 @@ public class EventListen implements Listener {
 
                 //LumberJack
                 case STONE_AXE:
-                    Material spruce = Material.SPRUCE_LOG;
-                    processTrade(screen, p, 20, 128, spruce);
+                    LumberjackLootTable treasureLJ = LumberjackLootTable.fromInt(
+                            random_int(
+                                    0 , // Paima tik pirmus 5 LootTable'o elementus
+                                    5
+                            )
+                    );
+                    processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
                     break;
                 case APPLE:
                     Material apple = Material.APPLE;
                     processTrade(screen, p, 10, 64, apple);
                     break;
                 case OAK_SAPLING:
-                    Material sapling = Material.OAK_SAPLING;
-                    processTrade(screen, p, 2, 16, sapling);
+                    treasureLJ = LumberjackLootTable.fromInt(
+                            random_int(
+                                    5, // Paima likusius 5 LootTable'o elementus
+                                    10
+                            )
+                    );
+                    processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
                     break;
                     //Miner
                 case STONE_PICKAXE:
@@ -102,54 +113,37 @@ public class EventListen implements Listener {
                     break;
                     //Fisher
                 case FISHING_ROD:
-                    Material cod = Material.COD;
-                    processTrade(screen, p, 10, 64, cod);
+                    FisherLootTable treasureF = FisherLootTable.fromInt(
+                            random_int(
+                                    0,
+                                    4
+                            )
+                    );
+                    processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
                     break;
                 case ENCHANTED_BOOK:
-                    temp = random_int(1, 10);
-                    if(temp>=6) {
-                        Material kelp = Material.KELP;
-                        processTrade(screen, p, 5, 4, kelp);
-                    }
-                    else if(temp == 5) {
-                        Material helm = Material.LEATHER_HELMET;
-                        processTrade(screen, p, 5, 1, helm);
-                    }
-                    else if(temp == 4) {
-                        Material chest = Material.LEATHER_CHESTPLATE;
-                        processTrade(screen, p, 5, 1, chest);
-                    }
-                    else if(temp == 3) {
-                        Material leg = Material.LEATHER_LEGGINGS;
-                        processTrade(screen, p, 5, 1, leg);
-                    }
-                    else if(temp == 2) {
-                        Material boot = Material.LEATHER_BOOTS;
-                        processTrade(screen, p, 5, 1, boot);
-                    }
-                    else {
-                        Material nameTg = Material.NAME_TAG;
-                        processTrade(screen, p, 5, 1, nameTg);
-                    }
+                     treasureF = FisherLootTable.fromInt(
+                            random_int(
+                                    0,
+                                    11
+                            )
+                    );
+                    processTrade(screen, p, 5, treasureF.getGoods(), treasureF.getItem());
                     break;
                 case FILLED_MAP:
                     temp = random_int(1, 10);
                     if(temp >= 3) {
                         Material treasureFail = Material.GOLD_NUGGET;
-                        processTrade(screen, p, 10, 7, treasureFail);
+                        processTrade(screen, p, 1, 7, treasureFail);
                     }
-                    else if(temp == 2){
-                        Material treasure = Material.GOLD_INGOT;
-                        processTrade(screen, p, 10, 32, treasure);
-                    }
-                    else {
-                        FisherLootTable treasure = FisherLootTable.fromInt(
+                    else{
+                        treasureF = FisherLootTable.fromInt(
                                 random_int(
-                                        0,
+                                        13,
                                         FisherLootTable.values().length
                                 )
                         );
-                        processTrade(screen, p, treasure.getCost(), treasure.getGoods(), treasure.getItem());
+                        processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
                     }
                     break;
                     //Close
