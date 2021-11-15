@@ -173,7 +173,7 @@ public class EventListen implements Listener {
     @EventHandler
     public void onNPCDeath(NPCDeathEvent event) {
         if (event.getReason().equals(RemovalReason.KILLED)) {
-            npcManager.removeOnDeath(event.getNpc());
+            npcManager.deleteNPC(event.getNpc());
             dataManager.getConfig().set("data." + event.getNpc().getId(), null);
             dataManager.saveConfig();
         }

@@ -10,7 +10,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.UUID;
 
 public class NPCManager {
 
@@ -23,7 +26,8 @@ public class NPCManager {
     }
 
     // getters
-    /** Checks whether there is any NPCs existing.
+    /**
+     * Checks whether there is any NPCs existing.
      * @return True if npc hashmap and npc id list are not empty.
      */
     public boolean npcsExist() {
@@ -40,8 +44,7 @@ public class NPCManager {
 
     // other
     /**
-     * creates NPC and attempts to spawn it.
-     *
+     * Creates NPC and attempts to spawn it.
      * @param player Player that spawns the NPC
      * @param loc    initial location of NPC and in which world.
      * @param type   NPC entity type
@@ -49,14 +52,13 @@ public class NPCManager {
      */
     public NPC createNPC(Player player, Location loc, EntityType type) { //String skin
         int id = npcIds.isEmpty() ? 0 : npcIds.getLast() + 1;
-        NPC npc = new NPC(id,"", loc, getRandomRole(), getRandomPersonality());
+        NPC npc = new NPC(id,"", loc, Role.getRandomRole(), Personality.getRandomPersonality());
 
         return spawnNPC(npc);
     }
 
     /**
-     * Loads npc into the world
-     *
+     * Loads npc into the world.
      * @param id unique npc id number
      * @param name name npc is called
      * @param location data where npc is located
@@ -68,26 +70,35 @@ public class NPCManager {
         NPC npc = new NPC(id, name, location, uuid, role, personality);
 
         if (spawnNPC(npc) == null) {
-            Logging.infoLog("Unable to spawn NPC %d", id);
+            Logging.severeLog("Unable to spawn NPC %d", id);
         }
     }
 
     /**
-     * removes NPC with given id.
-     *
-     * @param id valid id of npc.
+     * Deletes stored {@link NPC} from {@link NPCManager} entries.
+     * @param npc {@link NPC} instance existing in {@link NPCManager}.
      */
-    public void removeNPC(int id) {
-        npcs.get(id).remove();
-
-        npcs.remove(id);
-        npcIds.removeFirstOccurrence(id);
+    public void deleteNPC(NPC npc) {
+        npcs.remove(npc.getId());
+        npcIds.removeFirstOccurrence(npc.getId());
 
         Bukkit.broadcast(Component.text("NPC was removed!"));
     }
 
     /**
-     * Removes all NPC entities.
+     * Removes {@link NPC}, with given id, from the world and then deletes
+     * it from {@link NPCManager} entries.
+     * @param id valid id of npc.
+     */
+    public void removeNPC(int id) {
+        npcs.get(id).remove();
+
+        this.deleteNPC(npcs.get(id));
+    }
+
+    /**
+     * Removes all {@link NPC} entities from world then deletes them
+     * from {@link NPCManager} entries.
      */
     public void removeAllNPC() {
         if (npcIds.isEmpty() || this.npcs.isEmpty()) {
@@ -105,15 +116,9 @@ public class NPCManager {
         npcIds.clear();
     }
 
-    public void removeOnDeath(NPC npc) {
-        npcs.remove(npc.getId());
-        npcIds.removeFirstOccurrence(npc.getId());
-    }
-
     // private
     /**
      * Creates NPCEntity into world.
-     *
      * @param npc NPC to spawn.
      * @return Instance of NPC on success, null on failure.
      */
@@ -130,33 +135,8 @@ public class NPCManager {
     }
 
     // other
-    private Personality getRandomPersonality() {
-        int r = new Random().nextInt(6);
-        return switch (r) {
-            case 0 -> Personality.HARDWORKING;
-            case 1 -> Personality.LAZY;
-            case 2 -> Personality.RELIABLE;
-            case 3 -> Personality.CLUMSY;
-            case 4 -> Personality.GENEROUS;
-            default -> Personality.GREEDY;
-        };
-    }
-
-    private Role getRandomRole() {
-        int r = new Random().nextInt(3);
-        return switch (r) {
-            case 0 -> Role.LUMBERJACK;
-            case 1 -> Role.MINER;
-            default -> Role.FISHER;
-        };
-    }
-
     /**
      * Checks if there is a specific block in a radius
-     *
-     * @int count - checks if the required log was found.
-     * @float radius - the radius of the cuboid.
-     * @Block b - the block which we need (Spruce in this case).
      * @return returns the vector which the NPC will use for walking to the log.
      */
     public Vec3 getCuboid() {

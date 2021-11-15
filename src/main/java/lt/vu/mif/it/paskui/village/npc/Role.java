@@ -1,5 +1,7 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import java.util.Random;
+
 public enum Role {
     LUMBERJACK,
     MINER,
@@ -17,5 +19,10 @@ public enum Role {
     @Override
     public String toString() {
         return super.toString().toLowerCase();
+    }
+
+    public static Role getRandomRole() {
+        int id = new Random().nextInt(Role.values().length);
+        return Role.values()[id];
     }
 }
