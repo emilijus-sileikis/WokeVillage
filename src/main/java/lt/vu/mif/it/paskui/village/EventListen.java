@@ -38,13 +38,6 @@ public class EventListen implements Listener {
         this.dataManager = dataManager;
     }
 
-    // EventHandlers
-    @EventHandler
-    public void onInteract(NPCInteractEvent event) {
-
-        Player player = event.getPlayer();
-    }
-
     @EventHandler
     public static void onClick(InventoryClickEvent event) {
 
@@ -169,9 +162,7 @@ public class EventListen implements Listener {
             dataManager.saveConfig();
         }
     }
-
-
-
+    
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
 
         ItemStack itemReceived = new ItemStack(getItem(material));
