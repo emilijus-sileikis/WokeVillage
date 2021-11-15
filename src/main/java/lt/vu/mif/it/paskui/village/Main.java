@@ -44,7 +44,7 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
         this.data = new DataManager(this);
         this.npcManager = new NPCManager();
 
-        this.getServer().getPluginManager().registerEvents(new EventListen(npcManager),this);
+        this.getServer().getPluginManager().registerEvents(new EventListen(npcManager, data),this);
 
         if(data.getConfig().contains("data")) {
             spawnNPC();

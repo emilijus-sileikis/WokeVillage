@@ -3,8 +3,8 @@ package lt.vu.mif.it.paskui.village.commands;
 import lt.vu.mif.it.paskui.village.DataManager;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.command.CommandFlag;
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
-import lt.vu.mif.it.paskui.village.npc.NPCManager.NPCTuple;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
@@ -47,10 +47,10 @@ public class NPCCommands {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             // NOTE: These will be needed if we are going to implement skins
-            NPCTuple tuple = npcManager.createNPC(player, player.getLocation(), EntityType.PLAYER);
+            NPC npc = npcManager.createNPC(player, player.getLocation(), EntityType.PLAYER);
 
-            if (tuple != null) {
-                dataManager.writeData(tuple.npc(), tuple.id());
+            if (npc != null) {
+                dataManager.writeData(npc, npc.getId());
                 player.sendMessage("NPC CREATED");
                 Logging.infoLog("NPC CREATED");
             }

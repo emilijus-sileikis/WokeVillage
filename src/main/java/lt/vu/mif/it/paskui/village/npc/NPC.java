@@ -20,22 +20,24 @@ public class NPC {
     private Location loc;
     private Role role;
     private Personality personality;
+    private final int id;
     private SelectionScreen services;
     private NPCEntity npcEntity;
 
-    public NPC(String name, Location loc, Role role, Personality personality) {
+    public NPC(int id, String name, Location loc, Role role, Personality personality) {
         this.name = name;
         this.loc = loc;
         this.role = role;
         this.personality = personality;
         this.services = null;
+        this.id = id;
         npcEntity = new CustomVillager(this, loc);
         npcEntity.setEntityPos(loc);
         npcEntity.setEntityName(name);
     }
 
-    public NPC(String name, Location loc, UUID uuid, Role role, Personality personality) {
-        this(name, loc, role, personality);
+    public NPC(int id, String name, Location loc, UUID uuid, Role role, Personality personality) {
+        this(id, name, loc, role, personality);
         npcEntity.setEntityUUID(uuid);
     }
 
@@ -67,6 +69,8 @@ public class NPC {
     public SelectionScreen getServices() {
         return services;
     }
+
+    public int getId() {return id;}
 
     public void setServices(SelectionScreen services) {
         this.services = services;

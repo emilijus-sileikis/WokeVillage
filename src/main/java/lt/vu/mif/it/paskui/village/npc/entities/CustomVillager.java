@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.network.chat.TextComponent;
@@ -147,6 +148,8 @@ public class CustomVillager extends Villager implements NPCEntity {
     @Override
     public void remove(RemovalReason reason) {
         Logging.infoLog("NPC %s removed for %s", uuid, reason);
+        NPCDeathEvent event = new NPCDeathEvent(npc, reason);
+        event.callEvent();
         super.remove(reason);
     }
 }

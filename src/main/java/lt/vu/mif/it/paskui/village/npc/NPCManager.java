@@ -47,11 +47,11 @@ public class NPCManager {
      * @param type   NPC entity type
      * @return Spawned NPC instance on success, null on fail.
      */
-    public NPCTuple createNPC(Player player, Location loc, EntityType type) { //String skin
-        NPC npc = new NPC("", loc, getRandomRole(), getRandomPersonality());
+    public NPC createNPC(Player player, Location loc, EntityType type) { //String skin
         int id = npcIds.isEmpty() ? 0 : npcIds.getLast() + 1;
+        NPC npc = new NPC(id,"", loc, getRandomRole(), getRandomPersonality());
 
-        return spawnNPC(id, npc);
+        return spawnNPC(npc);
     }
 
     /**
@@ -65,9 +65,9 @@ public class NPCManager {
      * @param personality npc persona type
      */
     public void loadNPC(int id, String name, Location location, UUID uuid, Role role, Personality personality) {
-        NPC npc = new NPC(name, location, uuid, role, personality);
+        NPC npc = new NPC(id, name, location, uuid, role, personality);
 
-        if (spawnNPC(id, npc) == null) {
+        if (spawnNPC(npc) == null) {
             Logging.infoLog("Unable to spawn NPC %d", id);
         }
     }
@@ -81,7 +81,7 @@ public class NPCManager {
         npcs.get(id).remove();
 
         npcs.remove(id);
-        npcIds.remove(id);
+        npcIds.removeFirstOccurrence(id);
 
         Bukkit.broadcast(Component.text("NPC was removed!"));
     }
@@ -105,36 +105,31 @@ public class NPCManager {
         npcIds.clear();
     }
 
-    // private
+    public void removeOnDeath(NPC npc) {
+        npcs.remove(npc.getId());
+        npcIds.removeFirstOccurrence(npc.getId());
+    }
 
+    // private
     /**
      * Creates NPCEntity into world.
      *
-     * @param id  int type identifier on NPC.
      * @param npc NPC to spawn.
      * @return Instance of NPC on success, null on failure.
      */
-    private NPCTuple spawnNPC(int id, NPC npc) {
+    private NPC spawnNPC(NPC npc) {
         boolean spawned = npc.spawn();
 
         if (spawned) {
-            npcs.put(id, npc);
-            npcIds.add(id);
-            return new NPCTuple(id, npc);
+            npcs.put(npc.getId(), npc);
+            npcIds.add(npc.getId());
+            return npc;
         }
 
         return null;
     }
 
     // other
-    public record NPCTuple(int id, NPC npc) {
-        @Override
-        public String toString() {
-            return "NPCTuple{ id : " + id +
-                    ", npc : " + npc + '}';
-        }
-    }
-
     private Personality getRandomPersonality() {
         int r = new Random().nextInt(6);
         return switch (r) {

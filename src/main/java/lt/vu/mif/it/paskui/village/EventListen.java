@@ -1,11 +1,13 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +21,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -30,9 +31,11 @@ import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 public class EventListen implements Listener {
 
     private final NPCManager npcManager;
+    private final DataManager dataManager;
 
-    public EventListen(NPCManager npcManager) {
+    public EventListen(NPCManager npcManager, DataManager dataManager) {
         this.npcManager = npcManager;
+        this.dataManager = dataManager;
     }
 
     // EventHandlers
@@ -157,17 +160,17 @@ public class EventListen implements Listener {
             }
         }
     }
-    //TODO: gal kazkas tokio kad istrint data, kai npc mirsta?
-/*    @EventHandler
-    public void onEDeath(EntityDeathEvent event) {
-        //NPC npc = new NPC("", npcManager.getNPCs().get(0).getLoc());
-        if (event.getEntity().getKiller() != null && event.getEntity() instanceof NPC) {
-            Player player = event.getEntity().getKiller();
-            Bukkit.broadcast(Component.text("NPC was killed by " + player.getName()));
+
+    @EventHandler
+    public void onNPCDeath(NPCDeathEvent event) {
+        if (event.getReason().equals(RemovalReason.KILLED)) {
+            npcManager.removeOnDeath(event.getNpc());
+            dataManager.getConfig().set("data." + event.getNpc().getId(), null);
+            dataManager.saveConfig();
         }
     }
 
- */
+
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
 
