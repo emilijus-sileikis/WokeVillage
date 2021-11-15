@@ -12,14 +12,13 @@ import java.util.UUID;
 
 /**
  * Class for storing npc and it's data
- * TODO: make this primary class for npc
  */
 public class NPC {
 
     private String name;
     private Location loc;
-    private Role role;
-    private Personality personality;
+    private final Role role;
+    private final Personality personality;
     private final int id;
     private SelectionScreen services;
     private NPCEntity npcEntity;
