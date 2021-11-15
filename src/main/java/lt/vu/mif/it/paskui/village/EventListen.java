@@ -5,6 +5,7 @@ import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.entity.Entity.RemovalReason;
@@ -96,16 +97,31 @@ public class EventListen implements Listener {
                     break;
                     //Miner
                 case STONE_PICKAXE:
-                    Material cobble = Material.COBBLESTONE;
-                    processTrade(screen, p, 10, 96, cobble);
+                    MinerLootTable treasureM = MinerLootTable.fromInt(
+                            random_int(
+                                    0,
+                                    1
+                            )
+                    );
+                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
                     break;
                 case IRON_PICKAXE:
-                    Material iron = Material.IRON_ORE;
-                    processTrade(screen, p, 16, 32, iron);
+                    treasureM = MinerLootTable.fromInt(
+                            random_int(
+                                    1,
+                                    2
+                            )
+                    );
+                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
                     break;
                 case WOODEN_PICKAXE:
-                    Material coal = Material.COAL;
-                    processTrade(screen, p, 10, 64, coal);
+                    treasureM = MinerLootTable.fromInt(
+                            random_int(
+                                    2,
+                                    3
+                            )
+                    );
+                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
                     break;
                     //Fisher
                 case FISHING_ROD:
