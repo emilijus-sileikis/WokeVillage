@@ -29,7 +29,7 @@ public interface NPCEntity {
     void setEntityUUID(UUID npcUUID);
 
     // public
-    void initPathfinder();
+    void stopEntityTrading();
 
     void removeEntity();
 }
