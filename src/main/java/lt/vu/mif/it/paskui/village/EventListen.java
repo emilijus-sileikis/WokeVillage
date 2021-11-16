@@ -1,8 +1,8 @@
 package lt.vu.mif.it.paskui.village;
 
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
-import lt.vu.mif.it.paskui.village.npc.events.NPCInteractEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.MinerLootTable;
@@ -22,6 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class EventListen implements Listener {
     }
 
     @EventHandler
-    public static void onClick(InventoryClickEvent event) {
+    public void onClick(InventoryClickEvent event) {
 
         int temp;
 
@@ -50,6 +51,7 @@ public class EventListen implements Listener {
 
         if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
             SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
+            NPC npc = screen.getNPC();
             Player p = (Player) event.getWhoClicked();
 
             if (event.getCurrentItem() == null) {
@@ -69,7 +71,6 @@ public class EventListen implements Listener {
                     p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items."));
                     p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service."));
                     p.closeInventory();
-                //TODO: or add something here to reset the speed (and everywhere where the inventory is closed i guess)
                     break;
 
                 //LumberJack
@@ -178,7 +179,16 @@ public class EventListen implements Listener {
             dataManager.saveConfig();
         }
     }
-    
+
+    @EventHandler
+    public void onInvClose(InventoryCloseEvent event) {
+
+        if (event.getInventory().getHolder() instanceof SelectionScreen) {
+            SelectionScreen screen = (SelectionScreen) event.getInventory().getHolder();
+            screen.getNPC().stopTrade();
+        }
+    }
+
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
 
         ItemStack itemReceived = new ItemStack(getItem(material));
@@ -262,7 +272,6 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text(ChatColor.RED + "You lack the required resources."));
         }
         p.closeInventory();
-
     }
 
     private static int receiveItems(Inventory inventory, Material type, int amount) {

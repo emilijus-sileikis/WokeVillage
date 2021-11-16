@@ -100,6 +100,11 @@ public class NPC {
     }
 
     /**
+     * Removes the trading player from the NPCs brain.
+     */
+    public void stopTrade() {npcEntity.stopEntityTrading();}
+
+    /**
      * Removes npc entity from minecraft world.
      */
     public void remove() {
