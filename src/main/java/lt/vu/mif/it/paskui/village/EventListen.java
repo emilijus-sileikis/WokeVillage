@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village;
 
-import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
@@ -8,6 +7,8 @@ import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
@@ -42,7 +43,6 @@ public class EventListen implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-
         int temp;
 
         if (event.getClickedInventory() == null) {
@@ -65,10 +65,22 @@ public class EventListen implements Listener {
             switch(event.getCurrentItem().getType())
             {
                 case BOOK:
-                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "Welcome to WokeVillage plugin helper!"));
-                    p.sendMessage(Component.text(ChatColor.GOLD + "Woke Villagers are here to trade and help you gather large amounts of resources in a relatively short time. In the NPC trading menu, you can see various gathering tools, which when hovered over, display trade offers and details. "));
-                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "TASK - " + ChatColor.RESET +"displays offered items."));
-                    p.sendMessage(Component.text(ChatColor.GOLD + "" + ChatColor.BOLD + "PRICE - " + ChatColor.RESET +"displays resources needed to pay for the service."));
+                    p.sendMessage(Component.text("Welcome to WokeVillage plugin helper!")
+                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+                    p.sendMessage(Component.text("Woke Villagers are here to trade and " +
+                                    "help you gather large amounts of resources in a relatively " +
+                                    "short time. In the NPC trading menu, you can see various " +
+                                    "gathering tools, which when hovered over, display trade " +
+                                    "offers and details. ").color(NamedTextColor.GOLD)
+                    );
+                    p.sendMessage(Component.text("TASK - ")
+                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
+                            .append(Component.text("displays offered items."))
+                    );
+                    p.sendMessage(Component.text("PRICE - ")
+                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
+                            .append(Component.text("displays resources needed to pay for the service."))
+                    );
                     p.closeInventory();
                     break;
 
@@ -182,7 +194,6 @@ public class EventListen implements Listener {
 
     @EventHandler
     public void onInvClose(InventoryCloseEvent event) {
-
         if (event.getInventory().getHolder() instanceof SelectionScreen) {
             SelectionScreen screen = (SelectionScreen) event.getInventory().getHolder();
             screen.getNPC().stopTrade();
@@ -190,38 +201,21 @@ public class EventListen implements Listener {
     }
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
-
         ItemStack itemReceived = new ItemStack(getItem(material));
-        if (p.getInventory().contains(Material.GOLD_INGOT, cost))
-        {
+        if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
             int failureChance = 5; //future functionality for failure
             int timeElapsed = 500; //future functionality for time elapsed while gathering
 
-
             //personality check
-            switch(screen.getPersonality())
-            {
-                case HARDWORKING:
-                    timeElapsed -= random_int(0, 240);
-                    break;
-                case LAZY:
-                    timeElapsed += random_int(0, 240);
-                    break;
-                case RELIABLE:
-                    failureChance -= random_int(0, 5);
-                    break;
-                case CLUMSY:
-                    failureChance += random_int(0, 15);
-                    break;
-                case GENEROUS:
-                    cost *= random_double(0.5, 0.9);
-                    break;
-                case GREEDY:
-                    cost *= random_double(1, 2);
-                    break;
-                default:
-                    p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: processTrade"));
-                    break;
+            switch (screen.getPersonality()) {
+                case HARDWORKING -> timeElapsed -= random_int(0, 240);
+                case LAZY        -> timeElapsed += random_int(0, 240);
+                case RELIABLE    -> failureChance -= random_int(0, 5);
+                case CLUMSY      -> failureChance += random_int(0, 15);
+                case GENEROUS    -> cost *= random_double(0.5, 0.9);
+                case GREEDY      -> cost *= random_double(1, 2);
+                default          -> p.sendMessage(Component.text("Plugin ERROR: processTrade")
+                        .color(NamedTextColor.RED).decorate(TextDecoration.BOLD));
             }
             //payment
             Location loc = p.getLocation();
@@ -230,52 +224,41 @@ public class EventListen implements Listener {
             }
             removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
             p.updateInventory();
-            p.sendMessage(Component.text(ChatColor.GREEN + "You have bought villagers services!"));
-
+            p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
             //TODO: insert here init to pathfind the resources(possible through CustomVillager)
             // but, use 'timeElapsed' to force NPC to comeback to player
 
-
             //failure check
-            if(random_int(0, 100) < failureChance)
-            {
+            if(random_int(0, 100) < failureChance) {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(Component.text(ChatColor.RED + "Your items have been lost! The trader suffered an accident..."));
-            }
-            else
-            {
+                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
+                        .color(NamedTextColor.RED));
+            } else {
                 //receiving goods
                 for(int i=0; i<goods; i++) {
-                    switch(p.getInventory().firstEmpty()) {
-                        case -1:
-                            p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
-                            break;
-                        default:
-                            //items are added 1 by 1 to avoid duping
-                            receiveItems(p.getInventory(), material, 1);
-                            p.updateInventory();
-                            break;
+                    if (p.getInventory().firstEmpty() == -1) {
+                        p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
+                    } else {//items are added 1 by 1 to avoid duping
+                        receiveItems(p.getInventory(), material, 1);
+                        p.updateInventory();
                     }
                 }
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(Component.text(ChatColor.GREEN + "Your items have been delivered!"));
+                p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
             }
-
-        }
-        else {
-            p.sendMessage(Component.text(ChatColor.RED + "You lack the required resources."));
+        } else {
+            p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
         }
         p.closeInventory();
     }
 
     private static int receiveItems(Inventory inventory, Material type, int amount) {
-
         if(type == null || inventory == null)
             return -1;
 
@@ -289,7 +272,6 @@ public class EventListen implements Listener {
     }
 
     public static int removeItems(Inventory inventory, Material type, int amount) {
-
         if(type == null || inventory == null)
             return -1;
         if (amount <= 0 )
@@ -312,10 +294,8 @@ public class EventListen implements Listener {
     public static double random_double(double Min, double Max) {
         return (ThreadLocalRandom.current().nextDouble() * (Max - Min)) + Min;
     }
-    public static int random_int(int Min, int Max)
-    {
+
+    public static int random_int(int Min, int Max) {
         return (int) (Math.random()*(Max-Min))+Min;
     }
-
-
 }
