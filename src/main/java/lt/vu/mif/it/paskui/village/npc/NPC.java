@@ -110,4 +110,11 @@ public class NPC {
     public void remove() {
         npcEntity.removeEntity();
     }
+
+    /**
+     * Moves the NPC into the desired location
+     */
+    public void moveTo() {
+        npcEntity.moveTo();
+    }
 }

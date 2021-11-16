@@ -51,7 +51,6 @@ public class EventListen implements Listener {
 
         if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
             SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
-            NPC npc = screen.getNPC();
             Player p = (Player) event.getWhoClicked();
 
             if (event.getCurrentItem() == null) {
@@ -163,6 +162,7 @@ public class EventListen implements Listener {
                 case BARRIER:
                     p.sendMessage(Component.text("Inventory closed!"));
                     p.closeInventory();
+                    screen.getNPC().moveTo();
                     break;
                 default:
                     p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: OnClick"));

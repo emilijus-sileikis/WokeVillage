@@ -32,4 +32,6 @@ public interface NPCEntity {
     void stopEntityTrading();
 
     void removeEntity();
+
+    void moveTo();
 }

@@ -2,11 +2,13 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
+import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.jetbrains.annotations.NotNull;
@@ -110,10 +113,15 @@ public class CustomVillager extends Villager implements NPCEntity {
 
     public void moveTo() {
         // TODO: implement ME. Sincerely Unused Function.
-        Logging.infoLog("Move to called for NPC");
+
+        if (Main.getInstance().getNPCManager().getCuboid() != null) {
+            Logging.infoLog("Move to called for NPC");
+            Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
 //        this.goalSelector.addGoal(0, new MoveToBlockGoal());
 //        this.goalSelector.removeAllGoals();
-//        this.moveTo(Main.getInstance().getNPCManager().getCuboid());
+            this.moveTo(Main.getInstance().getNPCManager().getCuboid());
+        }
+        else Bukkit.broadcast(Component.text("No Spruce Logs found"));
     }
 
     // TODO: Implement calling the func below for when closing SelectionScreen

@@ -142,7 +142,7 @@ public class NPCManager {
     public Vec3 getCuboid() {
         NPC npc = npcs.get(npcIds.getLast());
         Location center = npc.getLoc();
-        float radius = 8;
+        float radius = 16;
         Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
         Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
         Block b;
@@ -154,14 +154,13 @@ public class NPCManager {
                     b = new Location(center.getWorld(), x, y, z).getBlock();
                     if (b.getType() == Material.SPRUCE_LOG) {
                         Bukkit.broadcast(Component.text("Spruce Log Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
-                        v = new Vec3(x, y, z);
+                        v = new Vec3((x + 1.3), (y + 1.3), z);
                         Bukkit.broadcast(Component.text("Move to: " + v));
                         return v;
                     }
                 }
             }
         }
-        Bukkit.broadcast(Component.text("No Spruce Logs found"));
         return null;
     }
 }
