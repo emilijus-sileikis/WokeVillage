@@ -57,7 +57,10 @@ public class EventListen implements Listener {
                 return;
             }
 
-            if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) || event.getAction().equals(InventoryAction.HOTBAR_SWAP)) {
+            if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) ||
+                    event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) ||
+                    event.getAction().equals(InventoryAction.HOTBAR_SWAP)
+            ) {
                 event.setCancelled(true);
                 return;
             }
