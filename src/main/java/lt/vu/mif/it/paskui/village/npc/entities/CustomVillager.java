@@ -114,17 +114,29 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void moveTo() {
         // TODO: implement ME. Sincerely Unused Function.
 
-        if (Main.getInstance().getNPCManager().getCuboid() != null) {
-            Logging.infoLog("Move to called for NPC");
-            Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
-//        this.goalSelector.addGoal(0, new MoveToBlockGoal());
-//        this.goalSelector.removeAllGoals();
-            this.moveTo(Main.getInstance().getNPCManager().getCuboid());
+        if (Main.getInstance().getNPCManager().getCuboid() == null) {
+            Bukkit.broadcast(Component.text("No Spruce Logs found"));
         }
-        else Bukkit.broadcast(Component.text("No Spruce Logs found"));
+
+        else {
+            Logging.infoLog("Move to called for NPC");
+           // Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
+//        this.goalSelector.addGoal(0, new MoveToBlockGoal());
+            //this.goalSelector.removeAllGoals();
+            this.brain.removeAllBehaviors();
+            this.navigation.moveTo(Main.getInstance().getNPCManager().getCuboid().x, Main.getInstance().getNPCManager().getCuboid().y, Main.getInstance().getNPCManager().getCuboid().z, 0.8D);
+            // TODO: figure this out for movement
+        /*    this.goalSelector.addGoal(1, new MoveToBlockGoal(this, 0.3, 16) {
+                @Override
+                protected boolean isValidTarget(LevelReader world, BlockPos pos) {
+                    return false;
+                }
+            });
+
+         */
+        }
     }
 
-    // TODO: Implement calling the func below for when closing SelectionScreen
     @Override
     public void stopEntityTrading() {
         this.stopTrading();
