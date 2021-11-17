@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -111,8 +112,11 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
+    /**
+     * Makes the NPC go to the nearest Spruce Log block.
+     * Then waits some time to simulate chopping.
+     */
     public void moveTo() {
-        // TODO: implement ME. Sincerely Unused Function.
 
         if (Main.getInstance().getNPCManager().getCuboid() == null) {
             Bukkit.broadcast(Component.text("No Spruce Logs found"));
@@ -120,20 +124,29 @@ public class CustomVillager extends Villager implements NPCEntity {
 
         else {
             Logging.infoLog("Move to called for NPC");
-           // Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
-//        this.goalSelector.addGoal(0, new MoveToBlockGoal());
-            //this.goalSelector.removeAllGoals();
+            Location loc = this.npc.getLoc();
             this.brain.removeAllBehaviors();
-            this.navigation.moveTo(Main.getInstance().getNPCManager().getCuboid().x, Main.getInstance().getNPCManager().getCuboid().y, Main.getInstance().getNPCManager().getCuboid().z, 0.8D);
-            // TODO: figure this out for movement
-        /*    this.goalSelector.addGoal(1, new MoveToBlockGoal(this, 0.3, 16) {
-                @Override
-                protected boolean isValidTarget(LevelReader world, BlockPos pos) {
-                    return false;
-                }
-            });
+            this.navigation.moveTo(Main.getInstance().getNPCManager().getCuboid().x, Main.getInstance().getNPCManager().getCuboid().y, Main.getInstance().getNPCManager().getCuboid().z, 0.4D);
 
-         */
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Bukkit.broadcast(Component.text("Pause Over"));
+                    moveBack(loc);
+                }
+            }.runTaskLater(Main.getInstance(), 400); //400 ticks = 20 seconds
+        }
+    }
+
+    /**
+     * Makes the NPC to come back to the location where the deal was dealt.
+     * @param loc - The location where the deal happened
+     */
+    public void moveBack(Location loc) {
+        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.4D);
+
+        if (this.npc.getLoc() == loc) {
+            refreshBrain(this.portalWorld);
         }
     }
 

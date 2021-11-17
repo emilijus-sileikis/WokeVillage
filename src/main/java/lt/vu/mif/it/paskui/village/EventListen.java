@@ -89,6 +89,8 @@ public class EventListen implements Listener {
 
                 //LumberJack
                 case STONE_AXE:
+                    // TODO: Make screen.getNPC().moveTo(); work only when a player has enough resources.
+                    screen.getNPC().moveTo();
                     LumberjackLootTable treasureLJ = LumberjackLootTable.fromInt(
                             random_int(
                                     0 , // Paima tik pirmus 5 LootTable'o elementus
@@ -177,7 +179,6 @@ public class EventListen implements Listener {
                 case BARRIER:
                     p.sendMessage(Component.text("Inventory closed!"));
                     p.closeInventory();
-                    screen.getNPC().moveTo();
                     break;
                 default:
                     p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: OnClick"));
