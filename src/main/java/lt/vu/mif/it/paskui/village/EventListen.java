@@ -90,7 +90,6 @@ public class EventListen implements Listener {
                 //LumberJack
                 case STONE_AXE:
                     // TODO: Make screen.getNPC().moveTo(); work only when a player has enough resources.
-                    screen.getNPC().moveTo();
                     LumberjackLootTable treasureLJ = LumberjackLootTable.fromInt(
                             random_int(
                                     0 , // Paima tik pirmus 5 LootTable'o elementus
@@ -98,6 +97,7 @@ public class EventListen implements Listener {
                             )
                     );
                     processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
+
                     break;
                 case APPLE:
                     Material apple = Material.APPLE;
@@ -230,8 +230,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            //TODO: insert here init to pathfind the resources(possible through CustomVillager)
-            // but, use 'timeElapsed' to force NPC to comeback to player
+            screen.getNPC().moveTo();
 
             //failure check
             if(random_int(0, 100) < failureChance) {
