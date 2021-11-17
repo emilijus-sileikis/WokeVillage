@@ -118,7 +118,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Makes the NPC go to the nearest Spruce Log block.
      * Then waits some time to simulate chopping.
      */
-    public void moveTo() {
+    public void moveTo(int timeElapsed) {
 
         if (Main.getInstance().getNPCManager().getCuboid() == null) {
             Bukkit.broadcast(Component.text("No Spruce Logs found"));
@@ -140,7 +140,7 @@ public class CustomVillager extends Villager implements NPCEntity {
                     b.setType(Material.AIR);
                     moveBack(loc);
                 }
-            }.runTaskLater(Main.getInstance(), 400); //400 ticks = 20 seconds
+            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds
         }
     }
 

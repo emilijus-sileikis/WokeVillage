@@ -114,7 +114,7 @@ public class NPC {
     /**
      * Moves the NPC into the desired location
      */
-    public void moveTo() {
-        npcEntity.moveTo();
+    public void moveTo(int time) {
+        npcEntity.moveTo(time);
     }
 }

@@ -33,5 +33,5 @@ public interface NPCEntity {
 
     void removeEntity();
 
-    void moveTo();
+    void moveTo(int timeElapsed);
 }
