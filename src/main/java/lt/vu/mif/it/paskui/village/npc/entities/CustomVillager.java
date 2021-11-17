@@ -27,6 +27,8 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -125,13 +127,17 @@ public class CustomVillager extends Villager implements NPCEntity {
         else {
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
+            Vec3 pos = Main.getInstance().getNPCManager().getCuboid();
+            Block b;
+            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y - 1.3, pos.z).getBlock();
             this.brain.removeAllBehaviors();
-            this.navigation.moveTo(Main.getInstance().getNPCManager().getCuboid().x, Main.getInstance().getNPCManager().getCuboid().y, Main.getInstance().getNPCManager().getCuboid().z, 0.4D);
+            this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     Bukkit.broadcast(Component.text("Pause Over"));
+                    b.setType(Material.AIR);
                     moveBack(loc);
                 }
             }.runTaskLater(Main.getInstance(), 400); //400 ticks = 20 seconds
