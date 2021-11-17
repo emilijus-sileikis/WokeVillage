@@ -139,7 +139,19 @@ public class NPCManager {
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
-    public Vec3 getCuboid() {
+    public Vec3 getCuboid(Material material, Role role) {
+        switch (role) {
+            case LUMBERJACK -> {
+                material = Material.SPRUCE_LOG;
+            }
+            case MINER -> {
+                material = Material.STONE;
+            }
+            case FISHER -> {
+                material = Material.WATER;
+            }
+        }
+
         NPC npc = npcs.get(npcIds.getLast());
         Location center = npc.getLoc();
         float radius = 16;
@@ -152,8 +164,8 @@ public class NPCManager {
             for(int y = minimum.getBlockY(); y <= maximum.getBlockY(); y++) {
                 for(int z = minimum.getBlockZ(); z <= maximum.getBlockZ(); z++) {
                     b = new Location(center.getWorld(), x, y, z).getBlock();
-                    if (b.getType() == Material.SPRUCE_LOG) {
-                        Bukkit.broadcast(Component.text("Spruce Log Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
+                    if (b.getType() == material) {
+                        Bukkit.broadcast(Component.text(":D Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
                         v = new Vec3((x + 1.3), (y + 1.3), z);
                         Bukkit.broadcast(Component.text("Move to: " + v));
                         return v;

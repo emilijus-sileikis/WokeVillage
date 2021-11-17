@@ -25,6 +25,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -229,7 +230,8 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            screen.getNPC().moveTo(timeElapsed);
+            timeElapsed = 5;
+            screen.getNPC().moveTo(timeElapsed, material);
 
             //failure check
             if(random_int(0, 100) < failureChance) {
@@ -239,20 +241,28 @@ public class EventListen implements Listener {
                 p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                         .color(NamedTextColor.RED));
             } else {
-                //receiving goods
-                for(int i=0; i<goods; i++) {
-                    if (p.getInventory().firstEmpty() == -1) {
-                        p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
-                    } else {//items are added 1 by 1 to avoid duping
-                        receiveItems(p.getInventory(), material, 1);
-                        p.updateInventory();
-                    }
-                }
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                }
-                p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        //receiving goods
+                        for(int i=0; i<goods; i++) {
+                            if (p.getInventory().firstEmpty() == -1) {
+                                p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
+                            } else {//items are added 1 by 1 to avoid duping
+                                receiveItems(p.getInventory(), material, 1);
+                                p.updateInventory();
+                            }
+                        }
+
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+                        }
+                        p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
+                    }
+                }.runTaskLater(Main.getInstance(), timeElapsed*20);
+
+
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

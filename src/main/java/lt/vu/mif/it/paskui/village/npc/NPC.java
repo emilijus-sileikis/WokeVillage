@@ -5,6 +5,7 @@ import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
@@ -114,7 +115,7 @@ public class NPC {
     /**
      * Moves the NPC into the desired location
      */
-    public void moveTo(int time) {
-        npcEntity.moveTo(time);
+    public void moveTo(int time, Material material) {
+        npcEntity.moveTo(time, material);
     }
 }

@@ -4,6 +4,7 @@ import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import net.minecraft.world.entity.Entity;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.util.UUID;
 
@@ -34,5 +35,5 @@ public interface NPCEntity {
 
     void removeEntity();
 
-    void moveTo(int timeElapsed);
+    void moveTo(int timeElapsed, Material material);
 }

@@ -119,16 +119,16 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Makes the NPC go to the nearest Spruce Log block.
      * Then waits some time to simulate chopping.
      */
-    public void moveTo(int timeElapsed) {
+    public void moveTo(int timeElapsed, Material material) {
 
-        if (Main.getInstance().getNPCManager().getCuboid() == null) {
-            Bukkit.broadcast(Component.text("No Spruce Logs found"));
+        if (Main.getInstance().getNPCManager().getCuboid(material, npc.getRole()) == null) {
+            Bukkit.broadcast(Component.text("No :D found"));
         }
 
         else {
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
-            Vec3 pos = Main.getInstance().getNPCManager().getCuboid();
+            Vec3 pos = Main.getInstance().getNPCManager().getCuboid(material, npc.getRole());
             Block b;
             b = new Location(loc.getWorld(), pos.x - 1.3, pos.y - 1.3, pos.z).getBlock();
             this.brain.removeAllBehaviors();
