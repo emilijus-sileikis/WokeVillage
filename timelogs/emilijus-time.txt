@@ -104,6 +104,30 @@ regarding NPCs having player nametags on server restart.
 -2021-11-08:
   -6h, Scan surrounding area for a specific block function + trying to implement it for the Lumberjack role.
   
+-2021-11-09:
+  -5h: Documentation update/fix/additions + looking more into how to create custom NPC goals + trying to create some goals.
 
-Viso valandu: 101h.
-Viso valandu sia savaite: 6h.
+-2021-11-10:
+  -3h: Code cleaning and bug fixes (Steal item fix).
+
+-2021-11-11:
+  -10h: 24h task, testing part: diagrams, cases, unit testing.
+
+-2021-11-12:
+  -3h: 24h task, testing part overview, pseudocode diagram, blocks.
+
+-2021-11-14:
+  -3h: Starting working on NPC remove on death + additional research on custom NPC goals.
+
+-2021-11-15:
+  -4h: NPC data remove on NPC death.
+
+-2021-11-16:
+  -7h: NPC remove trading player, teleports to specific block, walks to specific block and stops there forever.
+
+-2021-11-17:
+  -8h: NPC walks to a certain block, waits there and returns, NPC walks to a certain block, destroys it and returns + Failed attempts at testing A Star implementation.
+
+
+Viso valandu: 144h.
+Viso valandu sia savaite: 43h.
