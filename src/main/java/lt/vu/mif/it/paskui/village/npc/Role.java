@@ -1,11 +1,28 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.npc.services.*;
+import lt.vu.mif.it.paskui.village.npc.services.FisherSelectionScreen;
+import lt.vu.mif.it.paskui.village.npc.services.FisherSelectionScreen;
+
+
+import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+
 import java.util.Random;
 
 public enum Role {
-    LUMBERJACK,
-    MINER,
-    FISHER;
+    LUMBERJACK(LumberJackSelectionScreen.class),
+    MINER(MinerSelectionScreen.class),
+    FISHER(FisherSelectionScreen.class);
+
+    private final Class<? extends SelectionScreen> clazz;
+
+    private Role(Class<? extends SelectionScreen> clazz) {
+        this.clazz = clazz;
+    }
+
+    public Class<? extends SelectionScreen> getClazz() {
+        return clazz;
+    }
 
     public static Role fromString(String val) {
         for (Role role : Role.values()) {
