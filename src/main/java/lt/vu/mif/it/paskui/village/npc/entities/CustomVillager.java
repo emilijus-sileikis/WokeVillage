@@ -4,11 +4,8 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.Personality;
-import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
-import lt.vu.mif.it.paskui.village.npc.services.FisherSelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
@@ -36,8 +33,6 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -124,12 +119,9 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Then waits some time to simulate chopping.
      */
     public void moveTo(int timeElapsed, Material material) {
-
         if (Main.getInstance().getNPCManager().getCuboid(material, npc.getRole()) == null) {
             Bukkit.broadcast(Component.text("No :D found"));
-        }
-
-        else {
+        } else {
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
             Vec3 pos = Main.getInstance().getNPCManager().getCuboid(material, npc.getRole());
@@ -145,7 +137,7 @@ public class CustomVillager extends Villager implements NPCEntity {
                     b.setType(Material.AIR);
                     moveBack(loc);
                 }
-            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds
+            }.runTaskLater(Main.getInstance(), timeElapsed * 20L); //400 ticks = 20 seconds
         }
     }
 
@@ -212,24 +204,11 @@ public class CustomVillager extends Villager implements NPCEntity {
         SelectionScreen services = npc.getServices();
 
         if (services == null) {
-            try {
-                Constructor ServiceConstructor = npc.getRole().getClazz().getConstructor(npc.getClass());
-                services = (SelectionScreen) ServiceConstructor.newInstance(npc);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            services = SelectionScreen.createScreen(npc);
             npc.setServices(services);
         }
         player.getBukkitEntity().openInventory(services.getInventory());
         this.setTradingPlayer(player);
-
-        Logging.infoLog("NPC profession: %s", this.getVillagerData().getProfession()); // Is kept for debug logging.
 
         //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 
