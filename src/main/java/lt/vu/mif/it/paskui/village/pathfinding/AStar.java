@@ -54,8 +54,9 @@ public class AStar
     public Location[] getPath()
     {
         // check if player could stand at start and endpoint, if not return empty path
-        if(!(canStandAt(startLocation) && canStandAt(endLocation)))
+        if(!(canStandAt(startLocation) && canStandAt(endLocation))) {
             return new Location[0];
+        }
 
         // time for benchmark
         long nsStart = System.nanoTime();
@@ -66,9 +67,13 @@ public class AStar
         while(checkedNodes.size() < maxNodeTests && !pathFound && uncheckedNodes.size() > 0)
         {
             Node n = uncheckedNodes.get(0);
-            for(Node nt : uncheckedNodes)
-                if(nt.getEstimatedFinalExpense() < n.getEstimatedFinalExpense())
+            for(Node nt : uncheckedNodes) {
+                if(nt.getEstimatedFinalExpense() < n.getEstimatedFinalExpense()) {
                     n = nt;
+                }
+            }
+
+            Bukkit.broadcast(Component.text("Expense: " + n.estimatedExpenseLeft));
 
             if(n.estimatedExpenseLeft < 1)
             {
@@ -127,9 +132,11 @@ public class AStar
     {
         Node test = new Node(loc, 0, null);
 
-        for(Node n : checkedNodes)
-            if(n.id == test.id)
+        for(Node n : checkedNodes) {
+            if(n.id == test.id) {
                 return n;
+            }
+        }
 
         return test;
     }
@@ -173,8 +180,9 @@ public class AStar
 
         public double getEstimatedFinalExpense()
         {
-            if(estimatedExpenseLeft == -1)
+            if(estimatedExpenseLeft == -1) {
                 estimatedExpenseLeft = distanceTo(location, endLocation);
+            }
 
             return expense + 1.5 * estimatedExpenseLeft;
         }
@@ -186,22 +194,24 @@ public class AStar
         public void getReachableLocations()
         {
             //trying to get all possibly walkable blocks
-            for(int x = -1; x <= 1; x++)
-                for(int z = -1; z <= 1; z++)
+            for(int x = -1; x <= 1; x++) {
+                for(int z = -1; z <= 1; z++) {
                     if(!(x == 0 && z == 0) && x * z == 0)
                     {
                         Location loc = new Location(Bukkit.getWorlds().get(0), location.getBlockX() + x, location.getBlockY(), location.getBlockZ() + z);
 
                         // usual unchanged y
-                        if(canStandAt(loc))
+                        if(canStandAt(loc)) {
                             reachNode(loc, expense + 1);
+                        }
 
                         // one block up
                         if(!isObstructed(loc.clone().add(-x, 2, -z))) // block above current tile, thats why subtracting x and z
                         {
                             Location nLoc = loc.clone().add(0, 1, 0);
-                            if(canStandAt(nLoc))
+                            if(canStandAt(nLoc)) {
                                 reachNode(nLoc, expense + 1.4142);
+                            }
                         }
 
                         // one block down or falling multiple blocks down
@@ -209,8 +219,9 @@ public class AStar
                         {
                             Location nLoc = loc.clone().add(0, -1, 0);
                             if(canStandAt(nLoc)) // one block down
+                            {
                                 reachNode(nLoc, expense + 1.4142);
-                            else if(!isObstructed(nLoc) && !isObstructed(nLoc.clone().add(0, 1, 0))) // fall
+                            } else if(!isObstructed(nLoc) && !isObstructed(nLoc.clone().add(0, 1, 0))) // fall
                             {
                                 int drop = 1;
                                 while(drop <= maxFallDistance && !isObstructed(loc.clone().add(0, -drop, 0)))
@@ -228,17 +239,21 @@ public class AStar
                         }
 
                         //ladder
-                        if(canClimbLadders)
+                        if(canClimbLadders) {
                             if(loc.clone().add(-x, 0, -z).getBlock().getType() == Material.LADDER)
                             {
                                 Location nLoc = loc.clone().add(-x, 0, -z);
                                 int up = 1;
-                                while(nLoc.clone().add(0, up, 0).getBlock().getType() == Material.LADDER)
+                                while(nLoc.clone().add(0, up, 0).getBlock().getType() == Material.LADDER) {
                                     up++;
+                                }
 
                                 reachNode(nLoc.clone().add(0, up, 0), expense + up * 2);
                             }
+                        }
                     }
+                }
+            }
         }
 
         public void reachNode(Location locThere, double expenseThere)
@@ -278,10 +293,7 @@ public class AStar
 
     public boolean isObstructed(Location loc)
     {
-        if(loc.getBlock().getType().isSolid())
-            return true;
-
-        return false;
+        return loc.getBlock().getType().isSolid();
     }
 
     public boolean canStandAt(Location loc)
@@ -295,8 +307,9 @@ public class AStar
 
     public double distanceTo(Location loc1, Location loc2)
     {
-        if(loc1.getWorld() != loc2.getWorld())
+        if(loc1.getWorld() != loc2.getWorld()) {
             return Double.MAX_VALUE;
+        }
 
         double deltaX = Math.abs(loc1.getX() - loc2.getX());
         double deltaY = Math.abs(loc1.getY() - loc2.getY());
