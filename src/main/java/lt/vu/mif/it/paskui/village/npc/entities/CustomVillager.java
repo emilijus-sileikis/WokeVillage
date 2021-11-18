@@ -119,14 +119,17 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Then waits some time to simulate chopping.
      */
     public void moveTo(int timeElapsed, Material material) {
-        if (Main.getInstance().getNPCManager().getCuboid(material, npc.getRole()) == null) {
-            Bukkit.broadcast(Component.text("No :D found"));
-        } else {
+
+        if (npc.getCuboid(material) == null) {
+            Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
+        }
+
+        else {
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
-            Vec3 pos = Main.getInstance().getNPCManager().getCuboid(material, npc.getRole());
+            Vec3 pos = npc.getCuboid(material);
             Block b;
-            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y - 1.3, pos.z).getBlock();
+            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
             this.brain.removeAllBehaviors();
             this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
 
@@ -137,7 +140,7 @@ public class CustomVillager extends Villager implements NPCEntity {
                     b.setType(Material.AIR);
                     moveBack(loc);
                 }
-            }.runTaskLater(Main.getInstance(), timeElapsed * 20L); //400 ticks = 20 seconds
+            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds
         }
     }
 

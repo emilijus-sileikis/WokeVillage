@@ -3,9 +3,13 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import net.kyori.adventure.text.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
@@ -117,5 +121,45 @@ public class NPC {
      */
     public void moveTo(int time, Material material) {
         npcEntity.moveTo(time, material);
+    }
+
+    /**
+     * Checks if there is a specific block in a radius
+     * @return returns the vector which the NPC will use for walking to the log.
+     */
+    public Vec3 getCuboid(Material material) {
+        switch (role) {
+            case LUMBERJACK -> {
+                material = Material.SPRUCE_LOG;
+            }
+            case MINER -> {
+                material = Material.STONE;
+            }
+            case FISHER -> {
+                material = Material.WATER;
+            }
+        }
+
+        Location center = this.getLoc();
+        float radius = 16;
+        Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
+        Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
+        Block b;
+        Vec3 v;
+
+        for(int x = minimum.getBlockX(); x <= maximum.getBlockX(); x++) {
+            for(int y = minimum.getBlockY(); y <= maximum.getBlockY(); y++) {
+                for(int z = minimum.getBlockZ(); z <= maximum.getBlockZ(); z++) {
+                    b = new Location(center.getWorld(), x, y, z).getBlock();
+                    if (b.getType() == material) {
+                        Bukkit.broadcast(Component.text(material.toString() + " Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
+                        v = new Vec3((x + 1.3), y, z);
+                        Bukkit.broadcast(Component.text("Move to: " + v));
+                        return v;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
