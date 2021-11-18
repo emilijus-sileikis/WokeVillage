@@ -18,7 +18,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,7 +124,7 @@ public class Main extends JavaPlugin implements Listener {
     public void test()
     {
         Location start = new Location(this.overworld, -199, 67, -111);
-        Location end = new Location(this.overworld, -180, 67, -111);
+        Location end = new Location(this.overworld, -174, 70, -103);
 
         AStar a = new AStar(start, end, 10000, true, 5);
         path = a.getPath();
