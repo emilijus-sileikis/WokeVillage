@@ -45,11 +45,32 @@ public class CommandContext {
         return args;
     }
 
-    public Argument<?> getArg(String flag) {
+    public Argument<?> getArg(CommandFlag flag) {
+        return this.getArg(flag.getFlag());
+    }
+
+    public Argument<?> getDefaultArg(int num) {
+        return this.getArg(CommandFlag.CMD_ARGUMENT.getFlag() + num);
+    }
+
+    public boolean hasArg(CommandFlag flag) {
+        return this.hasArg(flag.getFlag());
+    }
+
+    public boolean hasDefaultArg(int num) {
+        return this.hasArg(CommandFlag.CMD_ARGUMENT.getFlag() + num);
+    }
+
+    // private
+    private Argument<?> getArg(String flag) {
         return args.get(flag);
     }
 
-    // Other
+    private boolean hasArg(String flag) {
+        return args.containsKey(flag);
+    }
+
+    // other
     @Override
     public String toString() {
         return String.format(

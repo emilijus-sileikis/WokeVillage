@@ -55,7 +55,7 @@ public class NPCCommands {
                 Logging.infoLog("NPC CREATED");
             }
         }
-        else if (context.getArg(CommandFlag.NPC_LOCATION.getFlag()) == null) {
+        else if (!context.hasArg(CommandFlag.NPC_LOCATION)) {
                 Logging.infoLog("Can not create the NPC!");
                 Logging.infoLog("The console MUST use the -l argument!");
         }
@@ -66,11 +66,9 @@ public class NPCCommands {
             mod = { "remove" },
             perm = "wokevillage.npc.remove")
     public void remove(@NotNull CommandContext context) {
-        CommandSender sender = context.getSender();
         Logging.infoLog("NPCCommands::remove has been executed.");
 
         Logging.infoLog(context.toString());
-
         context.getArgs().forEach(
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
@@ -82,11 +80,11 @@ public class NPCCommands {
 
         int id = npcManager.getLastId();
 
-        if (context.getArg("ARG0") != null) {
+        if (context.hasDefaultArg(0)) {
             try {
-                Argument<?> arg = context.getArg("ARG0");
+                Argument<?> arg = context.getDefaultArg(0);
                 id = Integer.parseInt((String) arg.clazz().cast(arg.value()));
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
@@ -101,15 +99,6 @@ public class NPCCommands {
             mod = { "removeAll" },
             perm = "wokevillage.npc.removeAll")
     public void removeAll(@NotNull CommandContext context) {
-        CommandSender sender = context.getSender();
-        Logging.infoLog("NPCCommands::removeAll has been executed.");
-
-        Logging.infoLog(context.toString());
-
-        context.getArgs().forEach(
-                (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
-        );
-
         npcManager.removeAllNPC();
         dataManager.getConfig().set("data", null);
         dataManager.saveConfig();
