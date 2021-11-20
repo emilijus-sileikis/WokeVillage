@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -36,15 +37,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * {@link NPC} interface into minecraft world.
+ */
 public class CustomVillager extends Villager implements NPCEntity {
 
+    /**
+     * {@link NPC} instance that this entity is associated to.
+     */
     private final NPC npc;
 
     /** Default constructor.
      * @param npc reference of npc entity will represent.
      * @param loc location of ncp.
      */
-    public CustomVillager(NPC npc, Location loc) {
+    public CustomVillager(final NPC npc, final Location loc) {
         super(
                 EntityType.VILLAGER,
                 ((CraftWorld) loc.getWorld()).getHandle()
@@ -56,30 +63,17 @@ public class CustomVillager extends Villager implements NPCEntity {
                 this.getVillagerData().setProfession(VillagerProfession.CLERIC)
         );
 
-        /*
-        // Clear out initial goals
-        GoalSelector[] goals = new GoalSelector[] {
-                targetSelector,
-                goalSelector
-        };
-
-        for (GoalSelector selector : goals) {
-            Logging.infoLog("%s", selector);
-            for (Goal goal : selector.availableGoals) {
-                Logging.infoLog("%s", goal.getClass());
-            }
-//            selector.availableGoals.clear();
-        }
-        */
-
-       //initPathfinder();
-       //getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.3);
+        Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
+                .setBaseValue(0.3);
     }
 
     // NPCEntity
     @Override
     public String getEntityName() {
-        return Objects.requireNonNullElse(getCustomName().getString(), "");
+        return Objects.requireNonNullElse(
+                this.getCustomName(),
+                Component.text("CustomVillager")
+        ).toString();
     }
 
     @Override
@@ -98,38 +92,32 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public void setEntityName(String name) {
-        if ( !(name.isBlank() || name.isEmpty()) ) {
-            this.setCustomName(new TextComponent(name));
-        }
+    public void setEntityName(final @NotNull String name) {
+        this.setCustomName(new TextComponent(name));
     }
 
     @Override
-    public void setEntityUUID(UUID npcUUID) {
+    public void setEntityUUID(final @NotNull UUID npcUUID) {
         this.uuid = npcUUID;
     }
 
     @Override
-    public void setEntityPos(Location loc) {
+    public void setEntityPos(final @NotNull Location loc) {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
-    /**
-     * Makes the NPC go to the nearest Spruce Log block.
-     * Then waits some time to simulate chopping.
-     */
-    public void moveTo(int timeElapsed, Material material) {
-
+    @Override
+    public void moveTo(final int timeElapsed, final Material material) {
         if (npc.getCuboid(material) == null) {
-            Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
-        }
-
-        else {
+            Bukkit.broadcast(
+                    Component.text("No " + material.toString() + " found")
+            );
+        } else {
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
             Vec3 pos = npc.getCuboid(material);
-            Block b;
-            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+            Block b = new Location(loc.getWorld(),
+                    pos.x - 1.3, pos.y, pos.z).getBlock();
             this.brain.removeAllBehaviors();
             this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
 
@@ -140,7 +128,8 @@ public class CustomVillager extends Villager implements NPCEntity {
                     b.setType(Material.AIR);
                     moveBack(loc);
                 }
-            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds
+            }.runTaskLater(Main.getInstance(), timeElapsed * 20L);
+            //400 ticks = 20 seconds
         }
     }
 
@@ -148,7 +137,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Makes the NPC to come back to the location where the deal was dealt.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(Location loc) {
+    public void moveBack(final Location loc) {
         this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.4D);
 
         if (this.npc.getLoc() == loc) {
@@ -168,14 +157,14 @@ public class CustomVillager extends Villager implements NPCEntity {
 
     // Villager
     @Override
-    protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic) {
+    protected @NotNull Brain<?> makeBrain(final @NotNull Dynamic<?> dynamic) {
         Brain<Villager> brain = this.brainProvider().makeBrain(dynamic);
         this.initBrainGoals(brain);
         return brain;
     }
 
     @Override
-    public void refreshBrain(ServerLevel world) {
+    public void refreshBrain(final @NotNull ServerLevel world) {
         Brain<Villager> behaviourController = this.getBrain();
 
         behaviourController.stopAll(world, this);
@@ -185,17 +174,15 @@ public class CustomVillager extends Villager implements NPCEntity {
 
     @Override
     protected void customServerAiStep() {
-        // Vanilla Villager brain clearing
-//        this.getBrain().removeAllBehaviors();
+        // TODO : research what can be used in this method.
         super.customServerAiStep();
-//        this.moveTo();
     }
 
     @Override
-    protected void rewardTradeXp(MerchantOffer offer) {}
+    protected void rewardTradeXp(final @NotNull MerchantOffer offer) { }
 
     @Override
-    protected void updateTrades() {}
+    protected void updateTrades() { }
 
     @Override
     protected void stopTrading() {
@@ -203,7 +190,10 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(
+            @NotNull final Player player,
+            @NotNull final InteractionHand hand
+    ) {
         SelectionScreen services = npc.getServices();
 
         if (services == null) {
@@ -219,12 +209,12 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public void travel(@NotNull Vec3 movementInput) {
+    public void travel(@NotNull final Vec3 movementInput) {
         super.travel(movementInput);
     }
 
     @Override
-    public void remove(RemovalReason reason) {
+    public void remove(final @NotNull RemovalReason reason) {
         Logging.infoLog("NPC %s removed for %s", uuid, reason);
         NPCDeathEvent event = new NPCDeathEvent(npc, reason);
         event.callEvent();
@@ -232,27 +222,38 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     // private
-    private void initBrainGoals(Brain<Villager> brain) {
+    /**
+     * To initialize and structure {@link CustomVillager} behaviour.
+     * @param brain brain to add behaviours to.
+     */
+    private void initBrainGoals(@NotNull final Brain<Villager> brain) {
+        final float speed = 0.5f;
         VillagerProfession profession = this.getVillagerData().getProfession();
 
         // brain package setup
         brain.addActivity(Activity.IDLE,
-                CustomVillagerGoalBuilder.getIdlePackage(profession, 0.5f)
+                CustomVillagerGoalBuilder.getIdlePackage(profession, speed)
         );
         brain.addActivity(Activity.CORE,
-                CustomVillagerGoalBuilder.getCorePackage(profession, 0.5f)
+                CustomVillagerGoalBuilder.getCorePackage(profession, speed)
         );
         brain.addActivity(Activity.MEET,
-                CustomVillagerGoalBuilder.getMeetPackage(profession, 0.5f)
+                CustomVillagerGoalBuilder.getMeetPackage(profession, speed)
         );
 
         // brain defaults setup
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
         brain.setActiveActivityIfPossible(Activity.IDLE);
-        brain.updateActivityFromSchedule(this.level.getDayTime(), this.level.getGameTime());
+        brain.updateActivityFromSchedule(
+                this.level.getDayTime(),
+                this.level.getGameTime()
+        );
     }
 
+    /**
+     * To add basic MobGoals to {@link CustomVillager}.
+     */
     public void initMobGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
@@ -263,6 +264,5 @@ public class CustomVillager extends Villager implements NPCEntity {
         //this.goalSelector.addGoal(5, new HurtByTargetGoal(this));
         //this.goalSelector.addGoal(7, new TryFindWaterGoal(this));
         //this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 5, true));
-        Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED)).setBaseValue(0.3);
     }
 }
