@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,14 +46,20 @@ public class NPCManager {
     // other
     /**
      * Creates NPC and attempts to spawn it.
-     * @param player Player that spawns the NPC
-     * @param loc    initial location of NPC and in which world.
-     * @param type   NPC entity type
+     * @param name        name given to NPC.
+     * @param loc         initial location of NPC and in which world.
+     * @param role        given {@link Role} to {@link NPC}.
+     * @param personality given {@link Personality} to {@link NPC}.
      * @return Spawned NPC instance on success, null on fail.
      */
-    public NPC createNPC(Player player, Location loc, EntityType type) { //String skin
+    public NPC createNPC(
+            final @NotNull String name,
+            final @NotNull Location loc,
+            final @NotNull Role role,
+            final @NotNull Personality personality
+    ) {
         int id = npcIds.isEmpty() ? 0 : npcIds.getLast() + 1;
-        NPC npc = new NPC(id,"", loc, Role.getRandomRole(), Personality.getRandomPersonality());
+        NPC npc = new NPC(id, name, loc, role, personality);
 
         return spawnNPC(npc);
     }

@@ -81,7 +81,9 @@ public class CommandContext {
     }
 
     /**
-     * Parses "{@code String[] args}" and stores data contextually inside {@link #args}
+     * Parses "{@code String[] args}" and stores data contextually inside {@link #args}.
+     * {@link CommandFlag}s' such as name, role, personality or default argument is stored
+     * as simple {@link String}, while location flag is {@link Location}.
      *
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
@@ -96,6 +98,8 @@ public class CommandContext {
             CommandFlag flag = CommandFlag.fromString(args[i]);
 
             switch (flag) {
+                case NPC_ROLE:
+                case NPC_PERSONALITY:
                 case NPC_NAME:
                     ++i;
                 case CMD_ARGUMENT: {

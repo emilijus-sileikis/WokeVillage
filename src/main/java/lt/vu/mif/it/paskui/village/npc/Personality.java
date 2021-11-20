@@ -12,7 +12,7 @@ public enum Personality {
 
     public static Personality fromString(String val) {
         for (Personality personality : Personality.values()) {
-            if ( val.equals(personality.toString()) )
+            if ( val.toLowerCase().equals(personality.toString()) )
                 return personality;
         }
 

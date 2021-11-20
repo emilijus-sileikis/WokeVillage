@@ -2,19 +2,22 @@ package lt.vu.mif.it.paskui.village.commands;
 
 import lt.vu.mif.it.paskui.village.DataManager;
 import lt.vu.mif.it.paskui.village.Main;
-import lt.vu.mif.it.paskui.village.command.CommandFlag;
-import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
+import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import static lt.vu.mif.it.paskui.village.command.CommandFlag.*;
 
 /**
  * Class for storing and implement NPC commands logic.
@@ -44,20 +47,36 @@ public class NPCCommands {
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            // NOTE: These will be needed if we are going to implement skins
-            NPC npc = npcManager.createNPC(player, player.getLocation(), EntityType.PLAYER);
+        String name = context.hasArg(NPC_NAME) ?
+                (String) context.getArg(NPC_NAME).value() :
+                "Villager";
 
-            if (npc != null) {
-                dataManager.writeData(npc, npc.getId());
-                player.sendMessage("NPC CREATED");
-                Logging.infoLog("NPC CREATED");
-            }
+        Location loc;
+        if (context.hasArg(NPC_LOCATION)) {
+            loc = (Location) context.getArg(NPC_LOCATION).value();
+        } else if (sender instanceof Player) {
+            Player player = (Player) sender;
+            loc = player.getLocation();
+        } else {
+            Logging.infoLog("Can not create the NPC!");
+            Logging.infoLog("The console MUST use the -l argument!");
+            return;
         }
-        else if (!context.hasArg(CommandFlag.NPC_LOCATION)) {
-                Logging.infoLog("Can not create the NPC!");
-                Logging.infoLog("The console MUST use the -l argument!");
+
+        Role role = context.hasArg(NPC_ROLE) ?
+                Role.fromString((String) context.getArg(NPC_ROLE).value()) :
+                Role.getRandomRole();
+
+        Personality personality = context.hasArg(NPC_PERSONALITY) ?
+                Personality.fromString((String) context.getArg(NPC_PERSONALITY).value()) :
+                Personality.getRandomPersonality();
+
+        NPC npc = npcManager.createNPC(name, loc, role, personality);
+
+        if (npc != null) {
+            dataManager.writeData(npc, npc.getId());
+            sender.sendMessage("NPC CREATED");
+            Logging.infoLog("NPC CREATED");
         }
     }
 

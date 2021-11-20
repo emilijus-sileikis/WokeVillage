@@ -1,10 +1,8 @@
 package lt.vu.mif.it.paskui.village.npc;
 
-import lt.vu.mif.it.paskui.village.npc.services.*;
 import lt.vu.mif.it.paskui.village.npc.services.FisherSelectionScreen;
-import lt.vu.mif.it.paskui.village.npc.services.FisherSelectionScreen;
-
-
+import lt.vu.mif.it.paskui.village.npc.services.LumberJackSelectionScreen;
+import lt.vu.mif.it.paskui.village.npc.services.MinerSelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 
 import java.util.Random;
@@ -26,7 +24,7 @@ public enum Role {
 
     public static Role fromString(String val) {
         for (Role role : Role.values()) {
-            if ( val.equals(role.toString()) )
+            if ( val.toLowerCase().equals(role.toString()) )
                 return role;
         }
 
