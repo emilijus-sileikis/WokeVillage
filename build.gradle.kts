@@ -19,7 +19,8 @@ repositories {
 
 dependencies {
     paperDevBundle("1.17.1-R0.1-SNAPSHOT")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation(platform("org.junit:junit-bom:5.8.1"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
 }
 
 tasks {

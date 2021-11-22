@@ -1,14 +1,18 @@
 package lt.vu.mif.it.paskui.village.command;
 
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import org.bukkit.Location;
 
 /**
  * Enum for storing necessary information about command flags
  */
-enum CommandFlag {
+public enum CommandFlag {
     CMD_ARGUMENT("ARG", 0, String.class),
+    NPC_NAME("--name", "-n", 1, String.class),
     NPC_LOCATION("-l", 3, Location.class),
-    NPC_NAME("--name", "-n", 1, String.class);
+    NPC_ROLE("-r", 1, Role.class),
+    NPC_PERSONALITY("-p", 1, Personality.class);
 
     private final String flag;
     private final String alias;
