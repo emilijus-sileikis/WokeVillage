@@ -7,6 +7,7 @@ import lt.vu.mif.it.paskui.village.commands.NPCCommands;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.pathfinding.AStar;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -129,6 +130,48 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
                     npcManager.loadNPC(id, name, location, npcUUID, role, personality);
                 }
         );
+    }
+
+    Location[] path;
+    Material[] mat;
+    BlockData[] dat;
+
+    public void test()
+    {
+        Location start = new Location(this.overworld, -199, 67, -111);
+        Location end = new Location(this.overworld, -174, 70, -103);
+
+        AStar a = new AStar(start, end, 10000, true, 5);
+        path = a.getPath();
+        Bukkit.broadcast(Component.text("Path: " + path.length));
+
+        mat = new Material[path.length];
+        dat = new BlockData[path.length];
+
+        for(int i = 0; i < path.length; i++)
+        {
+            mat[i] = path[i].getBlock().getType();
+            dat[i] = path[i].getBlock().getBlockData();
+
+            path[i].getBlock().setType(Material.GLASS);
+        }
+
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+            @Override
+            public void run()
+            {
+                resetTest();
+            }
+        }, 80L);
+    }
+
+    public void resetTest()
+    {
+        for(int i = 0; i < path.length; i++)
+        {
+            path[i].getBlock().setType(mat[i]);
+            path[i].getBlock().setBlockData(dat[i]);
+        }
     }
 
     // static

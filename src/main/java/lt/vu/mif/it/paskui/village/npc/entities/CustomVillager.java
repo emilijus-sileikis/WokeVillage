@@ -64,7 +64,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         );
 
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
-                .setBaseValue(0.3);
+                .setBaseValue(0.4);
     }
 
     // NPCEntity
@@ -106,30 +106,45 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
-    @Override
     public void moveTo(final int timeElapsed, final Material material) {
+
         if (npc.getCuboid(material) == null) {
-            Bukkit.broadcast(
-                    Component.text("No " + material.toString() + " found")
-            );
-        } else {
+            Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
+        }
+
+        else {
+            final int[] x = {0};
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
             Vec3 pos = npc.getCuboid(material);
-            Block b = new Location(loc.getWorld(),
-                    pos.x - 1.3, pos.y, pos.z).getBlock();
+            Block b;
+            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
             this.brain.removeAllBehaviors();
-            this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
+            this.navigation.moveTo(pos.x, pos.y, pos.z, 0.5D);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     Bukkit.broadcast(Component.text("Pause Over"));
-                    b.setType(Material.AIR);
+                    //b.setType(Material.AIR);
                     moveBack(loc);
                 }
-            }.runTaskLater(Main.getInstance(), timeElapsed * 20L);
-            //400 ticks = 20 seconds
+            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds //timeElapsed*20
+
+            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+                public void run() {
+                    if (x[0] <= 4) {
+                        Vec3 pos = npc.getCuboid(material);
+                        Block block;
+                        block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+                        block.setType(Material.AIR);
+                        ++x[0];
+                    }
+                    else {
+                        Bukkit.getScheduler().cancelTask(1);
+                    }
+                }
+            }, 60, 80);
         }
     }
 

@@ -136,6 +136,6 @@ public class NPCCommands {
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
-        Main.getInstsance().test();
+        Main.getInstance().test();
     }
 }

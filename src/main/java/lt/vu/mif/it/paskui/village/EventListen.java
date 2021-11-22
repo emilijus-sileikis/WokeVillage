@@ -230,7 +230,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            timeElapsed = 5;
+            timeElapsed = 20; //Delete this after testing
             screen.getNPC().moveTo(timeElapsed, material);
 
             //failure check
