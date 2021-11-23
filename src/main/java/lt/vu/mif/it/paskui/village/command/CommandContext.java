@@ -45,11 +45,32 @@ public class CommandContext {
         return args;
     }
 
-    public Argument<?> getArg(String flag) {
+    public Argument<?> getArg(CommandFlag flag) {
+        return this.getArg(flag.getFlag());
+    }
+
+    public Argument<?> getDefaultArg(int num) {
+        return this.getArg(CommandFlag.CMD_ARGUMENT.getFlag() + num);
+    }
+
+    public boolean hasArg(CommandFlag flag) {
+        return this.hasArg(flag.getFlag());
+    }
+
+    public boolean hasDefaultArg(int num) {
+        return this.hasArg(CommandFlag.CMD_ARGUMENT.getFlag() + num);
+    }
+
+    // private
+    private Argument<?> getArg(String flag) {
         return args.get(flag);
     }
 
-    // Other
+    private boolean hasArg(String flag) {
+        return args.containsKey(flag);
+    }
+
+    // other
     @Override
     public String toString() {
         return String.format(
@@ -60,7 +81,9 @@ public class CommandContext {
     }
 
     /**
-     * Parses "{@code String[] args}" and stores data contextually inside {@link #args}
+     * Parses "{@code String[] args}" and stores data contextually inside {@link #args}.
+     * {@link CommandFlag}s' such as name, role, personality or default argument is stored
+     * as simple {@link String}, while location flag is {@link Location}.
      *
      * @param args array of String to parse flags from
      * @throws MissingQuotesException missing ' " ' at end of argument.
@@ -75,6 +98,8 @@ public class CommandContext {
             CommandFlag flag = CommandFlag.fromString(args[i]);
 
             switch (flag) {
+                case NPC_ROLE:
+                case NPC_PERSONALITY:
                 case NPC_NAME:
                     ++i;
                 case CMD_ARGUMENT: {
