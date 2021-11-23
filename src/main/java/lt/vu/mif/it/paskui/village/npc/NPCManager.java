@@ -2,13 +2,8 @@ package lt.vu.mif.it.paskui.village.npc;
 
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

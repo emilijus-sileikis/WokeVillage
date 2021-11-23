@@ -1,7 +1,6 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
