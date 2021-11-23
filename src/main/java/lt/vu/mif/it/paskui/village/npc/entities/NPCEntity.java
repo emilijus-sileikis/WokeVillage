@@ -83,5 +83,5 @@ public interface NPCEntity {
      * @param timeElapsed time for collecting resources.
      * @param material    material to find and collect.
      */
-    void moveTo(int timeElapsed, Material material, Vec3 start, Vec3 pos);
+    void moveTo(int timeElapsed, Material material);
 }

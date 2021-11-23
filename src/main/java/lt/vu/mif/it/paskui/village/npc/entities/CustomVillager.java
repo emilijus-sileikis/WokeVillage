@@ -8,6 +8,7 @@ import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
+import lt.vu.mif.it.paskui.village.util.Task;
 import net.kyori.adventure.text.Component;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
@@ -34,7 +35,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -109,43 +113,33 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
-    public void moveTo(final int timeElapsed, final Material material, final Vec3 start, final Vec3 pos) {
+    public void moveTo(final int timeElapsed, final Material material) {
 
         if (npc.getCuboid(material) == null) {
             Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
         }
 
         else {
-            final int[] x = {0};
-            Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
-            Block b;
-            b = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+            Vec3 finish = this.npc.getCuboid(material);
+            Logging.infoLog("Move to called for NPC");
             this.brain.removeAllBehaviors();
-            this.navigation.moveTo(pos.x, pos.y, pos.z, 0.5D);
-            Double dist = distanceTo(start, pos); //10 blocks ~= 10 seconds
+            this.navigation.moveTo(finish.x, finish.y, finish.z, 0.5D);
+            Double dist = distanceTo(material); //10 blocks ~= 10 seconds
 
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.broadcast(Component.text("Pause Over"));
-                        moveBack(loc);
-                    }
-                }.runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L)); //400 ticks = 20 seconds
+            Bukkit.broadcast(Component.text("Distance: " + dist));
 
-                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
-                    public void run() {
-                        if (x[0] <= 4) {
-                            Vec3 pos = npc.getCuboid(material);
-                            Block block;
-                            block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
-                            block.setType(Material.AIR);
-                            ++x[0];
-                        } else {
-                            Bukkit.getScheduler().cancelTask(1);
+           BukkitTask chop = new Task(npc, material, loc).runTaskTimer(Main.getInstance(),60 + (dist.longValue() * 20L), 80);
+
+                if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) {
+                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
+                        @Override
+                        public void run() {
+                            Bukkit.broadcast(Component.text("Pause Over"));
+                            moveBack(loc);
                         }
-                    }
-                }, 60 + (dist.longValue() * 20L), 80);
+                    }, (timeElapsed * 20L) + (dist.longValue() * 20L));
+                }
         }
     }
 
@@ -161,9 +155,18 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
     }
 
-    public static double distanceTo(Vec3 p1, Vec3 p2) {
-        return Math.sqrt(Math.round(p1.x - p2.x) + Math.round(p1.y - p2.y) + Math.round(p1.z - p2.z));
+    /**
+     * Calculates the distance between the starting point and the end point.
+     * @param material - required material.
+     */
+    public double distanceTo(Material material) {
+        Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+        Vec3 p2 = this.npc.getCuboid(material);
+        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) +Math.pow(p1.z - p2.z, 2));
     }
+
+    //TODO: implement this later. I know where dw.
+    public void moveFurther() {};
 
     @Override
     public void stopEntityTrading() {

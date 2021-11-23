@@ -207,9 +207,6 @@ public class EventListen implements Listener {
     }
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
-        Vec3 start = new Vec3(screen.getNPC().getLoc().getX(), screen.getNPC().getLoc().getY(), screen.getNPC().getLoc().getZ());
-        Vec3 pos = screen.getNPC().getCuboid(material);
-        Double dist = CustomVillager.distanceTo(start, pos);
         ItemStack itemReceived = new ItemStack(getItem(material));
         if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
             int failureChance = 5; //future functionality for failure
@@ -236,7 +233,7 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
             timeElapsed = 20; //Delete this after testing
-            screen.getNPC().moveTo(timeElapsed, material, start, pos);
+            screen.getNPC().moveTo(timeElapsed, material);
 
             //failure check
             if(random_int(0, 100) < failureChance) {
@@ -265,10 +262,11 @@ public class EventListen implements Listener {
                         }
                         p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
                     }
-                }.runTaskLater(Main.getInstance(), (timeElapsed * 20) + (dist.longValue() * 40));
+                }.runTaskLater(Main.getInstance(), (timeElapsed * 20)); //+ (dist.longValue() * 40) //TODO: !!!!!!!!!!!!!
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
+            //Bukkit.getScheduler().cancelTask(4); //TODO: !!!!!!!!!!!!!
         }
         p.closeInventory();
     }
