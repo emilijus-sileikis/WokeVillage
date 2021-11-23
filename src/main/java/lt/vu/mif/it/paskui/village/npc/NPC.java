@@ -129,15 +129,9 @@ public class NPC {
      */
     public Vec3 getCuboid(Material material) {
         switch (role) {
-            case LUMBERJACK -> {
-                material = Material.SPRUCE_LOG;
-            }
-            case MINER -> {
-                material = Material.STONE;
-            }
-            case FISHER -> {
-                material = Material.WATER;
-            }
+            case LUMBERJACK -> material = Material.SPRUCE_LOG;
+            case MINER -> material = Material.STONE;
+            case FISHER -> material = Material.WATER;
         }
 
         Location center = this.getLoc();

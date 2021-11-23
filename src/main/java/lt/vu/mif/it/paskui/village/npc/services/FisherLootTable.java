@@ -71,7 +71,7 @@ public enum FisherLootTable {
     {
         if(itemId < FisherLootTable.values().length)
             return FisherLootTable.values()[itemId];
-       return FisherLootTable.SADDLE;
+        return FisherLootTable.SADDLE;
     }
 
 }
