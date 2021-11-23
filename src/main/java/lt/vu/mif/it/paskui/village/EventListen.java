@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
@@ -11,6 +12,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
@@ -205,6 +207,9 @@ public class EventListen implements Listener {
     }
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
+        Vec3 start = new Vec3(screen.getNPC().getLoc().getX(), screen.getNPC().getLoc().getY(), screen.getNPC().getLoc().getZ());
+        Vec3 pos = screen.getNPC().getCuboid(material);
+        Double dist = CustomVillager.distanceTo(start, pos);
         ItemStack itemReceived = new ItemStack(getItem(material));
         if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
             int failureChance = 5; //future functionality for failure
@@ -231,7 +236,7 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
             timeElapsed = 20; //Delete this after testing
-            screen.getNPC().moveTo(timeElapsed, material);
+            screen.getNPC().moveTo(timeElapsed, material, start, pos);
 
             //failure check
             if(random_int(0, 100) < failureChance) {
@@ -260,9 +265,7 @@ public class EventListen implements Listener {
                         }
                         p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
                     }
-                }.runTaskLater(Main.getInstance(), timeElapsed*20);
-
-
+                }.runTaskLater(Main.getInstance(), (timeElapsed * 20) + (dist.longValue() * 40));
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

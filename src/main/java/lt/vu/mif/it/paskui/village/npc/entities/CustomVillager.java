@@ -9,27 +9,30 @@ import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtTradingPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -106,7 +109,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
-    public void moveTo(final int timeElapsed, final Material material) {
+    public void moveTo(final int timeElapsed, final Material material, final Vec3 start, final Vec3 pos) {
 
         if (npc.getCuboid(material) == null) {
             Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
@@ -116,35 +119,33 @@ public class CustomVillager extends Villager implements NPCEntity {
             final int[] x = {0};
             Logging.infoLog("Move to called for NPC");
             Location loc = this.npc.getLoc();
-            Vec3 pos = npc.getCuboid(material);
             Block b;
             b = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
             this.brain.removeAllBehaviors();
             this.navigation.moveTo(pos.x, pos.y, pos.z, 0.5D);
+            Double dist = distanceTo(start, pos); //10 blocks ~= 10 seconds
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.broadcast(Component.text("Pause Over"));
-                    //b.setType(Material.AIR);
-                    moveBack(loc);
-                }
-            }.runTaskLater(Main.getInstance(), timeElapsed*20); //400 ticks = 20 seconds //timeElapsed*20
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.broadcast(Component.text("Pause Over"));
+                        moveBack(loc);
+                    }
+                }.runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L)); //400 ticks = 20 seconds
 
-            Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
-                public void run() {
-                    if (x[0] <= 4) {
-                        Vec3 pos = npc.getCuboid(material);
-                        Block block;
-                        block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
-                        block.setType(Material.AIR);
-                        ++x[0];
+                Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Main.getInstance(), new Runnable() {
+                    public void run() {
+                        if (x[0] <= 4) {
+                            Vec3 pos = npc.getCuboid(material);
+                            Block block;
+                            block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+                            block.setType(Material.AIR);
+                            ++x[0];
+                        } else {
+                            Bukkit.getScheduler().cancelTask(1);
+                        }
                     }
-                    else {
-                        Bukkit.getScheduler().cancelTask(1);
-                    }
-                }
-            }, 60, 80);
+                }, 60 + (dist.longValue() * 20L), 80);
         }
     }
 
@@ -158,6 +159,10 @@ public class CustomVillager extends Villager implements NPCEntity {
         if (this.npc.getLoc() == loc) {
             refreshBrain(this.portalWorld);
         }
+    }
+
+    public static double distanceTo(Vec3 p1, Vec3 p2) {
+        return Math.sqrt(Math.round(p1.x - p2.x) + Math.round(p1.y - p2.y) + Math.round(p1.z - p2.z));
     }
 
     @Override

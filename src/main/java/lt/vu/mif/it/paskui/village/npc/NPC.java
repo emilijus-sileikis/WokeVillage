@@ -119,8 +119,8 @@ public class NPC {
     /**
      * Moves the NPC into the desired location
      */
-    public void moveTo(int time, Material material) {
-        npcEntity.moveTo(time, material);
+    public void moveTo(int time, Material material, Vec3 start, Vec3 pos) {
+        npcEntity.moveTo(time, material, start, pos);
     }
 
     /**
