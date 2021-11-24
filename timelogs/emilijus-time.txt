@@ -128,6 +128,17 @@ regarding NPCs having player nametags on server restart.
 -2021-11-17:
   -8h: NPC walks to a certain block, waits there and returns, NPC walks to a certain block, destroys it and returns + Failed attempts at testing A Star implementation.
 
+-2021-11-18:
+  -3h: Simple implementation of A Star. Path from one block to another.
 
-Viso valandu: 144h.
-Viso valandu sia savaite: 43h.
+-2021-11-22:
+  -4h: Trying to make the NPC chop down the whole tree.
+
+-2021-11-23:
+  -8h: Trying to optimize tree chopping and fixing timings.
+
+-2021-11-24:
+  -6h: Finishing with NPC timings and tree chopping, new task creation. NPC timings and tasks testing.
+
+Viso valandu: 165h.
+Viso valandu sia savaite: 21h.
