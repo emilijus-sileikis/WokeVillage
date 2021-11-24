@@ -1,18 +1,17 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
-import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
@@ -27,7 +26,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -233,6 +232,7 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
             timeElapsed = 20; //Delete this after testing
+            Double dist = screen.getNPC().distanceTo(material);
             screen.getNPC().moveTo(timeElapsed, material);
 
             //failure check
@@ -243,35 +243,16 @@ public class EventListen implements Listener {
                 p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                         .color(NamedTextColor.RED));
             } else {
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        //receiving goods
-                        for(int i=0; i<goods; i++) {
-                            if (p.getInventory().firstEmpty() == -1) {
-                                p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
-                            } else {//items are added 1 by 1 to avoid duping
-                                receiveItems(p.getInventory(), material, 1);
-                                p.updateInventory();
-                            }
-                        }
-
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                        }
-                        p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
-                    }
-                }.runTaskLater(Main.getInstance(), (timeElapsed * 20)); //+ (dist.longValue() * 40) //TODO: !!!!!!!!!!!!!
+                BukkitTask receive = new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20) + (dist.longValue() * 40));
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
-            //Bukkit.getScheduler().cancelTask(4); //TODO: !!!!!!!!!!!!!
+            //TODO: receive.cancel();
         }
         p.closeInventory();
     }
 
-    private static int receiveItems(Inventory inventory, Material type, int amount) {
+    public static int receiveItems(Inventory inventory, Material type, int amount) {
         if(type == null || inventory == null)
             return -1;
 

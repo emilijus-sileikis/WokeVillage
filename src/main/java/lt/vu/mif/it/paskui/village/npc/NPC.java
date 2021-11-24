@@ -123,6 +123,10 @@ public class NPC {
         npcEntity.moveTo(time, material);
     }
 
+    public void moveBack(Location loc) {npcEntity.moveBack(loc);}
+
+    public Double distanceTo(Material material) {return npcEntity.distanceTo(material);}
+
     /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.

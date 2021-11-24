@@ -8,9 +8,9 @@ import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import lt.vu.mif.it.paskui.village.util.Task;
+import lt.vu.mif.it.paskui.village.util.Chop;
+import lt.vu.mif.it.paskui.village.util.Pause;
 import net.kyori.adventure.text.Component;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -21,24 +21,17 @@ import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtTradingPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -129,16 +122,10 @@ public class CustomVillager extends Villager implements NPCEntity {
 
             Bukkit.broadcast(Component.text("Distance: " + dist));
 
-           BukkitTask chop = new Task(npc, material, loc).runTaskTimer(Main.getInstance(),60 + (dist.longValue() * 20L), 80);
+           BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(),60 + (dist.longValue() * 20L), 80);
 
                 if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) {
-                    Bukkit.getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.broadcast(Component.text("Pause Over"));
-                            moveBack(loc);
-                        }
-                    }, (timeElapsed * 20L) + (dist.longValue() * 20L));
+                    BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
                 }
         }
     }
@@ -149,10 +136,9 @@ public class CustomVillager extends Villager implements NPCEntity {
      */
     public void moveBack(final Location loc) {
         this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.4D);
+        ServerLevel world = this.portalWorld;
 
-        if (this.npc.getLoc() == loc) {
-            refreshBrain(this.portalWorld);
-        }
+        if (this.npc.getLoc() == loc) {refreshBrain(world);}
     }
 
     /**
@@ -160,9 +146,15 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material - required material.
      */
     public double distanceTo(Material material) {
-        Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-        Vec3 p2 = this.npc.getCuboid(material);
-        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) +Math.pow(p1.z - p2.z, 2));
+
+        if (npc.getCuboid(material) == null) {
+            return 0;
+        }
+        else {
+            Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+            Vec3 p2 = this.npc.getCuboid(material);
+            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+        }
     }
 
     //TODO: implement this later. I know where dw.
