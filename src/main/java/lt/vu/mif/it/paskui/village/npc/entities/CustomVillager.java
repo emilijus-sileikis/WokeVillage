@@ -157,7 +157,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
     }
 
-    //TODO: implement this later. I know where dw.
+    //TODO: Make NPC move further if no material is found at current radius.
     public void moveFurther() {};
 
     @Override

@@ -117,14 +117,20 @@ public class NPC {
     }
 
     /**
-     * Moves the NPC into the desired location
+     * Moves the NPC into the desired location.
      */
     public void moveTo(int time, Material material) {
         npcEntity.moveTo(time, material);
     }
 
+    /**
+     * Makes the NPC move back to the starting location.
+     */
     public void moveBack(Location loc) {npcEntity.moveBack(loc);}
 
+    /**
+     * Calculates the distance between two points.
+     */
     public Double distanceTo(Material material) {return npcEntity.distanceTo(material);}
 
     /**

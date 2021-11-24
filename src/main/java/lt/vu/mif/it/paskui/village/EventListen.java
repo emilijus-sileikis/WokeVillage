@@ -26,7 +26,6 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -243,11 +242,10 @@ public class EventListen implements Listener {
                 p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                         .color(NamedTextColor.RED));
             } else {
-                BukkitTask receive = new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20) + (dist.longValue() * 40));
+                new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20) + (dist.longValue() * 40));
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
-            //TODO: receive.cancel();
         }
         p.closeInventory();
     }
