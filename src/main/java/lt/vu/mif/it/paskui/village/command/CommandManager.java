@@ -3,6 +3,7 @@ package lt.vu.mif.it.paskui.village.command;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,10 +31,10 @@ public class CommandManager {
         try {
             Method mth = commands.get(context.getCmd()); // gets command method (
             mth.invoke(instances.get(mth), context);     // invokes the method
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IllegalAccessException e) {
             // TODO: Implement sending usage message back to CommandSender
             Logging.severeLog("Command ( wokevillage.%s ) does not exist.", context.getCmd());
-        } catch (Exception e) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
     }

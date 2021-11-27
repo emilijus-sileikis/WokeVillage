@@ -152,7 +152,7 @@ public class CommandContext {
                 for (++offset; args[offset].endsWith("\""); ++offset) {
                     argStr.append(" ").append(args[offset]);
                 }
-            } catch (Exception e) {
+            } catch (ArrayIndexOutOfBoundsException e) {
                 /* this exception is called when for loop above tries accessing
                  * out of bounds of args array. This is to be expected if the user
                  * typed a command using " but forgetting to end them.
