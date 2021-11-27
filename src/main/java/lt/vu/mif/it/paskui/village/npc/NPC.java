@@ -151,9 +151,9 @@ public class NPC {
         }
 
         Location center = this.getLoc();
-        float radius = 16;
-        Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
-        Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
+        float radius = 16 / 2;
+        Location minimum = new Location(center.getWorld(), center.getX() - radius, center.getY() - radius, center.getZ() - radius);
+        Location maximum = new Location(center.getWorld(), center.getX() + radius, center.getY() + radius, center.getZ() + radius);
         Block b;
         Vec3 v;
 
