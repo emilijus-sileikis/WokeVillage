@@ -29,7 +29,7 @@ public class SelectionScreen implements InventoryHolder {
         this.npc = npc;
         inv = Bukkit.createInventory(this,
                 InventoryType.HOPPER,
-                Component.text(String.format("%s %s", getRole(), getPersonality()))
+                Component.text(String.format("%s %s", getRole().toString().substring(0,1).toUpperCase() + getRole().toString().substring(1), getPersonality()))
                         .decorate(TextDecoration.BOLD)
                         .color(NamedTextColor.RED)
         );

@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc.services;
 
+import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
@@ -23,7 +24,7 @@ public class LumberJackSelectionScreen extends SelectionScreen {
 
         List<Component> loreLog = new ArrayList<>();
         loreLog.add(Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW));
-        loreLog.add(Component.text("Price: 20 Gold Ingots.").color(NamedTextColor.YELLOW));
+        loreLog.add(Component.text("Price: 20 Gold Ingots." + LumberjackLootTable.SPRUCE_LOG.getCost()).color(NamedTextColor.YELLOW));
         this.createAddItem(
                 Component.text("Wood Chopping").color(NamedTextColor.GOLD)
                         .decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC),

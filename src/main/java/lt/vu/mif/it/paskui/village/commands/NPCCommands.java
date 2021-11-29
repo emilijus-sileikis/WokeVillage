@@ -26,6 +26,8 @@ public class NPCCommands {
 
     private final DataManager dataManager;
     private final NPCManager npcManager;
+    private Role CurrentRole;
+    private String CurrentName;
 
     public NPCCommands(Main plugin) {
         npcManager = plugin.getNPCManager();
@@ -47,9 +49,24 @@ public class NPCCommands {
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
+
+        CurrentRole = Role.getRandomRole();
+        CurrentName = NPCNames.getRandomName().getName();
+
+
+        Role role = context.hasArg(NPC_ROLE) ?
+                Role.fromString((String) context.getArg(NPC_ROLE).value()) :
+                CurrentRole;
+
+        Personality personality = context.hasArg(NPC_PERSONALITY) ?
+                Personality.fromString((String) context.getArg(NPC_PERSONALITY).value()) :
+                Personality.getRandomPersonality();
+
         String name = context.hasArg(NPC_NAME) ?
                 (String) context.getArg(NPC_NAME).value() :
-                "Villager";
+                CurrentName + " The " + CurrentRole.toString().substring(0,1).toUpperCase() + CurrentRole.toString().substring(1);
+
+
 
         Location loc;
         if (context.hasArg(NPC_LOCATION)) {
@@ -63,13 +80,6 @@ public class NPCCommands {
             return;
         }
 
-        Role role = context.hasArg(NPC_ROLE) ?
-                Role.fromString((String) context.getArg(NPC_ROLE).value()) :
-                Role.getRandomRole();
-
-        Personality personality = context.hasArg(NPC_PERSONALITY) ?
-                Personality.fromString((String) context.getArg(NPC_PERSONALITY).value()) :
-                Personality.getRandomPersonality();
 
         NPC npc = npcManager.createNPC(name, loc, role, personality);
 
@@ -122,4 +132,6 @@ public class NPCCommands {
         dataManager.getConfig().set("data", null);
         dataManager.saveConfig();
     }
+
+
 }
