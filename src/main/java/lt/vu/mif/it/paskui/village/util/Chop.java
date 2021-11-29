@@ -21,7 +21,7 @@ public class Chop extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (x[0] <= 4) {
+        if (x[0] <= 6) {
             if (npc.getCuboid(material) == null) {
                 this.cancel();
             }

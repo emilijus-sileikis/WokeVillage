@@ -95,4 +95,10 @@ public interface NPCEntity {
      * @param material - Required material.
      */
     double distanceTo(Material material);
+
+    void removeBrain();
+
+    void refreshBrain();
+
+    void moveFurther(Location location);
 }

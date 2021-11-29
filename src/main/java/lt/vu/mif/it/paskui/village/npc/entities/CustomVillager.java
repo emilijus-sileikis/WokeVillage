@@ -8,8 +8,7 @@ import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import lt.vu.mif.it.paskui.village.util.Chop;
-import lt.vu.mif.it.paskui.village.util.Pause;
+import lt.vu.mif.it.paskui.village.util.Move;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -27,7 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -64,7 +62,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         );
 
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
-                .setBaseValue(0.4);
+                .setBaseValue(0.5);
     }
 
     // NPCEntity
@@ -106,28 +104,15 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
+    /**
+     * Makes the NPC move to the desired block.
+     * @param timeElapsed time for collecting resources.
+     * @param material    material to find and collect.
+     */
     public void moveTo(final int timeElapsed, final Material material) {
 
-        if (npc.getCuboid(material) == null) {
-            Bukkit.broadcast(Component.text("No " + material.toString() + " found"));
-        }
+        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
 
-        else {
-            Location loc = this.npc.getLoc();
-            Vec3 finish = this.npc.getCuboid(material);
-            Logging.infoLog("Move to called for NPC");
-            this.brain.removeAllBehaviors();
-            this.navigation.moveTo(finish.x, finish.y, finish.z, 0.5D);
-            Double dist = distanceTo(material); //10 blocks ~= 10 seconds
-
-            Bukkit.broadcast(Component.text("Distance: " + dist));
-
-           BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(),60 + (dist.longValue() * 20L), 80);
-
-                if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) {
-                    BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
-                }
-        }
     }
 
     /**
@@ -157,12 +142,23 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
     }
 
-    //TODO: Make NPC move further if no material is found at current radius.
-    public void moveFurther() {};
-
     @Override
     public void stopEntityTrading() {
         this.stopTrading();
+    }
+
+    @Override
+    public void removeBrain() {this.brain.removeAllBehaviors();}
+
+    @Override
+    public void refreshBrain() {
+        this.brain.useDefaultActivity();
+    }
+
+    @Override
+    public void moveFurther(Location location) {
+        this.removeBrain();
+        this.navigation.moveTo(location.getX() + 8, location.getY() , location.getZ() + 3, 0.5D);
     }
 
     @Override

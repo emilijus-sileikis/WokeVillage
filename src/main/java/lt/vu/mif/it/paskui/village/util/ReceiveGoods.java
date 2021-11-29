@@ -44,5 +44,6 @@ public class ReceiveGoods extends BukkitRunnable {
             player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
         }
         p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
+        npc.refreshBrain();
     }
 }

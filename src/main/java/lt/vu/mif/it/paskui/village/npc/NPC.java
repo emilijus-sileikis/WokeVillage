@@ -134,6 +134,22 @@ public class NPC {
     public Double distanceTo(Material material) {return npcEntity.distanceTo(material);}
 
     /**
+     * Deletes all the behaviors.
+     */
+    public void removeBrain() {npcEntity.removeBrain();}
+
+    /**
+     * Puts back the behaviors in place.
+     */
+    public void refreshBrain() {npcEntity.refreshBrain();}
+
+    /**
+     * Move further if a block is not found.
+     * @param location
+     */
+    public void moveFurther(Location location) {npcEntity.moveFurther(location);}
+
+    /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
