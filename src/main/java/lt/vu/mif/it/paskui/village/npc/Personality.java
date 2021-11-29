@@ -25,7 +25,7 @@ public enum Personality {
     }
 
     public static Personality getRandomPersonality() {
-        int id = new Random().nextInt(Role.values().length);
+        int id = new Random().nextInt(Personality.values().length);
         return Personality.values()[id];
     }
 }
