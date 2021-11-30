@@ -106,29 +106,50 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public void moveTo(final int timeElapsed, final Material material) {
-        if (npc.getCuboid(material) == null) {
-            Bukkit.broadcast(
-                    Component.text("No " + material.toString() + " found")
-            );
-        } else {
-            Logging.infoLog("Move to called for NPC");
-            Location loc = this.npc.getLoc();
-            Vec3 pos = npc.getCuboid(material);
-            Block b = new Location(loc.getWorld(),
-                    pos.x - 1.3, pos.y, pos.z).getBlock();
-            this.brain.removeAllBehaviors();
-            this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
+    public void moveTo(final int timeElapsed, Material material) {
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Bukkit.broadcast(Component.text("Pause Over"));
-                    b.setType(Material.AIR);
-                    moveBack(loc);
-                }
-            }.runTaskLater(Main.getInstance(), timeElapsed * 20L);
-            //400 ticks = 20 seconds
+        for(int i=0; i<=4; i++)
+        {
+            switch(i) {
+                case 0: material = Material.SPRUCE_LOG;
+                    break;
+                case 1: material = Material.OAK_LOG;
+                    break;
+                case 2: material = Material.BIRCH_LOG;
+                    break;
+                case 3: material = Material.ACACIA_LOG;
+                    break;
+                case 4: material = Material.JUNGLE_LOG;
+                    break;
+                case 5: material = Material.DARK_OAK_LOG;
+                    break;
+                default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
+                    break;
+            }
+            if (npc.getCuboid(material) == null) {
+                Bukkit.broadcast(
+                        Component.text("No " + material.toString() + " found")
+                );
+            } else {
+                i=6;
+                Logging.infoLog("Move to called for NPC");
+                Location loc = this.npc.getLoc();
+                Vec3 pos = npc.getCuboid(material);
+                Block b = new Location(loc.getWorld(),
+                        pos.x - 1.3, pos.y, pos.z).getBlock();
+                this.brain.removeAllBehaviors();
+                this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.broadcast(Component.text("Pause Over"));
+                        b.setType(Material.AIR);
+                        moveBack(loc);
+                    }
+                }.runTaskLater(Main.getInstance(), timeElapsed * 20L);
+                //400 ticks = 20 seconds
+            }
         }
     }
 

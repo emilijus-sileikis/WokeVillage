@@ -129,7 +129,7 @@ public class NPC {
      */
     public Vec3 getCuboid(Material material) {
         switch (role) {
-            case LUMBERJACK -> material = Material.SPRUCE_LOG;
+            //case LUMBERJACK -> material = Material.SPRUCE_LOG; //any type of logs
             case MINER -> material = Material.STONE;
             case FISHER -> material = Material.WATER;
         }
