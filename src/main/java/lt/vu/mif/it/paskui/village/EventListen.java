@@ -230,7 +230,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            timeElapsed = 20; //Delete this after testing
+            //timeElapsed = 20; //Delete this after testing
             Double dist = screen.getNPC().distanceTo(material);
             screen.getNPC().moveTo(timeElapsed, material);
 
@@ -239,10 +239,10 @@ public class EventListen implements Listener {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
+                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...") //vis tiek duoda items
                         .color(NamedTextColor.RED));
             } else {
-                new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20) + (dist.longValue() * 40));
+                new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20L) + (dist.longValue() * 40));
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

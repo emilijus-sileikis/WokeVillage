@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,11 @@ public interface NPCEntity {
      * @return NPC instance.
      */
     NPC getNPC();
+
+    /**
+     * Gets current NPC position.
+     */
+    Vec3 getNPCPos();
 
     // setters
     /**

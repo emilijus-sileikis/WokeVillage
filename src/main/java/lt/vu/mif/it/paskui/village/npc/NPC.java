@@ -51,6 +51,7 @@ public class NPC {
     }
 
     public Location getLoc() {
+        this.updateLocation();
         return loc;
     }
 
@@ -150,6 +151,14 @@ public class NPC {
     public void moveFurther(Location location) {npcEntity.moveFurther(location);}
 
     /**
+     * Update location
+     */
+    public void updateLocation() {
+        Vec3 pos = npcEntity.getNPCPos();
+        this.loc = new Location(loc.getWorld(), pos.x, pos.y, pos.z);
+    }
+
+    /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
@@ -167,7 +176,7 @@ public class NPC {
         }
 
         Location center = this.getLoc();
-        float radius = 16 / 2;
+        float radius = 8;
         Location minimum = new Location(center.getWorld(), center.getX() - radius, center.getY() - radius, center.getZ() - radius);
         Location maximum = new Location(center.getWorld(), center.getX() + radius, center.getY() + radius, center.getZ() + radius);
         Block b;

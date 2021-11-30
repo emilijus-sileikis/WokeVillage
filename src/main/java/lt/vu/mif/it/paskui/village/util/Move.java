@@ -40,7 +40,7 @@ public class Move extends BukkitRunnable {
 
             BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(),60 + (dist.longValue() * 20L), 80);
 
-            if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) {
+            if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) { //ifas neveikia
                 BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
             }
         }

@@ -91,6 +91,9 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
+    public Vec3 getNPCPos() { return this.position(); }
+
+    @Override
     public void setEntityName(final @NotNull String name) {
         this.setCustomName(new TextComponent(name));
     }
@@ -117,11 +120,11 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     /**
-     * Makes the NPC to come back to the location where the deal was dealt.
+     * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) {
-        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.4D);
+    public void moveBack(Location loc) {
+        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D);
         ServerLevel world = this.portalWorld;
 
         if (this.npc.getLoc() == loc) {refreshBrain(world);}
@@ -220,8 +223,6 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         player.getBukkitEntity().openInventory(services.getInventory());
         this.setTradingPlayer(player);
-
-        //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 
         return InteractionResult.SUCCESS;
     }
