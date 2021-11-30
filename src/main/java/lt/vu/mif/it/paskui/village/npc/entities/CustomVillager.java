@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -157,8 +158,14 @@ public class CustomVillager extends Villager implements NPCEntity {
 
     @Override
     public void moveFurther(Location location) {
+        double X = location.getX();
+        double Y = location.getY();
+        double Z = location.getZ();
+        X += 8;
+        Z += 3;
         this.removeBrain();
-        this.navigation.moveTo(location.getX() + 8, location.getY() , location.getZ() + 3, 0.5D);
+        this.navigation.moveTo(X, Y, Z, 0.5D);
+        Bukkit.broadcast(Component.text("Final location: " + X + " " + Y + " " + Z));
     }
 
     @Override

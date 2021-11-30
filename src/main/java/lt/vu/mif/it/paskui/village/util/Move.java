@@ -48,6 +48,7 @@ public class Move extends BukkitRunnable {
         else {
             Bukkit.broadcast(Component.text("Moving further..."));
             Location location = this.npc.getLoc();
+            Bukkit.broadcast(Component.text("Start Location: " + location.toString()));
             npc.moveFurther(location);
         }
     }
