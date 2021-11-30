@@ -128,12 +128,6 @@ public class NPC {
      * @return returns the vector which the NPC will use for walking to the log.
      */
     public Vec3 getCuboid(Material material) {
-        switch (role) {
-            //case LUMBERJACK -> material = Material.SPRUCE_LOG; //any type of logs
-            case MINER -> material = Material.STONE;
-            case FISHER -> material = Material.WATER;
-        }
-
         Location center = this.getLoc();
         float radius = 16;
         Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));

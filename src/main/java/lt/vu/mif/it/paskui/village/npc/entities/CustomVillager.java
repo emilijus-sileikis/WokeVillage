@@ -110,22 +110,32 @@ public class CustomVillager extends Villager implements NPCEntity {
 
         for(int i=0; i<=4; i++)
         {
-            switch(i) {
-                case 0: material = Material.SPRUCE_LOG;
+            switch (npc.getRole()) {
+                case MINER: material = Material.STONE;
+                break;
+                case FISHER: material = Material.WATER;
                     break;
-                case 1: material = Material.OAK_LOG;
+                case LUMBERJACK:
+                    switch(i) {
+                        case 0: material = Material.SPRUCE_LOG;
+                            break;
+                        case 1: material = Material.OAK_LOG;
+                            break;
+                        case 2: material = Material.BIRCH_LOG;
+                            break;
+                        case 3: material = Material.ACACIA_LOG;
+                            break;
+                        case 4: material = Material.JUNGLE_LOG;
+                            break;
+                        case 5: material = Material.DARK_OAK_LOG;
+                            break;
+                        default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
+                            break;
+                    }
                     break;
-                case 2: material = Material.BIRCH_LOG;
-                    break;
-                case 3: material = Material.ACACIA_LOG;
-                    break;
-                case 4: material = Material.JUNGLE_LOG;
-                    break;
-                case 5: material = Material.DARK_OAK_LOG;
-                    break;
-                default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
-                    break;
+
             }
+
             if (npc.getCuboid(material) == null) {
                 Bukkit.broadcast(
                         Component.text("No " + material.toString() + " found")
