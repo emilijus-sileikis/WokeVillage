@@ -3,6 +3,8 @@ package lt.vu.mif.it.paskui.village.npc.services;
 import org.bukkit.Material;
 
 public enum FisherLootTable {
+    WATER(Material.WATER, 0, 0),
+    //
     SALMON(Material.SALMON,10,64),
     TROPICAL_FISH(Material.TROPICAL_FISH,10,64),
     PUFFERFISH(Material.PUFFERFISH,10,64),

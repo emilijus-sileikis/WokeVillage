@@ -144,7 +144,7 @@ public class EventListen implements Listener {
                 case FISHING_ROD:
                     FisherLootTable treasureF = FisherLootTable.fromInt(
                             random_int(
-                                    0,
+                                    1,
                                     4
                             )
                     );
@@ -153,7 +153,7 @@ public class EventListen implements Listener {
                 case ENCHANTED_BOOK:
                      treasureF = FisherLootTable.fromInt(
                             random_int(
-                                    0,
+                                    1,
                                     11
                             )
                     );
@@ -230,7 +230,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            //timeElapsed = 20; //Delete this after testing
+            timeElapsed = 20; //Delete this after testing
             Double dist = screen.getNPC().distanceTo(material);
             screen.getNPC().moveTo(timeElapsed, material);
 

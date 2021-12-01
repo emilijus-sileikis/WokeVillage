@@ -3,6 +3,8 @@ package lt.vu.mif.it.paskui.village.util;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
@@ -10,6 +12,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import static lt.vu.mif.it.paskui.village.EventListen.random_int;
 
 public class Move extends BukkitRunnable {
     NPC npc;
@@ -30,7 +34,15 @@ public class Move extends BukkitRunnable {
         // fisher - water
         // Use loot tables to get the target block
 
-        if (npc.getCuboid(material) != null) {
+        FisherLootTable fisher = FisherLootTable.fromInt(0);
+        LumberjackLootTable lumberjack = LumberjackLootTable.fromInt(
+                random_int(
+                        0,
+                        5
+                )
+        );
+
+        if (npc.getCuboid(lumberjack.getItem()) != null) {
             cancel();
             Location loc = this.npc.getLoc();
             Vec3 finish = this.npc.getCuboid(material);
