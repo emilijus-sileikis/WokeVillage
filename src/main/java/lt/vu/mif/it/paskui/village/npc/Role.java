@@ -14,7 +14,7 @@ public enum Role {
 
     private final Class<? extends SelectionScreen> clazz;
 
-    private Role(Class<? extends SelectionScreen> clazz) {
+    Role(Class<? extends SelectionScreen> clazz) {
         this.clazz = clazz;
     }
 

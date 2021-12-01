@@ -3,6 +3,7 @@ package lt.vu.mif.it.paskui.village.command;
 import lt.vu.mif.it.paskui.village.util.Logging;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 
 public class Injector {
@@ -37,12 +38,12 @@ public class Injector {
             try {
                 cns = clazz.getConstructor();
                 return cns.newInstance();
-            } catch (Exception ex) {
+            } catch (NoSuchMethodException | IllegalAccessException
+                    | InstantiationException | InvocationTargetException ex) {
                 Logging.severeLog(errFmt, clazz);
                 ex.printStackTrace();
             }
-        }
-        catch (Exception e) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             Logging.severeLog(errFmt, clazz);
             e.printStackTrace();
         }

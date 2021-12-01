@@ -113,10 +113,8 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param timeElapsed time for collecting resources.
      * @param material    material to find and collect.
      */
-    public void moveTo(final int timeElapsed, final Material material) {
-
+    public void moveTo(final int timeElapsed, Material material) {
         BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
-
     }
 
     /**
