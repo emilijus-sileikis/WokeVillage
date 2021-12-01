@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.npc.services;
+package lt.vu.mif.it.paskui.village.npc.services.tables;
 
 import org.bukkit.Material;
 

@@ -1,9 +1,9 @@
 package lt.vu.mif.it.paskui.village.npc.services;
 
-import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

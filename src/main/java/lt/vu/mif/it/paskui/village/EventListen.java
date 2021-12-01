@@ -2,9 +2,9 @@ package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
-import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
-import lt.vu.mif.it.paskui.village.npc.services.LumberjackLootTable;
-import lt.vu.mif.it.paskui.village.npc.services.MinerLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
 import net.kyori.adventure.text.Component;
