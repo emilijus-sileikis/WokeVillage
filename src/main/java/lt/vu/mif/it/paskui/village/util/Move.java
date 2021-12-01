@@ -13,7 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import static lt.vu.mif.it.paskui.village.EventListen.random_int;
+import java.util.Random;
 
 public class Move extends BukkitRunnable {
     NPC npc;
@@ -36,10 +36,7 @@ public class Move extends BukkitRunnable {
 
         FisherLootTable fisher = FisherLootTable.fromInt(0);
         LumberjackLootTable lumberjack = LumberjackLootTable.fromInt(
-                random_int(
-                        0,
-                        5
-                )
+                new Random().nextInt(6)
         );
 
         if (npc.getCuboid(lumberjack.getItem()) != null) {

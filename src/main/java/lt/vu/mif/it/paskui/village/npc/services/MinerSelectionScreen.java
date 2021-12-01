@@ -3,10 +3,12 @@ package lt.vu.mif.it.paskui.village.npc.services;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +52,25 @@ public class MinerSelectionScreen extends SelectionScreen {
                 Material.WOODEN_PICKAXE,
                 loreCoal
         );
+    }
+
+    @Override
+    public void processService(Material item, Player player) {
+        switch (item) {
+            case STONE_PICKAXE:
+                MinerLootTable treasureM = MinerLootTable.fromInt(randomInt(0, 1));
+                processTrade(player, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+            case IRON_PICKAXE:
+                treasureM = MinerLootTable.fromInt(randomInt(1, 2));
+                processTrade(player, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+            case WOODEN_PICKAXE:
+                treasureM = MinerLootTable.fromInt(randomInt(2, 3));
+                processTrade(player, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+        }
+
+        super.processService(item, player);
     }
 }

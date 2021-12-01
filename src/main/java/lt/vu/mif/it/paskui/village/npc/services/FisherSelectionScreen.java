@@ -3,10 +3,12 @@ package lt.vu.mif.it.paskui.village.npc.services;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,5 +52,33 @@ public class FisherSelectionScreen extends SelectionScreen {
                 Material.FILLED_MAP,
                 loreTreasure
         );
+    }
+
+    @Override
+    public void processService(Material item, Player player) {
+        switch (item) {
+            case FISHING_ROD -> {
+                FisherLootTable loot = FisherLootTable.fromInt(randomInt(1, 4));
+                processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+            }
+            case ENCHANTED_BOOK -> {
+                FisherLootTable loot = FisherLootTable.fromInt(randomInt(1, 11));
+                processTrade(player, 5, loot.getGoods(), loot.getItem());
+            }
+            case FILLED_MAP -> {
+                int temp = randomInt(1, 10);
+                if (temp >= 3) {
+                    Material treasureFail = Material.GOLD_NUGGET;
+                    processTrade(player, 1, 7, treasureFail);
+                } else {
+                    FisherLootTable loot = FisherLootTable.fromInt(
+                            randomInt(13, FisherLootTable.values().length)
+                    );
+                    processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+                }
+            }
+        }
+
+        super.processService(item, player);
     }
 }

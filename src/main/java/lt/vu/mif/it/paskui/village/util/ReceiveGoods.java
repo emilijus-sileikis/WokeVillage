@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village.util;
 
-import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -11,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import static lt.vu.mif.it.paskui.village.npc.services.SelectionScreen.receiveItems;
 
 public class ReceiveGoods extends BukkitRunnable {
     NPC npc;
@@ -35,7 +36,7 @@ public class ReceiveGoods extends BukkitRunnable {
             if (p.getInventory().firstEmpty() == -1) {
                 p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
             } else {//items are added 1 by 1 to avoid duping
-                EventListen.receiveItems(p.getInventory(), material, 1);
+                receiveItems(p.getInventory(), material, 1);
                 p.updateInventory();
             }
         }

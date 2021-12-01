@@ -3,11 +3,13 @@ package lt.vu.mif.it.paskui.village.npc.services;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.services.tables.ItemRandomizer;
 import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,5 +54,29 @@ public class LumberJackSelectionScreen extends SelectionScreen {
                 Material.OAK_SAPLING,
                 loreSaplings
         );
+    }
+
+    @Override
+    public void processService(Material item, Player player) {
+        switch (item) {
+            case STONE_AXE -> {
+                LumberjackLootTable loot = ItemRandomizer.getRandomItem(
+                        LumberjackLootTable.values(), 0, 5
+                );
+                processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+            }
+            case APPLE -> {
+                Material apple = Material.APPLE;
+                processTrade(player, 10, 64, apple);
+            }
+            case OAK_SAPLING -> {
+                LumberjackLootTable loot = ItemRandomizer.getRandomItem(
+                        LumberjackLootTable.values(), 5, 10
+                );
+                processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+            }
+        }
+
+        super.processService(item, player);
     }
 }
