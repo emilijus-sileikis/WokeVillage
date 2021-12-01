@@ -133,5 +133,19 @@ public class NPCCommands {
         dataManager.saveConfig();
     }
 
+    @Command(
+            roots = "npc",
+            mod = { "path" },
+            perm = "wokevillage.npc.path")
+    public void path(@NotNull CommandContext context) {
+        Logging.infoLog("NPCCommands::path has been executed.");
 
+        Logging.infoLog(context.toString());
+
+        context.getArgs().forEach(
+                (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
+        );
+
+        Main.getInstance().test();
+    }
 }

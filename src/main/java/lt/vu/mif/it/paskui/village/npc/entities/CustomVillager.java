@@ -8,6 +8,7 @@ import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Logging;
+import lt.vu.mif.it.paskui.village.util.Move;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -28,9 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -63,7 +63,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         );
 
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
-                .setBaseValue(0.3);
+                .setBaseValue(0.5);
     }
 
     // NPCEntity
@@ -91,6 +91,9 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
+    public Vec3 getNPCPos() { return this.position(); }
+
+    @Override
     public void setEntityName(final @NotNull String name) {
         this.setCustomName(new TextComponent(name));
     }
@@ -105,79 +108,67 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.setPos(loc.getX(), loc.getY(), loc.getZ());
     }
 
-    @Override
-    public void moveTo(final int timeElapsed, Material material) {
+    /**
+     * Makes the NPC move to the desired block.
+     * @param timeElapsed time for collecting resources.
+     * @param material    material to find and collect.
+     */
+    public void moveTo(final int timeElapsed, final Material material) {
 
-        for(int i=0; i<=4; i++)
-        {
-            switch (npc.getRole()) {
-                case MINER: material = Material.STONE;
-                break;
-                case FISHER: material = Material.WATER;
-                    break;
-                case LUMBERJACK:
-                    switch(i) {
-                        case 0: material = Material.SPRUCE_LOG;
-                            break;
-                        case 1: material = Material.OAK_LOG;
-                            break;
-                        case 2: material = Material.BIRCH_LOG;
-                            break;
-                        case 3: material = Material.ACACIA_LOG;
-                            break;
-                        case 4: material = Material.JUNGLE_LOG;
-                            break;
-                        case 5: material = Material.DARK_OAK_LOG;
-                            break;
-                        default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
-                            break;
-                    }
-                    break;
+        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
 
-            }
-
-            if (npc.getCuboid(material) == null) {
-                Bukkit.broadcast(
-                        Component.text("No " + material.toString() + " found")
-                );
-            } else {
-                i=6;
-                Logging.infoLog("Move to called for NPC");
-                Location loc = this.npc.getLoc();
-                Vec3 pos = npc.getCuboid(material);
-                Block b = new Location(loc.getWorld(),
-                        pos.x - 1.3, pos.y, pos.z).getBlock();
-                this.brain.removeAllBehaviors();
-                this.navigation.moveTo(pos.x, pos.y, pos.z, 0.4D);
-
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.broadcast(Component.text("Pause Over"));
-                        b.setType(Material.AIR);
-                        moveBack(loc);
-                    }
-                }.runTaskLater(Main.getInstance(), timeElapsed * 20L);
-                //400 ticks = 20 seconds
-            }
-        }
     }
 
     /**
-     * Makes the NPC to come back to the location where the deal was dealt.
+     * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) {
-        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.4D);
+    public void moveBack(Location loc) {
+        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D);
+        ServerLevel world = this.portalWorld;
 
-        if (this.npc.getLoc() == loc) {
-            refreshBrain(this.portalWorld);
+        if (this.npc.getLoc() == loc) {refreshBrain(world);}
+    }
+
+    /**
+     * Calculates the distance between the starting point and the end point.
+     * @param material - required material.
+     */
+    public double distanceTo(Material material) {
+
+        if (npc.getCuboid(material) == null) {
+            return 0;
+        }
+        else {
+            Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
+            Vec3 p2 = this.npc.getCuboid(material);
+            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
         }
     }
 
     @Override
     public void stopEntityTrading() {
         this.stopTrading();
+    }
+
+    @Override
+    public void removeBrain() {this.brain.removeAllBehaviors();}
+
+    @Override
+    public void refreshBrain() {
+        this.brain.useDefaultActivity();
+    }
+
+    @Override
+    public void moveFurther(Location location) {
+        double X = location.getX();
+        double Y = location.getY();
+        double Z = location.getZ();
+        X += 8;
+        Z += 3;
+        this.removeBrain();
+        this.navigation.moveTo(X, Y, Z, 0.5D);
+        Bukkit.broadcast(Component.text("Final location: " + X + " " + Y + " " + Z));
     }
 
     @Override
@@ -232,8 +223,6 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         player.getBukkitEntity().openInventory(services.getInventory());
         this.setTradingPlayer(player);
-
-        //TODO: add something to check if inventory is closed and then use initPathfinder(); maybe
 
         return InteractionResult.SUCCESS;
     }

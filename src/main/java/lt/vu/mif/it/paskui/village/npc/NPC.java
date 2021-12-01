@@ -51,6 +51,7 @@ public class NPC {
     }
 
     public Location getLoc() {
+        this.updateLocation();
         return loc;
     }
 
@@ -117,10 +118,44 @@ public class NPC {
     }
 
     /**
-     * Moves the NPC into the desired location
+     * Moves the NPC into the desired location.
      */
     public void moveTo(int time, Material material) {
         npcEntity.moveTo(time, material);
+    }
+
+    /**
+     * Makes the NPC move back to the starting location.
+     */
+    public void moveBack(Location loc) {npcEntity.moveBack(loc);}
+
+    /**
+     * Calculates the distance between two points.
+     */
+    public Double distanceTo(Material material) {return npcEntity.distanceTo(material);}
+
+    /**
+     * Deletes all the behaviors.
+     */
+    public void removeBrain() {npcEntity.removeBrain();}
+
+    /**
+     * Puts back the behaviors in place.
+     */
+    public void refreshBrain() {npcEntity.refreshBrain();}
+
+    /**
+     * Move further if a block is not found.
+     * @param location
+     */
+    public void moveFurther(Location location) {npcEntity.moveFurther(location);}
+
+    /**
+     * Update location
+     */
+    public void updateLocation() {
+        Vec3 pos = npcEntity.getNPCPos();
+        this.loc = new Location(loc.getWorld(), pos.x, pos.y, pos.z);
     }
 
     /**
@@ -129,9 +164,9 @@ public class NPC {
      */
     public Vec3 getCuboid(Material material) {
         Location center = this.getLoc();
-        float radius = 16;
-        Location minimum = new Location(center.getWorld(), center.getX() - (radius / 2), center.getY() - (radius / 2), center.getZ() - (radius / 2));
-        Location maximum = new Location(center.getWorld(), center.getX() + (radius / 2), center.getY() + (radius / 2), center.getZ() + (radius / 2));
+        float radius = 8;
+        Location minimum = new Location(center.getWorld(), center.getX() - radius, center.getY() - radius, center.getZ() - radius);
+        Location maximum = new Location(center.getWorld(), center.getX() + radius, center.getY() + radius, center.getZ() + radius);
         Block b;
         Vec3 v;
 

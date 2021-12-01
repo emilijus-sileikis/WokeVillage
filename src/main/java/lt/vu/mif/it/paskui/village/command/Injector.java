@@ -5,6 +5,7 @@ import lt.vu.mif.it.paskui.village.util.Logging;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+
 public class Injector {
 
     private final Object[] args;

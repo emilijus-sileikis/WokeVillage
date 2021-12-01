@@ -2,6 +2,7 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,11 @@ public interface NPCEntity {
      */
     NPC getNPC();
 
+    /**
+     * Gets current NPC position.
+     */
+    Vec3 getNPCPos();
+
     // setters
     /**
      * Setter for minecraft entity name.
@@ -83,4 +89,22 @@ public interface NPCEntity {
      * @param material    material to find and collect.
      */
     void moveTo(int timeElapsed, Material material);
+
+    /**
+     * Makes the NPC to move back to the starting point.
+     * @param loc - NPC trade location.
+     */
+    void moveBack(Location loc);
+
+    /**
+     * Counts the distance between start and end points.
+     * @param material - Required material.
+     */
+    double distanceTo(Material material);
+
+    void removeBrain();
+
+    void refreshBrain();
+
+    void moveFurther(Location location);
 }
