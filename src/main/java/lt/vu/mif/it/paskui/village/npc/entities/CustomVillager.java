@@ -114,36 +114,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-
-        for(int i=0; i<=4; i++) {
-            switch (npc.getRole()) {
-                case MINER: material = Material.STONE;
-                    break;
-                case FISHER: material = Material.WATER;
-                    break;
-                case LUMBERJACK:
-                    switch(i) {
-                        case 0: material = Material.SPRUCE_LOG;
-                            break;
-                        case 1: material = Material.OAK_LOG;
-                            break;
-                        case 2: material = Material.BIRCH_LOG;
-                            break;
-                        case 3: material = Material.ACACIA_LOG;
-                            break;
-                        case 4: material = Material.JUNGLE_LOG;
-                            break;
-                        case 5: material = Material.DARK_OAK_LOG;
-                            break;
-                        default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
-                            break;
-                    }
-                    break;
-            }
-        }
-
         BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
-
     }
 
     /**
