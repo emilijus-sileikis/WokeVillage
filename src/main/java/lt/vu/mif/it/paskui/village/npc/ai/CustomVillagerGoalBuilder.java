@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -60,14 +59,6 @@ public class CustomVillagerGoalBuilder {
                                         EntityType.VILLAGER, 8,
                                         MemoryModuleType.INTERACTION_TARGET, speed, 2),
                                 2
-                        ),
-                        Pair.of(
-                                new InteractWith<>(
-                                        EntityType.VILLAGER, 8,
-                                        AgeableMob::canBreed, AgeableMob::canBreed,
-                                        MemoryModuleType.BREED_TARGET, speed, 2
-                                ),
-                                1
                         ),
                         Pair.of(
                                 InteractWith.of(

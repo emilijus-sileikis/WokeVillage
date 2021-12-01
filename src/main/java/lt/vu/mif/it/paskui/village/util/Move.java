@@ -26,56 +26,31 @@ public class Move extends BukkitRunnable {
 
     @Override
     public void run() {
+        // Lumberjack - logs
+        // fisher - water
+        // Use loot tables to get the target block
 
-        for(int i=0; i<=4; i++) {
+        if (npc.getCuboid(material) != null) {
+            cancel();
+            Location loc = this.npc.getLoc();
+            Vec3 finish = this.npc.getCuboid(material);
+            Logging.infoLog("Move to called for NPC");
+            villager.removeBrain();
+            villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
+            Double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            switch (npc.getRole()) {
-                case MINER: material = Material.STONE;
-                    break;
-                case FISHER: material = Material.WATER;
-                    break;
-                case LUMBERJACK:
-                    switch(i) {
-                        case 0: material = Material.SPRUCE_LOG;
-                            break;
-                        case 1: material = Material.OAK_LOG;
-                            break;
-                        case 2: material = Material.BIRCH_LOG;
-                            break;
-                        case 3: material = Material.ACACIA_LOG;
-                            break;
-                        case 4: material = Material.JUNGLE_LOG;
-                            break;
-                        case 5: material = Material.DARK_OAK_LOG;
-                            break;
-                        default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
-                            break;
-                    }
-                    break;
+            Bukkit.broadcast(Component.text("Distance: " + dist));
+
+            BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), 80);
+
+            if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) { //ifas neveikia
+                BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
             }
-
-            if (npc.getCuboid(material) != null) {
-                cancel();
-                Location loc = this.npc.getLoc();
-                Vec3 finish = this.npc.getCuboid(material);
-                Logging.infoLog("Move to called for NPC");
-                villager.removeBrain();
-                villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
-                Double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
-
-                Bukkit.broadcast(Component.text("Distance: " + dist));
-
-                BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), 80);
-
-                if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) { //ifas neveikia
-                    BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
-                }
-            } else {
-                Bukkit.broadcast(Component.text("Moving further..."));
-                Location location = this.npc.getLoc();
-                Bukkit.broadcast(Component.text("Start Location: " + location.toString()));
-                npc.moveFurther(location);
-            }
+        } else {
+            Bukkit.broadcast(Component.text("Moving further..."));
+            Location location = this.npc.getLoc();
+            Bukkit.broadcast(Component.text("Start Location: " + location.toString()));
+            npc.moveFurther(location);
         }
     }
 }
