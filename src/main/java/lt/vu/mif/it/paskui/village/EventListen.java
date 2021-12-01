@@ -13,7 +13,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,146 +43,141 @@ public class EventListen implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        int temp;
+        boolean req = event.getClickedInventory() == null;
+        req = req || !(event.getClickedInventory().getHolder() instanceof SelectionScreen);
+        req = req || event.getCurrentItem() == null;
 
-        if (event.getClickedInventory() == null) {
+        if (req) return;
+
+        req = event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY);
+        req = req || event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD);
+        req = req || event.getAction().equals(InventoryAction.HOTBAR_SWAP);
+
+        if (req) {
+            event.setCancelled(true);
             return;
         }
 
-        if (event.getClickedInventory().getHolder() instanceof SelectionScreen) {
-            SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
-            Player p = (Player) event.getWhoClicked();
+        SelectionScreen screen = (SelectionScreen) event.getClickedInventory().getHolder();
+        Player p = (Player) event.getWhoClicked();
+        int temp;
 
-            if (event.getCurrentItem() == null) {
-                return;
-            }
+        switch(event.getCurrentItem().getType()) {
+            case BOOK:
+                p.sendMessage(Component.text("Welcome to WokeVillage plugin helper!")
+                        .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
+                p.sendMessage(Component.text("Woke Villagers are here to trade and " +
+                        "help you gather large amounts of resources in a relatively " +
+                        "short time. In the NPC trading menu, you can see various " +
+                        "gathering tools, which when hovered over, display trade " +
+                        "offers and details. ").color(NamedTextColor.GOLD)
+                );
+                p.sendMessage(Component.text("TASK - ")
+                        .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
+                        .append(Component.text("displays offered items."))
+                );
+                p.sendMessage(Component.text("PRICE - ")
+                        .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
+                        .append(Component.text("displays resources needed to pay for the service."))
+                );
+                p.closeInventory();
+                break;
 
-            if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) ||
-                    event.getAction().equals(InventoryAction.HOTBAR_MOVE_AND_READD) ||
-                    event.getAction().equals(InventoryAction.HOTBAR_SWAP)
-            ) {
-                event.setCancelled(true);
-                return;
-            }
+            //LumberJack
+            case STONE_AXE:
+                LumberjackLootTable treasureLJ = LumberjackLootTable.fromInt(
+                        random_int(
+                                0, // Paima tik pirmus 5 LootTable'o elementus
+                                5
+                        )
+                );
+                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
 
-            switch(event.getCurrentItem().getType())
-            {
-                case BOOK:
-                    p.sendMessage(Component.text("Welcome to WokeVillage plugin helper!")
-                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD));
-                    p.sendMessage(Component.text("Woke Villagers are here to trade and " +
-                                    "help you gather large amounts of resources in a relatively " +
-                                    "short time. In the NPC trading menu, you can see various " +
-                                    "gathering tools, which when hovered over, display trade " +
-                                    "offers and details. ").color(NamedTextColor.GOLD)
-                    );
-                    p.sendMessage(Component.text("TASK - ")
-                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
-                            .append(Component.text("displays offered items."))
-                    );
-                    p.sendMessage(Component.text("PRICE - ")
-                            .color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD)
-                            .append(Component.text("displays resources needed to pay for the service."))
-                    );
-                    p.closeInventory();
-                    break;
-
-                //LumberJack
-                case STONE_AXE:
-                    LumberjackLootTable treasureLJ = LumberjackLootTable.fromInt(
+                break;
+            case APPLE:
+                Material apple = Material.APPLE;
+                processTrade(screen, p, 10, 64, apple);
+                break;
+            case OAK_SAPLING:
+                treasureLJ = LumberjackLootTable.fromInt(
+                        random_int(
+                                5, // Paima likusius 5 LootTable'o elementus
+                                10
+                        )
+                );
+                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
+                break;
+            //Miner
+            case STONE_PICKAXE:
+                MinerLootTable treasureM = MinerLootTable.fromInt(
+                        random_int(
+                                0,
+                                1
+                        )
+                );
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+            case IRON_PICKAXE:
+                treasureM = MinerLootTable.fromInt(
+                        random_int(
+                                1,
+                                2
+                        )
+                );
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+            case WOODEN_PICKAXE:
+                treasureM = MinerLootTable.fromInt(
+                        random_int(
+                                2,
+                                3
+                        )
+                );
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                break;
+            //Fisher
+            case FISHING_ROD:
+                FisherLootTable treasureF = FisherLootTable.fromInt(
+                        random_int(
+                                1,
+                                4
+                        )
+                );
+                processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
+                break;
+            case ENCHANTED_BOOK:
+                treasureF = FisherLootTable.fromInt(
+                        random_int(
+                                1,
+                                11
+                        )
+                );
+                processTrade(screen, p, 5, treasureF.getGoods(), treasureF.getItem());
+                break;
+            case FILLED_MAP:
+                temp = random_int(1, 10);
+                if (temp >= 3) {
+                    Material treasureFail = Material.GOLD_NUGGET;
+                    processTrade(screen, p, 1, 7, treasureFail);
+                } else {
+                    treasureF = FisherLootTable.fromInt(
                             random_int(
-                                    0 , // Paima tik pirmus 5 LootTable'o elementus
-                                    5
-                            )
-                    );
-                    processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
-
-                    break;
-                case APPLE:
-                    Material apple = Material.APPLE;
-                    processTrade(screen, p, 10, 64, apple);
-                    break;
-                case OAK_SAPLING:
-                    treasureLJ = LumberjackLootTable.fromInt(
-                            random_int(
-                                    5, // Paima likusius 5 LootTable'o elementus
-                                    10
-                            )
-                    );
-                    processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
-                    break;
-                    //Miner
-                case STONE_PICKAXE:
-                    MinerLootTable treasureM = MinerLootTable.fromInt(
-                            random_int(
-                                    0,
-                                    1
-                            )
-                    );
-                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
-                    break;
-                case IRON_PICKAXE:
-                    treasureM = MinerLootTable.fromInt(
-                            random_int(
-                                    1,
-                                    2
-                            )
-                    );
-                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
-                    break;
-                case WOODEN_PICKAXE:
-                    treasureM = MinerLootTable.fromInt(
-                            random_int(
-                                    2,
-                                    3
-                            )
-                    );
-                    processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
-                    break;
-                    //Fisher
-                case FISHING_ROD:
-                    FisherLootTable treasureF = FisherLootTable.fromInt(
-                            random_int(
-                                    1,
-                                    4
+                                    13,
+                                    FisherLootTable.values().length
                             )
                     );
                     processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
-                    break;
-                case ENCHANTED_BOOK:
-                     treasureF = FisherLootTable.fromInt(
-                            random_int(
-                                    1,
-                                    11
-                            )
-                    );
-                    processTrade(screen, p, 5, treasureF.getGoods(), treasureF.getItem());
-                    break;
-                case FILLED_MAP:
-                    temp = random_int(1, 10);
-                    if(temp >= 3) {
-                        Material treasureFail = Material.GOLD_NUGGET;
-                        processTrade(screen, p, 1, 7, treasureFail);
-                    }
-                    else{
-                        treasureF = FisherLootTable.fromInt(
-                                random_int(
-                                        13,
-                                        FisherLootTable.values().length
-                                )
-                        );
-                        processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
-                    }
-                    break;
-                    //Close
-                case BARRIER:
-                    p.sendMessage(Component.text("Inventory closed!"));
-                    p.closeInventory();
-                    break;
-                default:
-                    p.sendMessage(Component.text(ChatColor.RED + "" + ChatColor.BOLD + "Plugin ERROR: OnClick"));
-                    break;
-            }
+                }
+                break;
+            //Close
+            case BARRIER:
+                p.sendMessage(Component.text("Inventory closed!"));
+                p.closeInventory();
+                break;
+            default:
+                p.sendMessage(Component.text("Plugin ERROR: OnClick")
+                        .color(NamedTextColor.RED));
+                break;
         }
     }
 
