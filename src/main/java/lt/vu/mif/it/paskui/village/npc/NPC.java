@@ -55,6 +55,8 @@ public class NPC {
         return loc;
     }
 
+    public Location getStartLoc() { return loc; }
+
     public org.bukkit.entity.Entity getEntity() {
         return npcEntity.getBukkitEntity();
     }
@@ -127,7 +129,7 @@ public class NPC {
     /**
      * Makes the NPC move back to the starting location.
      */
-    public void moveBack(Location loc) {npcEntity.moveBack(loc);}
+    public void moveBack(final Location loc) {npcEntity.moveBack(loc);}
 
     /**
      * Calculates the distance between two points.

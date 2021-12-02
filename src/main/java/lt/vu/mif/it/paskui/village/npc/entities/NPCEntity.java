@@ -94,7 +94,7 @@ public interface NPCEntity {
      * Makes the NPC to move back to the starting point.
      * @param loc - NPC trade location.
      */
-    void moveBack(Location loc);
+    void moveBack(final Location loc);
 
     /**
      * Counts the distance between start and end points.

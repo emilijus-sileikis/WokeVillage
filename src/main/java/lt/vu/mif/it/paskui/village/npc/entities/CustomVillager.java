@@ -114,14 +114,14 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
+        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimerAsynchronously(Main.getInstance(), 40, 200);
     }
 
     /**
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(Location loc) {
+    public void moveBack(final Location loc) {
         this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D);
         ServerLevel world = this.portalWorld;
 
@@ -166,7 +166,6 @@ public class CustomVillager extends Villager implements NPCEntity {
         Z += 3;
         this.removeBrain();
         this.navigation.moveTo(X, Y, Z, 0.5D);
-        Bukkit.broadcast(Component.text("Final location: " + X + " " + Y + " " + Z));
     }
 
     @Override
