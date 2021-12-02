@@ -27,8 +27,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
@@ -220,7 +223,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-                //timeElapsed = 20; //Delete this after testing
+                timeElapsed = 100; //Delete this after testing
                 Double dist = screen.getNPC().distanceTo(goTo);
                 screen.getNPC().moveTo(timeElapsed, goTo);
 
@@ -232,7 +235,24 @@ public class EventListen implements Listener {
                 p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...") //vis tiek duoda items
                         .color(NamedTextColor.RED));
             } else {
-                new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(),(timeElapsed * 20L) + (dist.longValue() * 40));
+                final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                int finalTimeElapsed = timeElapsed;
+                final Runnable runnable = new Runnable() {
+                    int countdownStarter = finalTimeElapsed + 20;
+
+                    public void run() {
+
+                        Bukkit.broadcast(Component.text(countdownStarter));
+                        countdownStarter--;
+
+                        if (countdownStarter < 0) {
+                            Bukkit.broadcast(Component.text("Time Over!"));
+                            new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(), 40);
+                            scheduler.shutdown();
+                        }
+                    }
+                };
+                scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

@@ -3,10 +3,8 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -144,7 +142,7 @@ public class NPC {
     /**
      * Puts back the behaviors in place.
      */
-    public void refreshBrain() {npcEntity.refreshBrain();}
+    public void refreshBrains(final ServerLevel world) {npcEntity.refreshBrains(world);}
 
     /**
      * Move further if a block is not found.
@@ -177,9 +175,7 @@ public class NPC {
                 for(int z = minimum.getBlockZ(); z <= maximum.getBlockZ(); z++) {
                     b = new Location(center.getWorld(), x, y, z).getBlock();
                     if (b.getType() == material) {
-                        Bukkit.broadcast(Component.text(material.toString() + " Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
                         v = new Vec3((x + 1.3), y, z);
-                        Bukkit.broadcast(Component.text("Move to: " + v));
                         return v;
                     }
                 }

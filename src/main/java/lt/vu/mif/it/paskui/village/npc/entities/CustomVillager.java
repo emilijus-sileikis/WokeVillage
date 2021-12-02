@@ -26,7 +26,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -114,19 +113,14 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimerAsynchronously(Main.getInstance(), 40, 200);
+        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 10, 100);
     }
 
     /**
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) {
-        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D);
-        ServerLevel world = this.portalWorld;
-
-        if (this.npc.getLoc() == loc) {refreshBrain(world);}
-    }
+    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D); }
 
     /**
      * Calculates the distance between the starting point and the end point.
@@ -153,8 +147,12 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void removeBrain() {this.brain.removeAllBehaviors();}
 
     @Override
-    public void refreshBrain() {
-        this.brain.useDefaultActivity();
+    public void refreshBrains(final @NotNull ServerLevel world) {
+        Brain<Villager> behaviourController = this.getBrain();
+
+        behaviourController.stopAll(world, this);
+        this.brain = behaviourController.copyWithoutBehaviors();
+        this.initBrainGoals(this.getBrain());
     }
 
     @Override

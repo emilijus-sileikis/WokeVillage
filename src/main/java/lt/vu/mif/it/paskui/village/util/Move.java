@@ -48,8 +48,9 @@ public class Move extends BukkitRunnable {
             villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
             Double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            BukkitTask chop = new Chop(npc, material, loc).runTaskTimerAsynchronously(Main.getInstance(), 60 + (dist.longValue() * 20L), 80);
-            BukkitTask wait = new Pause(npc, back).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
+            BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), (timeElapsed * 20L) / 6); //period 80
+
+            BukkitTask wait = new Pause(npc, back).runTaskLater(Main.getInstance(), (timeElapsed * 20L));
 
         } else {
             Location location = this.npc.getLoc();
