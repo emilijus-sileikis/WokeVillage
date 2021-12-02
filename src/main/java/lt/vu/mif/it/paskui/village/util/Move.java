@@ -2,9 +2,11 @@ package lt.vu.mif.it.paskui.village.util;
 
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import net.kyori.adventure.text.Component;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
@@ -28,21 +30,21 @@ public class Move extends BukkitRunnable {
         this.timeElapsed = timeElapsed;
     }
 
+    // TODO: Change this so it could work with all roles (lumberjack chops trees and moves further, fisher goes to a water source and stays there, miner mines a hole).
     @Override
     public void run() {
-        // Lumberjack - logs
-        // fisher - water
-        // Use loot tables to get the target block
 
-        FisherLootTable fisher = FisherLootTable.fromInt(0);
-        LumberjackLootTable lumberjack = LumberjackLootTable.fromInt(
-                random_int(
-                        0,
-                        5
-                )
-        );
+        if (npc.getRole() == Role.MINER) {
+            cancel();
+            Location loc = this.npc.getLoc();
+            Vec3 finish = new Vec3(loc.getX() + 5, loc.getY(), loc.getZ() + 3);
+            villager.removeBrain();
+            villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
+            // TODO: Make the NPC dig a 10x10x10 hole
+            //BukkitTask dig = new Dig();
+        }
 
-        if (npc.getCuboid(lumberjack.getItem()) != null) {
+        if (npc.getCuboid(material) != null) {
             cancel();
             Location loc = this.npc.getLoc();
             Vec3 finish = this.npc.getCuboid(material);
@@ -54,10 +56,8 @@ public class Move extends BukkitRunnable {
             Bukkit.broadcast(Component.text("Distance: " + dist));
 
             BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), 80);
+            BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
 
-            if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) { //ifas neveikia
-                BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
-            }
         } else {
             Bukkit.broadcast(Component.text("Moving further..."));
             Location location = this.npc.getLoc();

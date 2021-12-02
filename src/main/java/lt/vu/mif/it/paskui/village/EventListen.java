@@ -91,12 +91,18 @@ public class EventListen implements Listener {
                                 5
                         )
                 );
-                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
+                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem(), treasureLJ.getItem());
 
                 break;
             case APPLE:
                 Material apple = Material.APPLE;
-                processTrade(screen, p, 10, 64, apple);
+                treasureLJ = LumberjackLootTable.fromInt(
+                        random_int(
+                                1,
+                                2
+                        )
+                );
+                processTrade(screen, p, 10, 64, apple, treasureLJ.getItem());
                 break;
             case OAK_SAPLING:
                 treasureLJ = LumberjackLootTable.fromInt(
@@ -105,68 +111,58 @@ public class EventListen implements Listener {
                                 10
                         )
                 );
-                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem());
+                processTrade(screen, p, treasureLJ.getCost(), treasureLJ.getGoods(), treasureLJ.getItem(), treasureLJ.getItem());
                 break;
             //Miner
             case STONE_PICKAXE:
-                MinerLootTable treasureM = MinerLootTable.fromInt(
-                        random_int(
-                                0,
-                                1
-                        )
-                );
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                MinerLootTable treasureM = MinerLootTable.fromInt(0);
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), treasureM.getItem());
                 break;
             case IRON_PICKAXE:
-                treasureM = MinerLootTable.fromInt(
-                        random_int(
-                                1,
-                                2
-                        )
-                );
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                treasureM = MinerLootTable.fromInt(1);
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), treasureM.getItem());
                 break;
             case WOODEN_PICKAXE:
-                treasureM = MinerLootTable.fromInt(
-                        random_int(
-                                2,
-                                3
-                        )
-                );
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem());
+                MinerLootTable coal = MinerLootTable.fromInt(3);
+                treasureM = MinerLootTable.fromInt(2);
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), coal.getItem());
                 break;
             //Fisher
             case FISHING_ROD:
+                FisherLootTable fisher = FisherLootTable.fromInt(0);
                 FisherLootTable treasureF = FisherLootTable.fromInt(
                         random_int(
                                 1,
                                 4
                         )
                 );
-                processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
+                processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem(), fisher.getItem());
                 break;
             case ENCHANTED_BOOK:
+                fisher = FisherLootTable.fromInt(0);
                 treasureF = FisherLootTable.fromInt(
                         random_int(
                                 1,
                                 11
                         )
                 );
-                processTrade(screen, p, 5, treasureF.getGoods(), treasureF.getItem());
+                processTrade(screen, p, 5, treasureF.getGoods(), treasureF.getItem(), fisher.getItem());
                 break;
             case FILLED_MAP:
                 temp = random_int(1, 10);
                 if (temp >= 3) {
+                    fisher = FisherLootTable.fromInt(0);
                     Material treasureFail = Material.GOLD_NUGGET;
-                    processTrade(screen, p, 1, 7, treasureFail);
+                    processTrade(screen, p, 1, 7, treasureFail, fisher.getItem());
                 } else {
+                    fisher = FisherLootTable.fromInt(0);
                     treasureF = FisherLootTable.fromInt(
                             random_int(
                                     13,
                                     FisherLootTable.values().length
                             )
                     );
-                    processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem());
+                    processTrade(screen, p, treasureF.getCost(), treasureF.getGoods(), treasureF.getItem(), fisher.getItem());
                 }
                 break;
             //Close
@@ -198,7 +194,7 @@ public class EventListen implements Listener {
         }
     }
 
-    private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material){
+    private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material, Material goTo){
         ItemStack itemReceived = new ItemStack(getItem(material));
         if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
             int failureChance = 5; //future functionality for failure
@@ -224,9 +220,9 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-            timeElapsed = 20; //Delete this after testing
-            Double dist = screen.getNPC().distanceTo(material);
-            screen.getNPC().moveTo(timeElapsed, material);
+                timeElapsed = 20; //Delete this after testing
+                Double dist = screen.getNPC().distanceTo(goTo);
+                screen.getNPC().moveTo(timeElapsed, goTo);
 
             //failure check
             if(random_int(0, 100) < failureChance) {
