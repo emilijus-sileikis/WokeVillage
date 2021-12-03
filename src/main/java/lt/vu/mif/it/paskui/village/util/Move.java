@@ -27,7 +27,8 @@ public class Move extends BukkitRunnable {
     public void run() {
         final Location back = this.npc.getStartLoc();
 
-    /*    if (npc.getRole() == Role.MINER) {
+        /*
+        if (npc.getRole() == Role.MINER) {
             cancel();
             Location loc = this.npc.getLoc();
             Vec3 finish = new Vec3(loc.getX() + 5, loc.getY(), loc.getZ() + 3);
@@ -36,22 +37,26 @@ public class Move extends BukkitRunnable {
             // TODO: Make the NPC dig a 10x10x10 hole
             //BukkitTask dig = new Dig();
         }
+        */
 
-     */
+        Vec3 block = npc.getCuboid(material);
 
-        if (npc.getCuboid(material) != null) {
+        if (block != null) {
             cancel();
             Location loc = this.npc.getLoc();
-            Vec3 finish = this.npc.getCuboid(material);
             Logging.infoLog("Move to called for NPC");
             villager.removeBrain();
-            villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
-            Double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
+            villager.getNavigation().moveTo(block.x, block.y, block.z, 0.5D);
+            double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), (timeElapsed * 20L) / 6); //period 80
+            BukkitTask chop = new Chop(npc, material, loc)
+                    .runTaskTimer(
+                            Main.getInstance(),
+                            60 + ((long)dist * 20L),
+                            (timeElapsed * 20L) / 6
+                    ); //period 80
 
             BukkitTask wait = new Pause(npc, back).runTaskLater(Main.getInstance(), (timeElapsed * 20L));
-
         } else {
             Location location = this.npc.getLoc();
             npc.moveFurther(location);

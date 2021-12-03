@@ -22,13 +22,12 @@ public class Chop extends BukkitRunnable {
     @Override
     public void run() {
         if (x[0] <= 6) {
-            if (npc.getCuboid(material) == null) {
+            Vec3 blockPos = npc.getCuboid(material);
+            if (blockPos == null) {
                 this.cancel();
             }
             else {
-                Vec3 pos = npc.getCuboid(material);
-                Block block;
-                block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+                Block block = new Location(loc.getWorld(), blockPos.x - 1.3, blockPos.y, blockPos.z).getBlock();
                 block.setType(Material.AIR);
                 ++x[0];
             }
