@@ -1,6 +1,6 @@
 package lt.vu.mif.it.paskui.village;
 
-import lt.vu.mif.it.paskui.village.npc.services.FisherLootTable;
+import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

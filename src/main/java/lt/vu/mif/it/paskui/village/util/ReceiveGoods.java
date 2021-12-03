@@ -4,11 +4,13 @@ import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -44,6 +46,7 @@ public class ReceiveGoods extends BukkitRunnable {
             player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
         }
         p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
-        npc.refreshBrain();
+        ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
+        npc.refreshBrains(world);
     }
 }

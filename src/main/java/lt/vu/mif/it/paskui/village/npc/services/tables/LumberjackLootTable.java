@@ -1,15 +1,15 @@
-package lt.vu.mif.it.paskui.village.npc.services;
+package lt.vu.mif.it.paskui.village.npc.services.tables;
 
 import org.bukkit.Material;
 
 public enum LumberjackLootTable {
-    //
     SPRUCE_LOG(Material.SPRUCE_LOG,20,128),
     OAK_LOG(Material.OAK_LOG,20,128),
+    DARK_OAK_LOG(Material.DARK_OAK_LOG, 20, 128),
     BIRCH_LOG(Material.DARK_OAK_LOG,20,128),
     ACACIA_LOG(Material.ACACIA_LOG,20,128),
     JUNGLE_LOG(Material.JUNGLE_LOG,20,128),
-
+    //
     SPRUCE_SAPLING(Material.SPRUCE_SAPLING,2,16),
     OAK_SAPLING(Material.OAK_SAPLING,2,16),
     ACACIA_SAPLING(Material.ACACIA_SAPLING,2,16),

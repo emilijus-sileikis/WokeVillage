@@ -3,9 +3,7 @@ package lt.vu.mif.it.paskui.village.util;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
-import net.kyori.adventure.text.Component;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,58 +22,44 @@ public class Move extends BukkitRunnable {
         this.timeElapsed = timeElapsed;
     }
 
+    // TODO: Change this so it could work with all roles (lumberjack chops trees and moves further, fisher goes to a water source and stays there, miner mines a hole).
     @Override
     public void run() {
+        final Location back = this.npc.getStartLoc();
 
-        for(int i=0; i<=4; i++) {
+        /*
+        if (npc.getRole() == Role.MINER) {
+            cancel();
+            Location loc = this.npc.getLoc();
+            Vec3 finish = new Vec3(loc.getX() + 5, loc.getY(), loc.getZ() + 3);
+            villager.removeBrain();
+            villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
+            // TODO: Make the NPC dig a 10x10x10 hole
+            //BukkitTask dig = new Dig();
+        }
+        */
 
-            switch (npc.getRole()) {
-                case MINER: material = Material.STONE;
-                    break;
-                case FISHER: material = Material.WATER;
-                    break;
-                case LUMBERJACK:
-                    switch(i) {
-                        case 0: material = Material.SPRUCE_LOG;
-                            break;
-                        case 1: material = Material.OAK_LOG;
-                            break;
-                        case 2: material = Material.BIRCH_LOG;
-                            break;
-                        case 3: material = Material.ACACIA_LOG;
-                            break;
-                        case 4: material = Material.JUNGLE_LOG;
-                            break;
-                        case 5: material = Material.DARK_OAK_LOG;
-                            break;
-                        default: Bukkit.broadcast( Component.text("ERROR IN SWITCH") );
-                            break;
-                    }
-                    break;
-            }
+        Vec3 block = npc.getCuboid(material);
 
-            if (npc.getCuboid(material) != null) {
-                cancel();
-                Location loc = this.npc.getLoc();
-                Vec3 finish = this.npc.getCuboid(material);
-                Logging.infoLog("Move to called for NPC");
-                villager.removeBrain();
-                villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
-                Double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
+        if (block != null) {
+            cancel();
+            Location loc = this.npc.getLoc();
+            Logging.infoLog("Move to called for NPC");
+            villager.removeBrain();
+            villager.getNavigation().moveTo(block.x, block.y, block.z, 0.5D);
+            double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-                Bukkit.broadcast(Component.text("Distance: " + dist));
+            BukkitTask chop = new Chop(npc, material, loc)
+                    .runTaskTimer(
+                            Main.getInstance(),
+                            60 + ((long)dist * 20L),
+                            (timeElapsed * 20L) / 6
+                    ); //period 80
 
-                BukkitTask chop = new Chop(npc, material, loc).runTaskTimer(Main.getInstance(), 60 + (dist.longValue() * 20L), 80);
-
-                if (!(Bukkit.getScheduler().isCurrentlyRunning(chop.getTaskId()))) { //ifas neveikia
-                    BukkitTask wait = new Pause(npc, loc).runTaskLater(Main.getInstance(), (timeElapsed * 20L) + (dist.longValue() * 20L));
-                }
-            } else {
-                Bukkit.broadcast(Component.text("Moving further..."));
-                Location location = this.npc.getLoc();
-                Bukkit.broadcast(Component.text("Start Location: " + location.toString()));
-                npc.moveFurther(location);
-            }
+            BukkitTask wait = new Pause(npc, back).runTaskLater(Main.getInstance(), (timeElapsed * 20L));
+        } else {
+            Location location = this.npc.getLoc();
+            npc.moveFurther(location);
         }
     }
 }

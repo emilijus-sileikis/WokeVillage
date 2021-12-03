@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -26,6 +25,7 @@ import net.minecraft.world.entity.ai.behavior.ReactToBell;
 import net.minecraft.world.entity.ai.behavior.RunOne;
 import net.minecraft.world.entity.ai.behavior.SetEntityLookTarget;
 import net.minecraft.world.entity.ai.behavior.SetLookAndInteract;
+import net.minecraft.world.entity.ai.behavior.SetRaidStatus;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromBlockMemory;
 import net.minecraft.world.entity.ai.behavior.SetWalkTargetFromLookTarget;
 import net.minecraft.world.entity.ai.behavior.ShowTradesToPlayer;
@@ -33,6 +33,7 @@ import net.minecraft.world.entity.ai.behavior.SocializeAtBell;
 import net.minecraft.world.entity.ai.behavior.StrollAroundPoi;
 import net.minecraft.world.entity.ai.behavior.StrollToPoi;
 import net.minecraft.world.entity.ai.behavior.StrollToPoiList;
+import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.ai.behavior.TradeWithVillager;
 import net.minecraft.world.entity.ai.behavior.UpdateActivityFromSchedule;
 import net.minecraft.world.entity.ai.behavior.UseBonemeal;
@@ -60,14 +61,6 @@ public class CustomVillagerGoalBuilder {
                                         EntityType.VILLAGER, 8,
                                         MemoryModuleType.INTERACTION_TARGET, speed, 2),
                                 2
-                        ),
-                        Pair.of(
-                                new InteractWith<>(
-                                        EntityType.VILLAGER, 8,
-                                        AgeableMob::canBreed, AgeableMob::canBreed,
-                                        MemoryModuleType.BREED_TARGET, speed, 2
-                                ),
-                                1
                         ),
                         Pair.of(
                                 InteractWith.of(
@@ -108,10 +101,12 @@ public class CustomVillagerGoalBuilder {
             float speed
     ) {
         return ImmutableList.of(
+                Pair.of(0, new Swim(0.8F)),
                 Pair.of(0, new InteractWithDoor()),
                 Pair.of(0, new LookAtTargetSink(45, 90)),
                 Pair.of(0, new WakeUp()),
                 Pair.of(0, new ReactToBell()),
+                Pair.of(0, new SetRaidStatus()),
                 Pair.of(1, new MoveToTargetSink()),
                 Pair.of(2, new PoiCompetitorScan(profession)),
                 Pair.of(3, new LookAndFollowTradingPlayerSink(speed)),
@@ -195,25 +190,7 @@ public class CustomVillagerGoalBuilder {
                 Pair.of(new DoNothing(30, 60), 8))
         ));
     }
-
 /*
-    return ImmutableList.Builder<Pair<Integer,Behavior<LivingEntity>>> out = new ImmutableList.Builder<>().add(
-            new Pair<Integer, Behavior<LivingEntity>>(0, new InteractWithDoor()),
-            new Pair<Integer, Behavior<LivingEntity>>(0, new LookAtTargetSink(45, 90)),
-            new Pair<Integer, Behavior<LivingEntity>>(0, new WakeUp()),
-            new Pair<Integer, Behavior<LivingEntity>>(0, new ReactToBell()),
-            new Pair<Integer, Behavior<LivingEntity>>(0, new SetRaidStatus()),
-            new Pair<Integer, Behavior<LivingEntity>>(1, new MoveToTargetSink()),
-            new Pair<Integer, Behavior<LivingEntity>>(2, new PoiCompetitorScan(profession)),
-            new Pair<Integer, Behavior<LivingEntity>>(3, new LookAndFollowTradingPlayerSink(speed)),
-            new Pair<Integer, Behavior<LivingEntity>>(5, new GoToWantedItem<CustomVillager>(speed, false, 4)),
-            new Pair<Integer, Behavior<LivingEntity>>(10, new AcquirePoi(PoiType.HOME, MemoryModuleType.HOME, false, Optional.of((byte)14))),
-            new Pair<Integer, Behavior<LivingEntity>>(10, new AcquirePoi(PoiType.MEETING, MemoryModuleType.MEETING_POINT, true, Optional.of((byte)14)))
-    ).build();
-*/
-/*
-Pair.of(0, new SetRaidStatus()),
-Pair.of(0, new Swim(0.8F)),
 Pair.of(0, new ValidateNearbyPoi(profession.getJobPoiType(), MemoryModuleType.JOB_SITE)),
 Pair.of(0, new ValidateNearbyPoi(profession.getJobPoiType(), MemoryModuleType.POTENTIAL_JOB_SITE)),
 Pair.of(0, new ValidateNearbyPoi(profession.getJobPoiType(), MemoryModuleType.JOB_SITE)),

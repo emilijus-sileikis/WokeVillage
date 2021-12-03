@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
@@ -94,7 +95,7 @@ public interface NPCEntity {
      * Makes the NPC to move back to the starting point.
      * @param loc - NPC trade location.
      */
-    void moveBack(Location loc);
+    void moveBack(final Location loc);
 
     /**
      * Counts the distance between start and end points.
@@ -104,7 +105,7 @@ public interface NPCEntity {
 
     void removeBrain();
 
-    void refreshBrain();
+    void refreshBrains(final ServerLevel world);
 
     void moveFurther(Location location);
 }
