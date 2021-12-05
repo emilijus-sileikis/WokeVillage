@@ -59,7 +59,7 @@ public class NPCCommands {
             ? (String) context.getArg(NPC_NAME).value()
             : NPCNames.getRandomName().getName();
 
-        name += " The " + role.toString();
+        name += " The " + role.toStringWithCapInitial();
 
         Location loc;
         if (context.hasArg(NPC_LOCATION)) {
