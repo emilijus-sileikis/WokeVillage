@@ -209,7 +209,7 @@ public class NPC {
                         }
 
                         if (newBlock.getType() == Material.AIR
-                                && newBlock.getType() == Material.CAVE_AIR) {
+                                || newBlock.getType() == Material.CAVE_AIR) {
                             opened.add(newBlock);
                         } else if (newBlock.getType() == material) {
                             Bukkit.broadcast(Component.text(material + " Found at: " + newBlock.getLocation().toString()));
