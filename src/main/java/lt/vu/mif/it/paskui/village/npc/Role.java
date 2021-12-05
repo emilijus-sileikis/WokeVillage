@@ -33,8 +33,11 @@ public enum Role {
 
     @Override
     public String toString() {
-        return super.toString().substring(0, 1)
-            + super.toString().substring(1).toLowerCase();
+        return super.toString().toLowerCase();
+    }
+
+    public String toStringWithCapInitial() {
+        return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1);
     }
 
     public static Role getRandomRole() {
