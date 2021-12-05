@@ -3,8 +3,10 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import net.kyori.adventure.text.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -174,7 +176,7 @@ public class NPC {
     public Block searchMaterials(final @NotNull Material material) {
         this.updateLocation();
 
-        final double RADIUS = 8;
+        final double RADIUS = 16;
         final World WORLD = this.loc.getWorld();
         final Vec3 START = new Vec3(loc.getX(), loc.getY(), loc.getZ());
         final Vec3 MIN = START.subtract(RADIUS, RADIUS, RADIUS);
@@ -210,6 +212,7 @@ public class NPC {
                                 && newBlock.getType() == Material.CAVE_AIR) {
                             opened.add(newBlock);
                         } else if (newBlock.getType() == material) {
+                            Bukkit.broadcast(Component.text(material + " Found at: " + newBlock.getLocation().toString()));
                             return newBlock;
                         } else {
                             closed.push(newBlock);
