@@ -6,7 +6,7 @@ public enum LumberjackLootTable {
     SPRUCE_LOG(Material.SPRUCE_LOG,20,128),
     OAK_LOG(Material.OAK_LOG,20,128),
     DARK_OAK_LOG(Material.DARK_OAK_LOG, 20, 128),
-    BIRCH_LOG(Material.DARK_OAK_LOG,20,128),
+    BIRCH_LOG(Material.BIRCH_LOG,20,128),
     ACACIA_LOG(Material.ACACIA_LOG,20,128),
     JUNGLE_LOG(Material.JUNGLE_LOG,20,128),
     //
