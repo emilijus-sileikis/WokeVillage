@@ -27,9 +27,7 @@ public class Dig extends BukkitRunnable {
                 this.cancel();
             }
             else {
-                Vec3 pos = npc.getCuboid(material);
-                Block block;
-                block = new Location(loc.getWorld(), pos.x - 1.3, pos.y, pos.z).getBlock();
+                Block block = npc.getCuboid(material);
                 block.setType(Material.AIR);
                 ++x[0];
             }

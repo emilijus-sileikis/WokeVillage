@@ -225,7 +225,7 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
                 timeElapsed = 100; //Delete this after testing
-                Double dist = screen.getNPC().distanceTo(goTo);
+                //Double dist = screen.getNPC().distanceTo(goTo);
                 screen.getNPC().moveTo(timeElapsed, goTo);
 
             //failure check

@@ -30,6 +30,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -137,8 +138,8 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         else {
             Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-            Vec3 p2 = this.npc.getCuboid(material);
-            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+            Vector p2 = this.npc.getCuboid(material).getLocation().toVector();
+            return Math.sqrt(p1.distanceToSqr(p2.getX(), p2.getY(), p2.getZ()));
         }
     }
 
