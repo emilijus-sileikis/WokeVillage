@@ -114,6 +114,10 @@ public class CustomVillager extends Villager implements NPCEntity {
      */
     public void moveTo(final int timeElapsed, Material material) {
         BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 10, 100);
+
+        if (this.npc.getEntity().isDead()) {
+            move.cancel();
+        }
     }
 
     /**

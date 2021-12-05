@@ -119,7 +119,8 @@ public class EventListen implements Listener {
             //Miner
             case STONE_PICKAXE:
                 MinerLootTable treasureM = MinerLootTable.fromInt(0);
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), treasureM.getItem());
+                MinerLootTable stone = MinerLootTable.fromInt(4);
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), stone.getItem());
                 break;
             case IRON_PICKAXE:
                 treasureM = MinerLootTable.fromInt(1);
@@ -244,6 +245,11 @@ public class EventListen implements Listener {
 
                         Bukkit.broadcast(Component.text(countdownStarter));
                         countdownStarter--;
+
+                        if (screen.getNPC().getEntity().isDead()) {
+                            p.sendMessage(Component.text("The NPC has died..."));
+                            scheduler.shutdown();
+                        }
 
                         if (countdownStarter < 0) {
                             Bukkit.broadcast(Component.text("Time Over!"));
