@@ -7,6 +7,7 @@ import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
+import lt.vu.mif.it.paskui.village.util.Teleport;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -224,7 +225,7 @@ public class EventListen implements Listener {
             p.updateInventory();
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-                timeElapsed = 100; //Delete this after testing
+                timeElapsed = 50; //Delete this after testing
                 //Double dist = screen.getNPC().distanceTo(goTo);
                 screen.getNPC().moveTo(timeElapsed, goTo);
 
@@ -253,6 +254,7 @@ public class EventListen implements Listener {
 
                         if (countdownStarter < 0) {
                             Bukkit.broadcast(Component.text("Time Over!"));
+                            new Teleport(screen.getNPC(), loc).runTask(Main.getInstance());
                             new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(), 40);
                             scheduler.shutdown();
                         }

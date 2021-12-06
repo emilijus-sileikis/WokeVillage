@@ -1,7 +1,14 @@
 package lt.vu.mif.it.paskui.village.util;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import net.minecraft.world.phys.Vec3;
+import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import net.kyori.adventure.text.Component;
+import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.schedule.Activity;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,15 +19,21 @@ public class Chop extends BukkitRunnable {
     NPC npc;
     Material material;
     Location loc;
+    CustomVillager villager;
 
-    public Chop(NPC npc, Material material, Location loc) {
+    public Chop(NPC npc, Material material, Location loc, CustomVillager villager) {
         this.npc = npc;
         this.material = material;
         this.loc = loc;
+        this.villager = villager;
     }
 
     @Override
     public void run() {
+        if (this.villager.isInWaterOrBubble()) {
+            this.villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
+                    Pair.of(0, new Swim(0.8F))));
+        }
         if (x[0] <= 6) {
             Block block = npc.getCuboid(material);
             if (block == null) {

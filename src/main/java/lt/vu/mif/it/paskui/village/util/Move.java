@@ -3,7 +3,6 @@ package lt.vu.mif.it.paskui.village.util;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,7 +49,7 @@ public class Move extends BukkitRunnable {
             villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5D);
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            BukkitTask chop = new Chop(npc, material, loc)
+            BukkitTask chop = new Chop(npc, material, loc, villager)
                     .runTaskTimer(
                             Main.getInstance(),
                             60 + ((long)dist * 20L),
