@@ -2,7 +2,9 @@ package lt.vu.mif.it.paskui.village.util;
 
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,17 +29,19 @@ public class Move extends BukkitRunnable {
     public void run() {
         final Location back = this.npc.getLocation();
 
-        /*
         if (npc.getRole() == Role.MINER) {
             cancel();
             Location loc = this.npc.getLoc();
-            Vec3 finish = new Vec3(loc.getX() + 5, loc.getY(), loc.getZ() + 3);
             villager.removeBrain();
-            villager.getNavigation().moveTo(finish.x, finish.y, finish.z, 0.5D);
-            // TODO: Make the NPC dig a 10x10x10 hole
-            //BukkitTask dig = new Dig();
+            villager.getNavigation().moveTo(loc.getX() + 5, loc.getY(), loc.getZ() + 3, 0.5D);
+            double dist = villager.distanceTo(material);
+
+            BukkitTask dig = new Dig(npc, material, loc)
+                    .runTaskLater(
+                            Main.getInstance(),
+                            timeElapsed * 20L
+                    );
         }
-        */
 
         Block block = npc.getCuboid(material);
 

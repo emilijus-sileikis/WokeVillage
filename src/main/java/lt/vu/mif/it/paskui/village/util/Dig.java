@@ -1,7 +1,6 @@
 package lt.vu.mif.it.paskui.village.util;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,7 +8,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 // TODO: This is only the ,,demo'' variant, change this to something more efficient if possible.
 public class Dig extends BukkitRunnable {
-    final int[] x = {0};
     NPC npc;
     Material material;
     Location loc;
@@ -22,17 +20,20 @@ public class Dig extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (x[0] <= 999) {
-            if (npc.getCuboid(material) == null) {
-                this.cancel();
+        Location center = new Location(loc.getWorld(), npc.getLoc().getX(), npc.getLoc().getY(), npc.getLoc().getZ() + 7);
+        float range = 3;
+        float height = 10;
+        Location min = new Location(center.getWorld(), center.getX() - range, center.getY() - height, center.getZ() - range);
+        Location max = new Location(center.getWorld(), center.getX() + range, center.getY() + height, center.getZ() + range);
+        Block b;
+
+        for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+            for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
+                for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                    b = new Location(loc.getWorld(), x, y, z).getBlock();
+                    b.setType(Material.AIR);
+                }
             }
-            else {
-                Block block = npc.getCuboid(material);
-                block.setType(Material.AIR);
-                ++x[0];
-            }
-        } else {
-            this.cancel();
         }
     }
 }
