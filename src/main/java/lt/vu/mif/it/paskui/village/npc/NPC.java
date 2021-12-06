@@ -176,7 +176,7 @@ public class NPC {
     public Block searchMaterials(final @NotNull Material material) {
         this.updateLocation();
 
-        final double RADIUS = 16;
+        final double RADIUS = 8;
         final World WORLD = this.loc.getWorld();
         final Vec3 START = new Vec3(loc.getX(), loc.getY(), loc.getZ());
         final Vec3 MIN = START.subtract(RADIUS, RADIUS, RADIUS);
@@ -212,7 +212,6 @@ public class NPC {
                                 || newBlock.getType() == Material.CAVE_AIR) {
                             opened.add(newBlock);
                         } else if (newBlock.getType() == material) {
-                            Bukkit.broadcast(Component.text(material + " Found at: " + newBlock.getLocation().toString()));
                             return newBlock;
                         } else {
                             closed.push(newBlock);

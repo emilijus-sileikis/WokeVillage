@@ -30,10 +30,6 @@ public class Chop extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (this.villager.isInWaterOrBubble()) {
-            this.villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
-                    Pair.of(0, new Swim(0.8F))));
-        }
         if (x[0] <= 6) {
             Block block = npc.getCuboid(material);
             if (block == null) {

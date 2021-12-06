@@ -21,7 +21,7 @@ public class Dig extends BukkitRunnable {
     @Override
     public void run() {
         Location center = new Location(loc.getWorld(), npc.getLoc().getX(), npc.getLoc().getY(), npc.getLoc().getZ() + 7);
-        float range = 3;
+        float range = 2;
         float height = 10;
         Location min = new Location(center.getWorld(), center.getX() - range, center.getY() - height, center.getZ() - range);
         Location max = new Location(center.getWorld(), center.getX() + range, center.getY() + height, center.getZ() + range);

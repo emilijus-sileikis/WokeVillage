@@ -1,9 +1,13 @@
 package lt.vu.mif.it.paskui.village.util;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import net.minecraft.world.entity.ai.behavior.Swim;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,6 +54,8 @@ public class Move extends BukkitRunnable {
             Location loc = this.npc.getLoc();
             Logging.infoLog("Move to called for NPC");
             villager.removeBrain();
+            villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
+                    Pair.of(0, new Swim(0.8F))));
             villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5D);
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
