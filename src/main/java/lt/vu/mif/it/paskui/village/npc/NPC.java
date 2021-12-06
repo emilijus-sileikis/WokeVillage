@@ -3,17 +3,14 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;

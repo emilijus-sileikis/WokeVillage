@@ -8,7 +8,6 @@ import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.schedule.Activity;
-import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

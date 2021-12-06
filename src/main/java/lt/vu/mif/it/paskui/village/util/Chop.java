@@ -1,14 +1,7 @@
 package lt.vu.mif.it.paskui.village.util;
 
-import com.google.common.collect.ImmutableList;
-import com.mojang.datafixers.util.Pair;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
-import net.kyori.adventure.text.Component;
-import net.minecraft.world.entity.ai.behavior.Swim;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.schedule.Activity;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
