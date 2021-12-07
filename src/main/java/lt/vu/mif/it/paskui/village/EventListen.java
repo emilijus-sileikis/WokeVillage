@@ -6,6 +6,7 @@ import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import lt.vu.mif.it.paskui.village.util.Failure;
 import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
 import lt.vu.mif.it.paskui.village.util.Teleport;
 import net.kyori.adventure.text.Component;
@@ -18,7 +19,6 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -229,38 +229,33 @@ public class EventListen implements Listener {
                 //Double dist = screen.getNPC().distanceTo(goTo);
                 screen.getNPC().moveTo(timeElapsed, goTo);
 
+            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            int finalTimeElapsed = timeElapsed;
+            final Runnable runnable = new Runnable() {
+                int countdownStarter = finalTimeElapsed + 20;
+
+                public void run() {
+
+                    Bukkit.broadcast(Component.text(countdownStarter));
+                    countdownStarter--;
+
+                    if (screen.getNPC().getEntity().isDead()) {
+                        p.sendMessage(Component.text("The NPC has died..."));
+                        scheduler.shutdown();
+                    }
+
+                    if (countdownStarter < 0) {
+                        new Teleport(screen.getNPC(), loc).runTask(Main.getInstance());
+                        new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTask(Main.getInstance());
+                        scheduler.shutdown();
+                    }
+                }
+            };
+            scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
+
             //failure check
             if(random_int(0, 100) < failureChance) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                }
-                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...") //vis tiek duoda items
-                        .color(NamedTextColor.RED));
-            } else {
-                final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-                int finalTimeElapsed = timeElapsed;
-                final Runnable runnable = new Runnable() {
-                    int countdownStarter = finalTimeElapsed + 20;
-
-                    public void run() {
-
-                        Bukkit.broadcast(Component.text(countdownStarter));
-                        countdownStarter--;
-
-                        if (screen.getNPC().getEntity().isDead()) {
-                            p.sendMessage(Component.text("The NPC has died..."));
-                            scheduler.shutdown();
-                        }
-
-                        if (countdownStarter < 0) {
-                            Bukkit.broadcast(Component.text("Time Over!"));
-                            new Teleport(screen.getNPC(), loc).runTask(Main.getInstance());
-                            new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLater(Main.getInstance(), 40);
-                            scheduler.shutdown();
-                        }
-                    }
-                };
-                scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
+                new Failure(p, scheduler, loc, screen.getNPC()).runTaskLater(Main.getInstance(), timeElapsed * 20L);
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

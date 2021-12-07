@@ -29,7 +29,6 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -114,11 +113,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 10, 100);
-
-        if (this.npc.getEntity().isDead()) {
-            move.cancel();
-        }
+        new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 10, 100);
     }
 
     /**
@@ -167,7 +162,6 @@ public class CustomVillager extends Villager implements NPCEntity {
         double Z = location.getZ();
         X += 8;
         Z += 3;
-        this.removeBrain();
         this.navigation.moveTo(X, Y, Z, 0.5D);
     }
 
