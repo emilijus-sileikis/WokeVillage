@@ -140,5 +140,39 @@ regarding NPCs having player nametags on server restart.
 -2021-11-24:
   -6h: Finishing with NPC timings and tree chopping, new task creation. NPC timings and tasks testing.
 
-Viso valandu: 165h.
-Viso valandu sia savaite: 21h.
+-2021-11-25:
+  -2h: Research about space filling curves.
+
+-2021-11-28:
+  -5h: Trying to find a good example of H-curve in 3D.
+
+-2021-11-29:
+  -4h: More testing different methods on how to make the NPC move further if no material is found.
+
+-2021-11-30:
+  -2h: Trying to find out why coordinates won't update.
+  -2h: NPC coordinates won't update fix.
+  -3h: NPC move further additions, now he can move further if no blocks were found.
+
+-2021-12-01:
+  -3h: Looking and testing other cuboid variations.
+
+-2021-12-02:
+  -3h: Adding move to points to other Roles.
+  -2h: Make NPC move back to the start location fix.
+  -3h: Trying to fix timings again.
+
+-2021-12-05:
+  -3h: Trying to find out what is wrong with new cuboid.
+
+-2021-12-06:
+  -3h: Fixed NPC drowns in water while working.
+  -2h: Made a simple dig case for miner.
+  -2h: Testing new NPC implementations.
+
+-2021-12-07:
+  -4h: Fixing the resource lost bug. Trying to optimize runnables.
+  -2h: Trying some new versions of the cuboid.
+
+Viso valandu: 210h.
+Viso valandu sia savaite: 13h.
