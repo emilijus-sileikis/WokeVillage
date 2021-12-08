@@ -108,4 +108,8 @@ public interface NPCEntity {
     void refreshBrains(final ServerLevel world);
 
     void moveFurther(Location location);
+
+    void setInvisible();
+
+    void setVisible();
 }

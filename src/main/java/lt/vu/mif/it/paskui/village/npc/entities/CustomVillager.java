@@ -7,8 +7,8 @@ import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import lt.vu.mif.it.paskui.village.util.Check;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import lt.vu.mif.it.paskui.village.util.Move;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -113,14 +113,17 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 10, 100);
+        new Check(npc, material, this, timeElapsed)
+                .runTaskLater(
+                        Main.getInstance(), 20
+                );
     }
 
     /**
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D); }
+    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5F); }
 
     /**
      * Calculates the distance between the starting point and the end point.
@@ -160,10 +163,16 @@ public class CustomVillager extends Villager implements NPCEntity {
         double X = location.getX();
         double Y = location.getY();
         double Z = location.getZ();
-        X += 8;
-        Z += 3;
-        this.navigation.moveTo(X, Y, Z, 0.5D);
+        X += 30;
+        Z += 5;
+        this.navigation.moveTo(X, Y, Z, 0.5F);
     }
+
+    @Override
+    public void setInvisible() { this.setInvisible(true); }
+
+    @Override
+    public void setVisible() { this.setInvisible(false); }
 
     @Override
     public void removeEntity() {

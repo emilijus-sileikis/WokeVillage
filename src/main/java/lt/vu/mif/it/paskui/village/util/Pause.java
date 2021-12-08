@@ -18,6 +18,7 @@ public class Pause extends BukkitRunnable {
     @Override
     public void run() {
         Bukkit.broadcast(Component.text("Pause Over"));
+        npc.setVisible();
         npc.moveBack(loc);
     }
 }

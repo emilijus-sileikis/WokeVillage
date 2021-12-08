@@ -163,6 +163,16 @@ public class NPC {
     }
 
     /**
+     * Sets the NPC invisible.
+     */
+    public void setInvisible() { npcEntity.setInvisible(); }
+
+    /**
+     * Sets the NPC visible.
+     */
+    public void setVisible() { npcEntity.setVisible(); }
+
+    /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
