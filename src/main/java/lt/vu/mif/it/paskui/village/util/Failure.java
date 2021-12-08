@@ -36,5 +36,6 @@ public class Failure extends BukkitRunnable {
         scheduler.shutdown();
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
+        npc.getEntity().setInvulnerable(false);
     }
 }

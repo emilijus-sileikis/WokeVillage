@@ -48,5 +48,6 @@ public class ReceiveGoods extends BukkitRunnable {
         p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
+        npc.getEntity().setInvulnerable(false);
     }
 }

@@ -29,10 +29,7 @@ public class Move extends BukkitRunnable {
     // TODO: Change this so it could work with all roles (lumberjack chops trees and moves further, fisher goes to a water source and stays there, miner mines a hole).
     @Override
     public void run() {
-        if (npc.getEntity().isDead()) {
-            this.cancel();
-        }
-
+        this.villager.setInvulnerable(true);
         final Location back = this.npc.getLocation();
         villager.removeBrain();
         Block block = npc.getCuboid(material);
