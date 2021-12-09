@@ -172,6 +172,8 @@ public class NPC {
      */
     public void setVisible() { npcEntity.setVisible(); }
 
+    public void setKillable() { npcEntity.setKillable(); }
+
     /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.

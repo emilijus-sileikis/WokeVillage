@@ -62,7 +62,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         );
 
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
-                .setBaseValue(0.5);
+                .setBaseValue(0.5F);
     }
 
     // NPCEntity
@@ -175,6 +175,9 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void setVisible() { this.setInvisible(false); }
 
     @Override
+    public void setKillable() { this.setInvulnerable(false); }
+
+    @Override
     public void removeEntity() {
         this.remove(Entity.RemovalReason.DISCARDED);
     }
@@ -226,6 +229,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         player.getBukkitEntity().openInventory(services.getInventory());
         this.setTradingPlayer(player);
+        this.setInvulnerable(true);
 
         return InteractionResult.SUCCESS;
     }

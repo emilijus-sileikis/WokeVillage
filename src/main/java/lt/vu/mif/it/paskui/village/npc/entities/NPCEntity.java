@@ -112,4 +112,6 @@ public interface NPCEntity {
     void setInvisible();
 
     void setVisible();
+
+    void setKillable();
 }
