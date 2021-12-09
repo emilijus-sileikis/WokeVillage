@@ -49,5 +49,6 @@ public class ReceiveGoods extends BukkitRunnable {
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
         npc.setKillable();
+        npc.setCollidable();
     }
 }

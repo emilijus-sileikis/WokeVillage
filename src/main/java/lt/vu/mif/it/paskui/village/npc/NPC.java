@@ -174,6 +174,10 @@ public class NPC {
 
     public void setKillable() { npcEntity.setKillable(); }
 
+    public void setNonCollidable() { npcEntity.setNonCollidable(); }
+
+    public void setCollidable() { npcEntity.setCollidable(); }
+
     /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.

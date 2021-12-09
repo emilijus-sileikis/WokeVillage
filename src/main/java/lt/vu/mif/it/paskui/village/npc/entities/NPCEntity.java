@@ -114,4 +114,8 @@ public interface NPCEntity {
     void setVisible();
 
     void setKillable();
+
+    void setNonCollidable();
+
+    void setCollidable();
 }

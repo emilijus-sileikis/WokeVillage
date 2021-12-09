@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
@@ -176,6 +177,22 @@ public class CustomVillager extends Villager implements NPCEntity {
 
     @Override
     public void setKillable() { this.setInvulnerable(false); }
+
+    @Override
+    public void setNonCollidable() {
+        this.getBukkitLivingEntity().setCollidable(false);
+        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+            player.setCollidable(false);
+        }
+    }
+
+    @Override
+    public void setCollidable() {
+        this.getBukkitLivingEntity().setCollidable(true);
+        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+            player.setCollidable(true);
+        }
+    }
 
     @Override
     public void removeEntity() {
