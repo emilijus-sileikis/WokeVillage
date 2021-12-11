@@ -7,8 +7,8 @@ import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import lt.vu.mif.it.paskui.village.util.Check;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import lt.vu.mif.it.paskui.village.util.Move;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -63,7 +63,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         );
 
         Objects.requireNonNull(getAttribute(Attributes.MOVEMENT_SPEED))
-                .setBaseValue(0.5);
+                .setBaseValue(0.5F);
     }
 
     // NPCEntity
@@ -114,19 +114,17 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        BukkitTask move = new Move(npc, material, this, timeElapsed).runTaskTimer(Main.getInstance(), 40, 300);
+        new Check(npc, material, this, timeElapsed)
+                .runTaskLater(
+                        Main.getInstance(), 20
+                );
     }
 
     /**
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(Location loc) {
-        this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D);
-        ServerLevel world = this.portalWorld;
-
-        if (this.npc.getLoc() == loc) {refreshBrain(world);}
-    }
+    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5F); }
 
     /**
      * Calculates the distance between the starting point and the end point.
@@ -139,8 +137,8 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         else {
             Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-            Vec3 p2 = this.npc.getCuboid(material);
-            return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(p1.z - p2.z, 2));
+            Vector p2 = this.npc.getCuboid(material).getLocation().toVector();
+            return Math.sqrt(p1.distanceToSqr(p2.getX(), p2.getY(), p2.getZ()));
         }
     }
 
@@ -153,8 +151,12 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void removeBrain() {this.brain.removeAllBehaviors();}
 
     @Override
-    public void refreshBrain() {
-        this.brain.useDefaultActivity();
+    public void refreshBrains(final @NotNull ServerLevel world) {
+        Brain<Villager> behaviourController = this.getBrain();
+
+        behaviourController.stopAll(world, this);
+        this.brain = behaviourController.copyWithoutBehaviors();
+        this.initBrainGoals(this.getBrain());
     }
 
     @Override
@@ -162,11 +164,34 @@ public class CustomVillager extends Villager implements NPCEntity {
         double X = location.getX();
         double Y = location.getY();
         double Z = location.getZ();
-        X += 8;
-        Z += 3;
-        this.removeBrain();
-        this.navigation.moveTo(X, Y, Z, 0.5D);
-        Bukkit.broadcast(Component.text("Final location: " + X + " " + Y + " " + Z));
+        X += 30;
+        Z += 5;
+        this.navigation.moveTo(X, Y, Z, 0.5F);
+    }
+
+    @Override
+    public void setInvisible() { this.setInvisible(true); }
+
+    @Override
+    public void setVisible() { this.setInvisible(false); }
+
+    @Override
+    public void setKillable() { this.setInvulnerable(false); }
+
+    @Override
+    public void setNonCollidable() {
+        this.getBukkitLivingEntity().setCollidable(false);
+        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+            player.setCollidable(false);
+        }
+    }
+
+    @Override
+    public void setCollidable() {
+        this.getBukkitLivingEntity().setCollidable(true);
+        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+            player.setCollidable(true);
+        }
     }
 
     @Override
@@ -221,6 +246,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         }
         player.getBukkitEntity().openInventory(services.getInventory());
         this.setTradingPlayer(player);
+        this.setInvulnerable(true);
 
         return InteractionResult.SUCCESS;
     }

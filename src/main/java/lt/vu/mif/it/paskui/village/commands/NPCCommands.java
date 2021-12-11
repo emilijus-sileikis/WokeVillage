@@ -26,10 +26,8 @@ public class NPCCommands {
 
     private final DataManager dataManager;
     private final NPCManager npcManager;
-    private Role CurrentRole;
-    private String CurrentName;
 
-    public NPCCommands(Main plugin) {
+    public NPCCommands(final Main plugin) {
         npcManager = plugin.getNPCManager();
         dataManager = plugin.getDataManager();
     }
@@ -39,7 +37,7 @@ public class NPCCommands {
             roots = "npc",
             mod = { "create" },
             perm = "wokevillage.npc.create")
-    public void create(@NotNull CommandContext context) {
+    public void create(final @NotNull CommandContext context) {
         CommandSender sender = context.getSender();
         Logging.infoLog("NPCCommands::create has been executed.");
 
@@ -49,24 +47,19 @@ public class NPCCommands {
                 (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
         );
 
+        Role role = context.hasArg(NPC_ROLE)
+            ? Role.fromString((String) context.getArg(NPC_ROLE).value())
+            : Role.getRandomRole();
 
-        CurrentRole = Role.getRandomRole();
-        CurrentName = NPCNames.getRandomName().getName();
+        Personality personality = context.hasArg(NPC_PERSONALITY)
+            ? Personality.fromString((String) context.getArg(NPC_PERSONALITY).value())
+            : Personality.getRandomPersonality();
 
+        String name = context.hasArg(NPC_NAME)
+            ? (String) context.getArg(NPC_NAME).value()
+            : NPCNames.getRandomName().getName();
 
-        Role role = context.hasArg(NPC_ROLE) ?
-                Role.fromString((String) context.getArg(NPC_ROLE).value()) :
-                CurrentRole;
-
-        Personality personality = context.hasArg(NPC_PERSONALITY) ?
-                Personality.fromString((String) context.getArg(NPC_PERSONALITY).value()) :
-                Personality.getRandomPersonality();
-
-        String name = context.hasArg(NPC_NAME) ?
-                (String) context.getArg(NPC_NAME).value() :
-                CurrentName + " The " + CurrentRole.toString().substring(0,1).toUpperCase() + CurrentRole.toString().substring(1);
-
-
+        name += " The " + role.toStringWithCapInitial();
 
         Location loc;
         if (context.hasArg(NPC_LOCATION)) {

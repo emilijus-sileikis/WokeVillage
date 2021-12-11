@@ -14,7 +14,7 @@ public enum Role {
 
     private final Class<? extends SelectionScreen> clazz;
 
-    Role(Class<? extends SelectionScreen> clazz) {
+    Role(final Class<? extends SelectionScreen> clazz) {
         this.clazz = clazz;
     }
 
@@ -34,6 +34,10 @@ public enum Role {
     @Override
     public String toString() {
         return super.toString().toLowerCase();
+    }
+
+    public String toStringWithCapInitial() {
+        return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1);
     }
 
     public static Role getRandomRole() {

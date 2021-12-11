@@ -5,9 +5,10 @@ import org.bukkit.Material;
 public enum MinerLootTable {
     COBBLESTONE(Material.COBBLESTONE,10,96),
     IRON_ORE(Material.IRON_ORE,16,32),
-    COAL(Material.COAL,10,64);
-
-
+    COAL(Material.COAL,10,64),
+    //
+    COAL_ORE(Material.COAL_ORE, 0, 0),
+    STONE(Material.STONE, 0, 0);
 
     private final Material item;
     private final int cost;

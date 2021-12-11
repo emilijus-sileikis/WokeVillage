@@ -3,16 +3,18 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -54,6 +56,8 @@ public class NPC {
         this.updateLocation();
         return loc;
     }
+
+    public Location getLocation() { return loc; }
 
     public org.bukkit.entity.Entity getEntity() {
         return npcEntity.getBukkitEntity();
@@ -127,7 +131,7 @@ public class NPC {
     /**
      * Makes the NPC move back to the starting location.
      */
-    public void moveBack(Location loc) {npcEntity.moveBack(loc);}
+    public void moveBack(final Location loc) {npcEntity.moveBack(loc);}
 
     /**
      * Calculates the distance between two points.
@@ -142,7 +146,7 @@ public class NPC {
     /**
      * Puts back the behaviors in place.
      */
-    public void refreshBrain() {npcEntity.refreshBrain();}
+    public void refreshBrains(final ServerLevel world) {npcEntity.refreshBrains(world);}
 
     /**
      * Move further if a block is not found.
@@ -159,30 +163,79 @@ public class NPC {
     }
 
     /**
+     * Sets the NPC invisible.
+     */
+    public void setInvisible() { npcEntity.setInvisible(); }
+
+    /**
+     * Sets the NPC visible.
+     */
+    public void setVisible() { npcEntity.setVisible(); }
+
+    public void setKillable() { npcEntity.setKillable(); }
+
+    public void setNonCollidable() { npcEntity.setNonCollidable(); }
+
+    public void setCollidable() { npcEntity.setCollidable(); }
+
+    /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
-    public Vec3 getCuboid(Material material) {
-        Location center = this.getLoc();
-        float radius = 8;
-        Location minimum = new Location(center.getWorld(), center.getX() - radius, center.getY() - radius, center.getZ() - radius);
-        Location maximum = new Location(center.getWorld(), center.getX() + radius, center.getY() + radius, center.getZ() + radius);
-        Block b;
-        Vec3 v;
+    public Block getCuboid(Material material) {
+        return this.searchMaterials(material);
+    }
 
-        for(int x = minimum.getBlockX(); x <= maximum.getBlockX(); x++) {
-            for(int y = minimum.getBlockY(); y <= maximum.getBlockY(); y++) {
-                for(int z = minimum.getBlockZ(); z <= maximum.getBlockZ(); z++) {
-                    b = new Location(center.getWorld(), x, y, z).getBlock();
-                    if (b.getType() == material) {
-                        Bukkit.broadcast(Component.text(material.toString() + " Found at: X=" + x + " " + "Y=" + y + " " + "Z=" + z));
-                        v = new Vec3((x + 1.3), y, z);
-                        Bukkit.broadcast(Component.text("Move to: " + v));
-                        return v;
+    public Block searchMaterials(final @NotNull Material material) {
+        this.updateLocation();
+
+        final double RADIUS = 8;
+        final World WORLD = this.loc.getWorld();
+        final Vec3 START = new Vec3(loc.getX(), loc.getY(), loc.getZ());
+        final Vec3 MIN = START.subtract(RADIUS, RADIUS, RADIUS);
+        final Vec3 MAX = START.add(RADIUS, RADIUS, RADIUS);
+
+        LinkedList<Block> opened = new LinkedList<>(List.of(
+                this.loc.getBlock(),
+                this.loc.toBlockLocation().add(0, 1, 0).getBlock()
+        ));
+        LinkedList<Block> closed = new LinkedList<>();
+
+        while (!opened.isEmpty()) {
+            Block block = opened.pop();
+
+            for (int y = block.getY() - 1; y <= block.getY() + 1; ++y) {
+                for (int x = block.getX() - 1; x <= block.getX() + 1; ++x) {
+                    for (int z = block.getZ() - 1; z <= block.getZ() + 1; ++z) {
+                        if ((MIN.y > y || y > MAX.y)
+                                || (MIN.x > x || x > MAX.x)
+                                || (MIN.z > z || z > MAX.z)) {
+                            continue;
+                        }
+
+                        Block newBlock = WORLD.getBlockAt(x, y, z);
+
+                        if (newBlock.equals(block)
+                            || opened.contains(newBlock)
+                            || closed.contains(newBlock)) {
+                            continue;
+                        }
+
+                        if (newBlock.getType() == Material.AIR
+                                || newBlock.getType() == Material.CAVE_AIR) {
+                            opened.add(newBlock);
+                        } else if (newBlock.getType() == material) {
+                            return newBlock;
+                        } else {
+                            closed.push(newBlock);
+                        }
                     }
                 }
             }
+
+            closed.add(block);
         }
+
         return null;
     }
 }
