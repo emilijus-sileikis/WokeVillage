@@ -80,7 +80,9 @@ Command execution splits into three different functions - *onEnable()*, *registe
 **Random NPC Role generation**
 
 An administrator of the server should be able to spawn multiple types of NPC roles with one command.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The player typing the "/npc create" command is administrator of the server.
 
 Test steps:
@@ -89,12 +91,15 @@ Test steps:
 3. Open their inventory to check their role, based on their available tasks
 
 Expected result:
+
 After performing this test multiple times, the player should encounter different NPC roles, however randomization can cause the same role to spawn multiple times in a row.
 
 **Random NPC Personality generation**
 
 An administrator of the server should be able to spawn multiple types of NPC personalities with one command.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The player typing the "/npc create" command is administrator of the server.
 
 Test steps:
@@ -103,12 +108,15 @@ Test steps:
 3. Open their inventory to check their personality, based on the text above the NPC trading inventory.
 
 Expected result:
+
 After performing this test multiple times, the player should encounter different NPC personalities, however randomization can cause the same personality to spawn multiple times in a row.
 
 **Functional "Lazy", "Hardworking" personalities**
 
 The NPC must be faster at gathering, when the NPCs personality is "Hardworking" and slower at gathering, when the NPCs personality is "Lazy".
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The player has access to an NPC with "Lazy", "Hardworking" personalities, has enough resources to pay the NPC for the transaction.
 
 Test steps:
@@ -117,13 +125,16 @@ Test steps:
 3. Set a timer when the transaction is completed. Stop the timer when the NPC comes back with gathered goods
 
 Expected result:
+
 If the NPC has "Lazy" personality, it will come back within 750s-1000s.
 If the NPC has "Hardworking" personality, it will come back within 250s-500s
 
 **Functional "Generous", "Greedy" personalities**
 
 The NPC must have cheaper prices, when the NPCs personality is "Generous" and more costly prices, when the NPCs personality is "Greedy".
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption:   The  player  has  access  to  an  NPC  with  "Generous",  "Greedy"  personalities,  has enough resources to pay the NPC for the transaction.
 
 Test steps:
@@ -132,13 +143,16 @@ Test steps:
 3. Check how much gold has been deducted from your inventory
 
 Expected result:
+
 If the NPC has "Greedy" personality, it will take up to 200% of the price from the player.
 If the NPC has "Generous" personality, it will take down to 50% of the price from the player.
 
 **Functional “Clumsy”, “Reliable” personalities**
 
 The NPC must never fail to deliver its resources, when the NPCs personality is "Reliable" and have 15% chance to fail at gathering, when the NPCs personality is "Clumsy".
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The player has access to an NPC with "Clumsy", "Reliable" personalities, has enough resources to pay the NPC for the transaction.
 
 Test steps:
@@ -146,6 +160,7 @@ Test steps:
 2. Perform a successful transaction to the NPC via trading menu services
 
 Expected result:
+
 Repeat the test multiple times, to increase data sample-size.
 If the NPC has "Reliable" personality, it will never fail to deliver the goods.
 If the NPC has "Clumsy" personality, it will fail 15% of the time (up from 5% base chance).
@@ -153,7 +168,9 @@ If the NPC has "Clumsy" personality, it will fail 15% of the time (up from 5% ba
 **Commands – Remove Command**
 
 A server administrator should be able to use the NPC remove command.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: A server administrator should be able to use the NPC remove command.
 
 Test steps:
@@ -162,12 +179,15 @@ Test steps:
 3. Press "Enter" to submit the command.
 
 Expected result:
+
 The command gets executed and the latest spawned NPC is removed.
 
 **Commands – Create Command**
 
 A server administrator should be able to use the NPC remove command.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The command sender has administrator privileges.
 
 Test steps:
@@ -176,12 +196,15 @@ Test steps:
 3. Press "Enter" to submit the command.
 
 Expected result:
+
 The command gets registered and the NPC is spawned near the command sender.
 
 **Commands – Remove All Command**
 
 A server administrator should be able to use the NPC remove all command to remove all the NPC from the world.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The command sender has administrator privileges and at least one NPC is present in the world.
 
 Test steps:
@@ -190,12 +213,15 @@ Test steps:
 3. Press "Enter" to submit the command.
 
 Expected result:
+
 The command gets executed and all the NPC are removed from the world.
 
 **Commands – Command Flags**
 
 A server administrator and the server console user should be able to use command flags to pass additional arguments when spawning the NPC.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption:  The command sender has administrator privileges or is a console user, and at least one NPC is present in the world.
 
 Test steps
@@ -210,12 +236,15 @@ For console instance:
 3. Press "Enter" to submit the command.
 
 Expected result:
+
 The command gets executed and the NPC is spawned with the given name or/and at the given location or/and has the required role/personality.
 
 **Data Management – Data Saving**
 
 The NPC data should be written into a document on NPC spawn.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: There is at least one administrator who can execute the commands.
 
 Test steps:
@@ -224,12 +253,15 @@ Test steps:
 3. See if there is data in the data.yml file.
 
 Expected result:
+
 The NPC data (name, location, UUID, role, personality) is shown in the data.yml file.
 
 **Data Management – Data Loading** 
 
 The NPC data should help to reload the NPC back into the server.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: The data.yml file is not empty.
 
 Test steps:
@@ -238,12 +270,15 @@ Test steps:
 3. Check if all the NPCs are present.
 
 Expected result:
+
 After server restart, the NPCs should be present in the server.
 
 **Data Management – Data Deleting**
 
 The NPC data should be deleted once the NPC is removed.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption:  There is at least one administrator who can execute the commands, the data file is not empty.
 
 Test steps:
@@ -252,12 +287,15 @@ Test steps:
 3. Look at the data.yml to see if the data was removed.
 
 Expected result:
+
 The NPC data (name, location, UUID, role, personality) is removed from the data.yml file.
 
 **Opening the trading inventory**
 
 A standard player should be able to open the NPCs trading inventory.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: "Woke Village" plugin NPC is standing right in front of the player.
 
 Test steps:
@@ -265,6 +303,7 @@ Test steps:
 2. Right-click your mouse, while the cursor is on the NPC
 
 Expected result:
+
 A menu pops out, displaying
 1. "Help" button in the first trading slot.
 2. Three items representing trading tasks are in the next three slots.
@@ -273,7 +312,9 @@ A menu pops out, displaying
 **Successful transaction**
 
 A standard player should be able to successfully complete a transaction with the NPC.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: "Woke Village" plugin NPCs trading inventory can be opened, the player has enough resources to purchase traders goods.
 
 Test steps:
@@ -281,6 +322,7 @@ Test steps:
 2. Select one of three available tasks
 
 Expected result:
+
 1. A musical note will be played indicating the successful pay of the deal.
 2. In-game chat displays a message: "You have bought villagers services!".
 3. NPC starts pathfinding to desired resource.
@@ -288,7 +330,9 @@ Expected result:
 **Immovable menu items**
 
 A player should not be able to tamper (remove, duplicate, change) with trading menus items.
+
 Precondition: The server, in which the player is connected to has the "Woke Village" plugin.
+
 Assumption: "Woke Village" plugin NPCs trading inventory is opened.
 
 Test steps:
@@ -298,6 +342,7 @@ Test steps:
 4. Switch menus items places
 
 Expected result:
+
 Items in the trading menu will not disappear/change/duplicate. They will remain in their starting places and the player will not be able to drag them to its inventory.
 
 ## **Technologies and tools:**
