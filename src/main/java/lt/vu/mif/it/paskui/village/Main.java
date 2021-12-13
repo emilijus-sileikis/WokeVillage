@@ -4,6 +4,7 @@ import lt.vu.mif.it.paskui.village.command.CommandContext;
 import lt.vu.mif.it.paskui.village.command.CommandManager;
 import lt.vu.mif.it.paskui.village.command.Injector;
 import lt.vu.mif.it.paskui.village.commands.NPCCommands;
+import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
@@ -61,6 +62,10 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
 
     @Override
     public void onDisable() {
+
+        for (NPC npc : npcManager.getNPCs().values()) {
+            data.writeData(npc, npc.getId());
+        }
         npcManager.removeAllNPC();
     }
 
