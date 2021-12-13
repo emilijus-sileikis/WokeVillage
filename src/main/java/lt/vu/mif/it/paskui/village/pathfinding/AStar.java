@@ -76,7 +76,7 @@ public class AStar
                 endNode = n;
 
                 // print information about last node
-                Bukkit.broadcast(  Component.text(uncheckedNodes.size() + "uc " + checkedNodes.size() + "c " + round(n.expense) + "cne " + round(n.getEstimatedFinalExpense()) + "cnee "));
+             //   Bukkit.broadcast(  Component.text(uncheckedNodes.size() + "uc " + checkedNodes.size() + "c " + round(n.expense) + "cne " + round(n.getEstimatedFinalExpense()) + "cnee "));
 
                 break;
             }
@@ -90,7 +90,7 @@ public class AStar
         if(!pathFound)
         {
             float duration = (System.nanoTime() - nsStart) / 1000000f;
-            Bukkit.broadcast(Component.text("A* took " + (duration > 50 ? ChatColor.RED : ChatColor.WHITE) + duration + "ms" + ChatColor.WHITE + " to not find a path."));
+          //  Bukkit.broadcast(Component.text("A* took " + (duration > 50 ? ChatColor.RED : ChatColor.WHITE) + duration + "ms" + ChatColor.WHITE + " to not find a path."));
 
             return new Location[0];
         }
@@ -118,7 +118,7 @@ public class AStar
 
         // outputting benchmark result
         float duration = (System.nanoTime() - nsStart) / 1000000f;
-        Bukkit.broadcast(Component.text("A* took " + (duration > 50 ? ChatColor.RED : ChatColor.WHITE) + duration + "ms" + ChatColor.WHITE + " to find a path."));
+       // Bukkit.broadcast(Component.text("A* took " + (duration > 50 ? ChatColor.RED : ChatColor.WHITE) + duration + "ms" + ChatColor.WHITE + " to find a path."));
 
         return locations;
     }

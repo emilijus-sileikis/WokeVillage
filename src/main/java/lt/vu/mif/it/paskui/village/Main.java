@@ -143,7 +143,7 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
 
         AStar a = new AStar(start, end, 10000, true, 5);
         path = a.getPath();
-        Bukkit.broadcast(Component.text("Path: " + path.length));
+        //Bukkit.broadcast(Component.text("Path: " + path.length));
 
         mat = new Material[path.length];
         dat = new BlockData[path.length];

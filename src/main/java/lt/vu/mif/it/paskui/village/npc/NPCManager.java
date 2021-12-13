@@ -84,7 +84,7 @@ public class NPCManager {
         npcs.remove(npc.getId());
         npcIds.removeFirstOccurrence(npc.getId());
 
-        Bukkit.broadcast(Component.text("NPC was removed!"));
+        Bukkit.broadcast(Component.text("NPC - " + npc.getName() + " was removed from the world!"));
     }
 
     /**
@@ -104,11 +104,11 @@ public class NPCManager {
      */
     public void removeAllNPC() {
         if (npcIds.isEmpty() || this.npcs.isEmpty()) {
-            Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
+            //Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             return;
         }
 
-        Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
+        //Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
 
         for (NPC npc : npcs.values()) {
             npc.remove();
