@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.util;<<<<<<< HEAD
+package lt.vu.mif.it.paskui.village.util;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import org.bukkit.scheduler.BukkitRunnable;

@@ -44,7 +44,6 @@ public enum LumberjackLootTable {
             return LumberjackLootTable.values()[itemId];
         return LumberjackLootTable.SPRUCE_LOG;
     }
-
 }
 
 

@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class LumberJackSelectionScreen extends SelectionScreen {
 
@@ -20,13 +21,32 @@ public class LumberJackSelectionScreen extends SelectionScreen {
         super(npc);
     }
 
+
+
     @Override
     protected void init(Role role, Personality personality) {
         super.init(role, personality);
 
+        pricesLumberjack = new int[]{20,10,2};
+
+        if(getPersonality().equals(Personality.GREEDY))
+        {
+            for(int i=0; i<pricesLumberjack.length; i++)
+            {
+                pricesLumberjack[i] *= randomDouble(1, 2);
+            }
+        }
+        if(getPersonality().equals(Personality.GENEROUS))
+        {
+            for(int i=0; i<pricesLumberjack.length; i++)
+            {
+                pricesLumberjack[i] *= randomDouble(0.5, 0.9);;
+            }
+        }
+
         List<Component> loreLog = new ArrayList<>();
         loreLog.add(Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW));
-        loreLog.add(Component.text("Price: 20 Gold Ingots." + LumberjackLootTable.SPRUCE_LOG.getCost()).color(NamedTextColor.YELLOW));
+        loreLog.add(Component.text("Price: " + pricesLumberjack[0] + " Gold Ingots").color(NamedTextColor.YELLOW));
         this.createAddItem(
                 Component.text("Wood Chopping").color(NamedTextColor.GOLD)
                         .decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC),
@@ -36,7 +56,7 @@ public class LumberJackSelectionScreen extends SelectionScreen {
 
         List<Component> loreApple = new ArrayList<>();
         loreApple.add(Component.text("Task: 64 Apples.").color(NamedTextColor.YELLOW));
-        loreApple.add(Component.text("Price: 10 Gold Ingots.").color(NamedTextColor.YELLOW));
+        loreApple.add(Component.text("Price: " + pricesLumberjack[1] + " Gold Ingots").color(NamedTextColor.YELLOW));
         this.createAddItem(
                 Component.text("Apple Gathering").color(NamedTextColor.GOLD)
                         .decorate(TextDecoration.BOLD).decorate(TextDecoration.ITALIC),
@@ -46,7 +66,7 @@ public class LumberJackSelectionScreen extends SelectionScreen {
 
         List<Component> loreSaplings = new ArrayList<>();
         loreSaplings.add(Component.text("Task: 16 Saplings.").color(NamedTextColor.YELLOW));
-        loreSaplings.add(Component.text("Price: 2 Gold Ingots.").color(NamedTextColor.YELLOW));
+        loreSaplings.add(Component.text("Price: " + pricesLumberjack[2] + " Gold Ingots").color(NamedTextColor.YELLOW));
         this.createAddItem(
                 Component.text("Sapling Gathering").color(NamedTextColor.GOLD)
                         .decorate(TextDecoration.BOLD)
@@ -63,19 +83,20 @@ public class LumberJackSelectionScreen extends SelectionScreen {
                 LumberjackLootTable loot = ItemRandomizer.getRandomItem(
                         LumberjackLootTable.values(), 0, 5
                 );
-                processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+                processTrade(player, pricesLumberjack[0], loot.getGoods(), loot.getItem());
             }
             case APPLE -> {
                 Material apple = Material.APPLE;
-                processTrade(player, 10, 64, apple);
+                processTrade(player, pricesLumberjack[1], 64, apple);
             }
             case OAK_SAPLING -> {
                 LumberjackLootTable loot = ItemRandomizer.getRandomItem(
                         LumberjackLootTable.values(), 5, 10
                 );
-                processTrade(player, loot.getCost(), loot.getGoods(), loot.getItem());
+                processTrade(player, pricesLumberjack[2], loot.getGoods(), loot.getItem());
             }
         }
+
 
         super.processService(item, player);
     }

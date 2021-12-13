@@ -42,6 +42,9 @@ public class SelectionScreen implements InventoryHolder {
 
     private final NPC npc;
     protected final Inventory inv;
+    protected int pricesFisher[];
+    protected int pricesMiner[];
+    protected int pricesLumberjack[];
 
     public SelectionScreen(NPC npc) {
         this.npc = npc;
@@ -51,6 +54,10 @@ public class SelectionScreen implements InventoryHolder {
                         .decorate(TextDecoration.BOLD)
                         .color(NamedTextColor.RED)
         );
+        pricesFisher = new int[3];
+        pricesMiner = new int[3];
+        pricesLumberjack = new int[3];
+
         init(npc.getRole(), npc.getPersonality());
     }
 
