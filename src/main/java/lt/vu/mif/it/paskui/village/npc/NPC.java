@@ -172,11 +172,31 @@ public class NPC {
      */
     public void setVisible() { npcEntity.setVisible(); }
 
+    /**
+     * Sets the NPC killable.
+     */
     public void setKillable() { npcEntity.setKillable(); }
 
+    /**
+     * Sets the NPC non collidable.
+     */
     public void setNonCollidable() { npcEntity.setNonCollidable(); }
 
+    /**
+     * Sets the NPC Collidable.
+     */
     public void setCollidable() { npcEntity.setCollidable(); }
+
+    /**
+     * Sets the Cosmetics for the NPC.
+     * @param role
+     */
+    public void cosmetics(Role role) { npcEntity.cosmetics(role); }
+
+    /**
+     * Resets the Cosmetics.
+     */
+    public void itemReset() { npcEntity.itemReset(); }
 
     /**
      * Checks if there is a specific block in a radius

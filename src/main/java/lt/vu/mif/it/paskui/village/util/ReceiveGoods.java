@@ -50,5 +50,6 @@ public class ReceiveGoods extends BukkitRunnable {
         npc.refreshBrains(world);
         npc.setKillable();
         npc.setCollidable();
+        npc.itemReset();
     }
 }

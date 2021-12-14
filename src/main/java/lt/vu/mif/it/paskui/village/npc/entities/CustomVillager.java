@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
@@ -31,6 +32,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -199,6 +201,21 @@ public class CustomVillager extends Villager implements NPCEntity {
     @Override
     public void removeEntity() {
         this.remove(Entity.RemovalReason.DISCARDED);
+    }
+
+    @Override
+    public void cosmetics(Role role) {
+        switch (role) {
+            case MINER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.IRON_PICKAXE)));
+            case LUMBERJACK -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.IRON_AXE)));
+            case FISHER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.FISHING_ROD)));
+            default -> Logging.infoLog("Plugin ERROR: Failed to get an item!");
+        }
+    }
+
+    @Override
+    public void itemReset() {
+        this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.AIR)));
     }
 
     // Villager
