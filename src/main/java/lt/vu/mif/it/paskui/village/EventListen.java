@@ -236,7 +236,7 @@ public class EventListen implements Listener {
 
                 public void run() {
 
-                    Bukkit.broadcast(Component.text(countdownStarter));
+                    //Bukkit.broadcast(Component.text(countdownStarter));
                     countdownStarter--;
 
                     if (screen.getNPC().getEntity().isDead()) {

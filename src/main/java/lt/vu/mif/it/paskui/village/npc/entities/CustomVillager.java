@@ -268,6 +268,11 @@ public class CustomVillager extends Villager implements NPCEntity {
             @NotNull final InteractionHand hand
     ) {
         SelectionScreen services = npc.getServices();
+        //TODO: Test this with two players
+        if (this.isInvulnerable()) {
+            player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("The NPC is busy"), UUID.randomUUID());
+            return InteractionResult.FAIL;
+        }
 
         if (services == null) {
             services = SelectionScreen.createScreen(npc);
