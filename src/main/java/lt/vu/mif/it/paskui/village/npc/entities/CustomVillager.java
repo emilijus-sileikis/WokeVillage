@@ -214,6 +214,16 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
+    public void goods(Role role) {
+        switch (role) {
+            case MINER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.CHEST)));
+            case LUMBERJACK -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.BARREL)));
+            case FISHER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.TROPICAL_FISH_BUCKET)));
+            default -> Logging.infoLog("Plugin ERROR: Failed to get an item!");
+        }
+    }
+
+    @Override
     public void itemReset() {
         this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.AIR)));
     }

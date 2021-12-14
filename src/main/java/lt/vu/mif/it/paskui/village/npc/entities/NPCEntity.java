@@ -155,4 +155,10 @@ public interface NPCEntity {
      * Resets the Cosmetics.
      */
     void itemReset();
+
+    /**
+     * Cosmetic for delivering goods.
+     * @param role
+     */
+    void goods(Role role);
 }

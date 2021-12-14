@@ -197,6 +197,12 @@ public class NPC {
     public void itemReset() { npcEntity.itemReset(); }
 
     /**
+     * Cosmetic for delivering goods.
+     * @param role
+     */
+    public void goods(Role role) { npcEntity.goods(role); }
+
+    /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */

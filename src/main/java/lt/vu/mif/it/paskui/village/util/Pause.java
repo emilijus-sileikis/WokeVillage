@@ -18,6 +18,7 @@ public class Pause extends BukkitRunnable {
     public void run() {
         npc.setVisible();
         npc.moveBack(loc);
+        npc.goods(npc.getRole());
         new Teleport(npc, loc).runTaskLater(Main.getInstance(), 80);
     }
 }
