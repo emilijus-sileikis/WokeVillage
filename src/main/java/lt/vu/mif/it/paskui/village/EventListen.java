@@ -247,7 +247,7 @@ public class EventListen implements Listener {
 
                     if (countdownStarter < 0) {
                         new Teleport(screen.getNPC(), loc).runTask(Main.getInstance());
-                        new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTask(Main.getInstance());
+                        new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskAsynchronously(Main.getInstance());
                         scheduler.shutdown();
                     }
                 }

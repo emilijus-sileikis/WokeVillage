@@ -57,7 +57,7 @@ public class Check extends BukkitRunnable {
                     .runTaskTimer(
                             Main.getInstance(),
                             60 + ((long)dist * 20L),
-                            (timeElapsed * 20L) / 6
+                            (timeElapsed * 20L) / 7
                     );
 
             new Pause(npc, back)
