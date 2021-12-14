@@ -1,8 +1,6 @@
 package lt.vu.mif.it.paskui.village.pathfinding;
 
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 

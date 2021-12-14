@@ -8,7 +8,6 @@ import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.util.Failure;
 import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
-import lt.vu.mif.it.paskui.village.util.Teleport;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -241,7 +240,6 @@ public class EventListen implements Listener {
                     countdownStarter--;
 
                     if (screen.getNPC().getEntity().isDead()) {
-                        p.sendMessage(Component.text("The NPC has died..."));
                         scheduler.shutdown();
                     }
 

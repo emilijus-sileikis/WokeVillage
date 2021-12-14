@@ -10,8 +10,6 @@ import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
