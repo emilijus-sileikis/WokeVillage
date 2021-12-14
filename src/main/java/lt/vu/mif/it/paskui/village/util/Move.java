@@ -22,6 +22,7 @@ public class Move extends BukkitRunnable {
 
             if (npc.getRole() != Role.MINER) {
                 new Invisible(npc).runTaskLater(Main.getInstance(), 100);
+                npc.itemReset();
             }
             new Pause(npc, location)
                     .runTaskLater(

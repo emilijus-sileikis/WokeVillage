@@ -39,5 +39,6 @@ public class Failure extends BukkitRunnable {
         npc.setKillable();
         npc.setCollidable();
         npc.setVisible();
+        npc.itemReset();
     }
 }
