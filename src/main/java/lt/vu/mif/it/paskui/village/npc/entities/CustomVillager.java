@@ -29,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -131,13 +132,14 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material - required material.
      */
     public double distanceTo(Material material) {
+        Block block = npc.getCuboid(material);
 
-        if (npc.getCuboid(material) == null) {
+        if (block == null) {
             return 0;
         }
         else {
             Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-            Vector p2 = this.npc.getCuboid(material).getLocation().toVector();
+            Vector p2 = block.getLocation().toVector();
             return Math.sqrt(p1.distanceToSqr(p2.getX(), p2.getY(), p2.getZ()));
         }
     }

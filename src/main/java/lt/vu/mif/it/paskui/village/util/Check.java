@@ -45,7 +45,7 @@ public class Check extends BukkitRunnable {
                     );
         }
 
-        if (npc.getCuboid(material) != null) {
+        if (block != null) {
             Location loc = this.npc.getLoc();
             Logging.infoLog("Move to called for NPC");
             villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
