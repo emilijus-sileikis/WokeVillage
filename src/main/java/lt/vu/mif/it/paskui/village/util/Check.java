@@ -30,7 +30,7 @@ public class Check extends BukkitRunnable {
     public void run() {
         this.villager.setInvulnerable(true);
         this.npc.setNonCollidable();
-        final Location back = this.npc.getLocation();
+        Location back = this.npc.getLoc();
         this.villager.cosmetics(this.npc.getRole());
         villager.removeBrain();
         Block block = npc.getCuboid(material);

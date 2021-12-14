@@ -17,7 +17,7 @@ public class Move extends BukkitRunnable {
 
     @Override
     public void run() {
-            Location location = this.npc.getLocation();
+            Location location = this.npc.getLoc();
             npc.moveFurther(location);
 
             if (npc.getRole() != Role.MINER) {

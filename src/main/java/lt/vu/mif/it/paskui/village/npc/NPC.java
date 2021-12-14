@@ -57,8 +57,6 @@ public class NPC {
         return loc;
     }
 
-    public Location getLocation() { return loc; }
-
     public org.bukkit.entity.Entity getEntity() {
         return npcEntity.getBukkitEntity();
     }
