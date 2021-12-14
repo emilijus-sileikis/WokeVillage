@@ -45,7 +45,7 @@ public class LumberJackSelectionScreen extends SelectionScreen {
         }
 
         List<Component> loreLog = new ArrayList<>();
-        loreLog.add(Component.text("Task: 128 Spruce Logs.").color(NamedTextColor.YELLOW));
+        loreLog.add(Component.text("Task: 128 Spruce Logs.") .color(NamedTextColor.YELLOW));
         loreLog.add(Component.text("Price: " + pricesLumberjack[0] + " Gold Ingots").color(NamedTextColor.YELLOW));
         this.createAddItem(
                 Component.text("Wood Chopping").color(NamedTextColor.GOLD)
