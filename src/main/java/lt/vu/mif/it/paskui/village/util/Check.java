@@ -33,7 +33,7 @@ public class Check extends BukkitRunnable {
         Location back = this.npc.getLoc();
         this.npc.setWorkHand();
         villager.removeBrain();
-        Block block = npc.getCuboid(material);
+        Block block = npc.searchMaterials(material);
         villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
                 Pair.of(0, new Swim(0.8f))));
 

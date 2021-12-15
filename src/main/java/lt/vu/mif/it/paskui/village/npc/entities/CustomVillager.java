@@ -133,7 +133,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material - required material.
      */
     public double distanceTo(Material material) {
-        Block block = npc.getCuboid(material);
+        Block block = npc.searchMaterials(material);
 
         if (block == null) {
             return 0;

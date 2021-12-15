@@ -211,10 +211,6 @@ public class NPC {
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
-    public Block getCuboid(Material material) {
-        return this.searchMaterials(material);
-    }
-
     public Block searchMaterials(final @NotNull Material material) {
         this.updateLocation();
 
