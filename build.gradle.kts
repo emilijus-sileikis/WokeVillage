@@ -34,8 +34,12 @@ tasks {
 
     processResources {
         filteringCharset = "UTF-8"
+        val projectData = mapOf(
+            "name" to project.properties["name"],
+            "version" to project.properties["version"]
+        )
         filesMatching("plugin.yml") {
-            expand(project.properties)
+            expand(projectData)
         }
     }
 }

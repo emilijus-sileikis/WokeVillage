@@ -1,7 +1,7 @@
-name: WokeVillage
+name: ${name}
 author: Paskui Solutions
 main: lt.vu.mif.it.paskui.village.Main
-version: 0.7
+version: ${version}
 api-version: 1.17
 
 commands:
