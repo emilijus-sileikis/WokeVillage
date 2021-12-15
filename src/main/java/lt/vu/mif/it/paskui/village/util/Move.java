@@ -9,10 +9,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Move extends BukkitRunnable {
     NPC npc;
     int timeElapsed;
+    Location back;
 
-    public Move(NPC npc, int timeElapsed) {
+    public Move(NPC npc, int timeElapsed, Location back) {
         this.npc = npc;
         this.timeElapsed = timeElapsed;
+        this.back = back;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class Move extends BukkitRunnable {
                 new Invisible(npc).runTaskLater(Main.getInstance(), 100);
                 npc.itemReset();
             }
-            new Pause(npc, location)
+            new Pause(npc, back)
                     .runTaskLater(
                             Main.getInstance(), (timeElapsed * 20L)
                     );

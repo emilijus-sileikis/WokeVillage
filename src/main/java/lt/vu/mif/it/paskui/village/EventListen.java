@@ -119,17 +119,17 @@ public class EventListen implements Listener {
             //Miner
             case STONE_PICKAXE:
                 MinerLootTable treasureM = MinerLootTable.fromInt(0);
-                MinerLootTable stone = MinerLootTable.fromInt(4);
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), stone.getItem());
+                //MinerLootTable stone = MinerLootTable.fromInt(4);
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), null);
                 break;
             case IRON_PICKAXE:
                 treasureM = MinerLootTable.fromInt(1);
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), treasureM.getItem());
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), null);
                 break;
             case WOODEN_PICKAXE:
-                MinerLootTable coal = MinerLootTable.fromInt(3);
+                //MinerLootTable coal = MinerLootTable.fromInt(3);
                 treasureM = MinerLootTable.fromInt(2);
-                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), coal.getItem());
+                processTrade(screen, p, treasureM.getCost(), treasureM.getGoods(), treasureM.getItem(), null);
                 break;
             //Fisher
             case FISHING_ROD:

@@ -67,7 +67,7 @@ public class Check extends BukkitRunnable {
                     );
         }
         else {
-            new Move(npc, timeElapsed)
+            new Move(npc, timeElapsed, back)
                     .runTaskLater(
                             Main.getInstance(), 80
                     );
