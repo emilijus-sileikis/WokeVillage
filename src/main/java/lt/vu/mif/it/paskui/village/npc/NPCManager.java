@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -116,6 +117,7 @@ public class NPCManager {
 
         npcs.clear();
         npcIds.clear();
+        Bukkit.getScheduler().cancelTasks(Main.getInstance()); //Cancel all events if all NPCs are removed.
     }
 
     // private

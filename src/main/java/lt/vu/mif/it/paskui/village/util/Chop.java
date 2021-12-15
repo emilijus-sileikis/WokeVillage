@@ -25,15 +25,15 @@ public class Chop extends BukkitRunnable {
     public void run() {
         if (x[0] <= 6) {
             Block block = npc.getCuboid(material);
-            if (block == null) {
-                this.cancel();
+            if (block == null || npc.getEntity().isDead()) {
+                return;
             }
             else {
                 block.setType(Material.AIR);
                 ++x[0];
             }
         } else {
-            this.cancel();
+            return;
         }
     }
 }

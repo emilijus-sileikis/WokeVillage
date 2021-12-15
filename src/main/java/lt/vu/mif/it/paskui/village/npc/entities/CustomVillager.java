@@ -127,7 +127,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5F); }
+    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D); }
 
     /**
      * Calculates the distance between the starting point and the end point.
@@ -170,7 +170,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         double Z = location.getZ();
         X += 30;
         Z += 5;
-        this.navigation.moveTo(X, Y, Z, 0.5F);
+        this.navigation.moveTo(X, Y, Z, 0.5D);
     }
 
     @Override

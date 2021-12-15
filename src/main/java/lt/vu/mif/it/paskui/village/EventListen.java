@@ -242,7 +242,6 @@ public class EventListen implements Listener {
                     if (screen.getNPC().getEntity().isDead()) {
                         scheduler.shutdown();
                     }
-
                     if (countdownStarter < 0) {
                         new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLaterAsynchronously(Main.getInstance(), 20);
                         scheduler.shutdown();

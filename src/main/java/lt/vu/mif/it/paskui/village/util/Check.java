@@ -34,10 +34,12 @@ public class Check extends BukkitRunnable {
         this.villager.cosmetics(this.npc.getRole());
         villager.removeBrain();
         Block block = npc.getCuboid(material);
+        villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
+                Pair.of(0, new Swim(0.8f))));
 
         if (npc.getRole() == Role.MINER) {
             Location loc = this.npc.getLoc();
-            villager.getNavigation().moveTo(loc.getX() + 5, loc.getY(), loc.getZ() + 3, 0.5F);
+            villager.getNavigation().moveTo(loc.getX() + 5, loc.getY(), loc.getZ() + 3, 0.5D);
 
             new Dig(npc, material, loc)
                     .runTaskLater(
@@ -49,9 +51,7 @@ public class Check extends BukkitRunnable {
         if (block != null) {
             Location loc = this.npc.getLoc();
             Logging.infoLog("Move to called for NPC");
-            villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
-                    Pair.of(0, new Swim(0.8F))));
-            villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5F);
+            villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5D);
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
             new Chop(npc, material, loc, villager)

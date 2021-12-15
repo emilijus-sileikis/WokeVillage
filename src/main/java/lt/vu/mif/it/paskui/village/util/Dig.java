@@ -20,6 +20,10 @@ public class Dig extends BukkitRunnable {
 
     @Override
     public void run() {
+        if (npc.getEntity().isDead()) {
+            return;
+        }
+
         Location center = new Location(loc.getWorld(), npc.getLoc().getX(), npc.getLoc().getY(), npc.getLoc().getZ() + 7);
         float range = 2;
         float height = 10;
