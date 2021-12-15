@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -186,21 +187,25 @@ public class NPC {
     public void setCollidable() { npcEntity.setCollidable(); }
 
     /**
-     * Sets the Cosmetics for the NPC.
-     * @param role
-     */
-    public void cosmetics(Role role) { npcEntity.cosmetics(role); }
-
-    /**
      * Resets the Cosmetics.
      */
-    public void itemReset() { npcEntity.itemReset(); }
+    public void itemReset() {
+        npcEntity.setHandItem(new ItemStack(Material.AIR));
+    }
 
     /**
-     * Cosmetic for delivering goods.
-     * @param role
+     * Sets the Cosmetics for the NPC.
      */
-    public void goods(Role role) { npcEntity.goods(role); }
+    public void setWorkHand() {
+        npcEntity.setHandItem(new ItemStack(role.workCosmetic));
+    }
+
+    /**
+     * Sets {@link NPCEntity} hand based on its role.
+     */
+    public void setGoodsHand() {
+        npcEntity.setHandItem(new ItemStack(role.goodsCosmetic));
+    }
 
     /**
      * Checks if there is a specific block in a radius

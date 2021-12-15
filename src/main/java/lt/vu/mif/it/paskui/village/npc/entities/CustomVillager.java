@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
@@ -25,6 +24,7 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
@@ -32,7 +32,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -204,28 +203,8 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public void cosmetics(Role role) {
-        switch (role) {
-            case MINER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.IRON_PICKAXE)));
-            case LUMBERJACK -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.IRON_AXE)));
-            case FISHER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.FISHING_ROD)));
-            default -> Logging.infoLog("Plugin ERROR: Failed to get an item!");
-        }
-    }
-
-    @Override
-    public void goods(Role role) {
-        switch (role) {
-            case MINER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.CHEST)));
-            case LUMBERJACK -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.BARREL)));
-            case FISHER -> this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.TROPICAL_FISH_BUCKET)));
-            default -> Logging.infoLog("Plugin ERROR: Failed to get an item!");
-        }
-    }
-
-    @Override
-    public void itemReset() {
-        this.setItemInHand(InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.fromBukkitCopy(new ItemStack(Material.AIR)));
+    public void setHandItem(org.bukkit.inventory.ItemStack item) {
+        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.fromBukkitCopy(item));
     }
 
     // Villager

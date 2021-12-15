@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -146,19 +147,7 @@ public interface NPCEntity {
     void setCollidable();
 
     /**
-     * Sets the Cosmetics for the NPC.
-     * @param role
+     * Interface for setting entities hand item;
      */
-    void cosmetics(Role role);
-
-    /**
-     * Resets the Cosmetics.
-     */
-    void itemReset();
-
-    /**
-     * Cosmetic for delivering goods.
-     * @param role
-     */
-    void goods(Role role);
+    void setHandItem(ItemStack item);
 }

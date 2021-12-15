@@ -96,7 +96,7 @@ public class SelectionScreen implements InventoryHolder {
     // static
     public static SelectionScreen createScreen(NPC npc) {
         try {
-            Constructor<? extends SelectionScreen> cns = npc.getRole().getClazz().getConstructor(npc.getClass());
+            Constructor<? extends SelectionScreen> cns = npc.getRole().clazz.getConstructor(npc.getClass());
             return cns.newInstance(npc);
         } catch (NoSuchMethodException | IllegalAccessException |
                 InstantiationException | InvocationTargetException e
