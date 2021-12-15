@@ -19,16 +19,16 @@ public class Move extends BukkitRunnable {
 
     @Override
     public void run() {
-            Location location = this.npc.getLoc();
-            npc.moveFurther(location);
+        Location location = this.npc.getLoc();
+        npc.moveFurther(location);
 
-            if (npc.getRole() != Role.MINER) {
-                new Invisible(npc).runTaskLater(Main.getInstance(), 100);
-                npc.itemReset();
-            }
-            new Pause(npc, back)
-                    .runTaskLater(
-                            Main.getInstance(), (timeElapsed * 20L)
-                    );
+        if (npc.getRole() != Role.MINER) {
+            new Invisible(npc).runTaskLater(Main.getInstance(), 100);
+            npc.itemReset();
+        }
+
+        new Pause(npc, back).runTaskLater(
+                Main.getInstance(), (timeElapsed * 20L)
+        );
     }
 }
