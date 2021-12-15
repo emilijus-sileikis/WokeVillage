@@ -54,7 +54,7 @@ public class Check extends BukkitRunnable {
             villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5D);
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            new Chop(npc, material, loc, villager)
+            new Chop(npc, material, loc, villager, block)
                     .runTaskTimer(
                             Main.getInstance(),
                             60 + ((long)dist * 20L),
@@ -69,7 +69,7 @@ public class Check extends BukkitRunnable {
         else {
             new Move(npc, timeElapsed, back)
                     .runTaskLater(
-                            Main.getInstance(), 80
+                            Main.getInstance(), 60
                     );
         }
     }
