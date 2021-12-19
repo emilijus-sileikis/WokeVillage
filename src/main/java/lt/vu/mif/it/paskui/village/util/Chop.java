@@ -21,7 +21,7 @@ public class Chop extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (y <= 6 || block != null || !npcEntity.getBukkitEntity().isDead()) {
+        if (y >= 6 || block == null || npcEntity.getBukkitEntity().isDead()) {
             return;
         }
 
