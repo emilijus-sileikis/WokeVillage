@@ -1,7 +1,8 @@
-name: Paskui
+name: ${name}
 author: Paskui Solutions
-main: lt.vu.mif.it.paskui.paskui.Main
+main: lt.vu.mif.it.paskui.village.Main
 version: ${version}
+api-version: 1.17
 
 commands:
-  gui:
+  npc:

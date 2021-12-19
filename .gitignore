@@ -9,3 +9,21 @@
 
 # Ignore Gradle build output directory
 build
+bin
+
+# Ignore Intellij IDE configs
+.idea/*
+
+# VIgnore isual Studio configs
+.vs   
+
+# Ignore Eclipse IDE configs
+.project
+.classpath
+.settings
+
+# Ignore Vim
+*.swp
+
+# Ignore run folder which contains easy to run Paper software
+run
