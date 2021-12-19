@@ -10,8 +10,6 @@ import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -89,6 +87,7 @@ public class NPCCommands {
             perm = "wokevillage.npc.remove")
     public void remove(@NotNull CommandContext context) {
         Logging.infoLog("NPCCommands::remove has been executed.");
+        CommandSender sender = context.getSender();
 
         Logging.infoLog(context.toString());
         context.getArgs().forEach(
@@ -96,7 +95,8 @@ public class NPCCommands {
         );
 
         if (!npcManager.npcsExist()) {
-            Bukkit.broadcast(Component.text("No npcs created"));
+            //Bukkit.broadcast(Component.text("No npcs created"));
+            sender.sendMessage("No NPCs created");
             return;
         }
 
@@ -121,24 +121,19 @@ public class NPCCommands {
             mod = { "removeAll" },
             perm = "wokevillage.npc.removeAll")
     public void removeAll(@NotNull CommandContext context) {
+        CommandSender sender = context.getSender();
+
+        if (!(npcManager.npcsExist())) {
+            //Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
+            sender.sendMessage("There are no NPCs to remove!");
+            return;
+        }
+
+        //Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
+        sender.sendMessage("Total of " + npcManager.getNPCs().size() + " NPCs were removed!");
+
         npcManager.removeAllNPC();
         dataManager.getConfig().set("data", null);
         dataManager.saveConfig();
-    }
-
-    @Command(
-            roots = "npc",
-            mod = { "path" },
-            perm = "wokevillage.npc.path")
-    public void path(@NotNull CommandContext context) {
-        Logging.infoLog("NPCCommands::path has been executed.");
-
-        Logging.infoLog(context.toString());
-
-        context.getArgs().forEach(
-                (String key, Argument<?> val) -> Logging.infoLog("%s : %s", key, val)
-        );
-
-        Main.getInstance().test();
     }
 }

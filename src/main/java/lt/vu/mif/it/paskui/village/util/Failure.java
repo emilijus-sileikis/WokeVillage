@@ -28,6 +28,10 @@ public class Failure extends BukkitRunnable {
 
     @Override
     public void run() {
+        if (npc.getEntity().isDead()) {
+            return;
+        }
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
         }
@@ -39,5 +43,6 @@ public class Failure extends BukkitRunnable {
         npc.setKillable();
         npc.setCollidable();
         npc.setVisible();
+        npc.itemReset();
     }
 }

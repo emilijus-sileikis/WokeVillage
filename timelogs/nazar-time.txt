@@ -1,3 +1,19 @@
 09-09 2h - papildomai aptariam viziją ir planuojam technologijų naudojimą
 09-12 7h - Mokinausi kaip efektyviai dirbti su Minecraft Plugins, pridejau InteliJ plugins, gradle ir sukuriau 24/7 hostinama Minecraft Server, kad testuoti rezultatus. Susitkimas su komanda.
 09-15 2h - Susitikimas su komanda, naujos plugino testavimas serveryje.
+09-19 3h - Dokumentacija, README ir licenzijos nustatymas.
+09-19 +3h - Susitikimas su komanda, grafiku braizymas.
+09-21 3h - dokumentacijos gerinimai remiantis Software Engineering, grafikų pridėjimas.
+09-26 3h - Susitikimas su komanda, projekto skaidrių ruošimas.
+09-30 2h - Kalbų repetavimas ir tobulinimas.
+10-04 5h - Report ruošimas su LaTeX, weekly report ruošimas SE paskaitai. Šie ruošimai susidarė iš analizės, grafikų, patobulintos vizijos (non)functional requirements bei pagrindai dizainui. Taip pat įvykdytas merge-request ir kodo analizavimas pereinant iš spigot į paper.
+10-06 4h - Report baigimas su LaTeX, pridėjimas activity flowchart, deployement graph, abiejų grafų paaiškinimas, algoritmo aprašymas, non(functional) requirements.
+10-10 3h - Naujų trades pridėjimas.
+10-14 2h - Prie trades pridėti Particles ir SoundEffects.
+10-17 3h - Naujos command systemos aptarimas, testavimas.
+10-21 6h - Trading system rehaul, item dropping feature, new function for trade creation.
+10-24 3h - Naujos entity systemos aptarimas, tyrinėjami galimi variantai integruoti NPC į server-side.
+10-25 2h - Skaidriu ruošimas pristatymui.
+10-28 3h - Aptarimas NPC personalities, sistemos ateities planavimas
+11-09 4h - Prideti papildomi darbai visiems NPC, if struktūros pakeistos su switch.
+11-10 2h - Pagerintas trading procesas, pridėta daugiau produktų, gaunamų iš atliktų NPC darbų.

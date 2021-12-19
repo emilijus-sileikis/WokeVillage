@@ -15,6 +15,6 @@ public class Teleport extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (npc.getEntity().isInWaterOrBubbleColumn()) { npc.getEntity().teleport(loc); }
+        if (npc.getEntity().isInWaterOrBubbleColumn() || npc.getEntity().getVelocity().getX() == 0.0D || npc.getEntity().getVelocity().getZ() == 0.0D) { npc.getEntity().teleport(loc); }
     }
 }

@@ -5,10 +5,32 @@ Patrik Vorornovic
     - 2h, po paskaitos meet su grupe, apsitarimui darbams iki sekmadienio meet, papildomai aptariam viziją ir planuojam technologijų naudojimą
 
 
+
 - 2021-09-12:
     - 5h pridėjau ir siunčiausi visą reikiamą softą (InteliJ), mokiausi Gradle/GIT veikimo principų, testavau ir padėjau kurti MC serverio hostą.
     - 2h meet
 
 
+
 - 2021-09-13:
     - 1h Susitvarkiau GitKraken paskyrą, mokiausi naudotis GitLabu ir tvarkyti kodą
+
+
+
+- 2021-09-19:
+    - 1h Susitikimas, kuriuo metu nutarėm plugin'o funkcionalumą ir tolimesnį veiksmų planą
+
+
+
+- 2021-09-21:
+    - 4h Susidiegiau BuildTools's, tada pasidariau local serverį, susitvarkiau intellij failų generavimą ir buildinimo errorą, analizavau kodą
+
+
+
+- 2021-09-25:
+    - 2h Ruošiausi pristatymui ir dariau skaidres
+
+
+- 2021-09-26:
+    - Meetas skaidrių aptarimas ir kodo nagrinėjimas
+	

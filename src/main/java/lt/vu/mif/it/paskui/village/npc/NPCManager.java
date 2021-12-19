@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc;
 
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -84,7 +85,7 @@ public class NPCManager {
         npcs.remove(npc.getId());
         npcIds.removeFirstOccurrence(npc.getId());
 
-        Bukkit.broadcast(Component.text("NPC was removed!"));
+        Bukkit.broadcast(Component.text("NPC - " + npc.getName() + " was removed from the world!"));
     }
 
     /**
@@ -104,11 +105,11 @@ public class NPCManager {
      */
     public void removeAllNPC() {
         if (npcIds.isEmpty() || this.npcs.isEmpty()) {
-            Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
+            //Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             return;
         }
 
-        Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
+        //Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
 
         for (NPC npc : npcs.values()) {
             npc.remove();
@@ -116,6 +117,7 @@ public class NPCManager {
 
         npcs.clear();
         npcIds.clear();
+        Bukkit.getScheduler().cancelTasks(Main.getInstance()); //Cancel all events if all NPCs are removed.
     }
 
     // private

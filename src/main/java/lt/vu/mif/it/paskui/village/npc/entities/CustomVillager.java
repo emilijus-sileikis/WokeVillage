@@ -24,11 +24,13 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -124,20 +126,21 @@ public class CustomVillager extends Villager implements NPCEntity {
      * Makes the NPC to come back to the location where the deal was made.
      * @param loc - The location where the deal happened
      */
-    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5F); }
+    public void moveBack(final Location loc) { this.navigation.moveTo(loc.getX(), loc.getY(), loc.getZ(), 0.5D); }
 
     /**
      * Calculates the distance between the starting point and the end point.
      * @param material - required material.
      */
     public double distanceTo(Material material) {
+        Block block = npc.searchMaterials(material);
 
-        if (npc.getCuboid(material) == null) {
+        if (block == null) {
             return 0;
         }
         else {
             Vec3 p1 = new Vec3(this.getBlockX(), this.getBlockY(), this.getBlockZ());
-            Vector p2 = this.npc.getCuboid(material).getLocation().toVector();
+            Vector p2 = block.getLocation().toVector();
             return Math.sqrt(p1.distanceToSqr(p2.getX(), p2.getY(), p2.getZ()));
         }
     }
@@ -166,7 +169,7 @@ public class CustomVillager extends Villager implements NPCEntity {
         double Z = location.getZ();
         X += 30;
         Z += 5;
-        this.navigation.moveTo(X, Y, Z, 0.5F);
+        this.navigation.moveTo(X, Y, Z, 0.5D);
     }
 
     @Override
@@ -197,6 +200,11 @@ public class CustomVillager extends Villager implements NPCEntity {
     @Override
     public void removeEntity() {
         this.remove(Entity.RemovalReason.DISCARDED);
+    }
+
+    @Override
+    public void setHandItem(org.bukkit.inventory.ItemStack item) {
+        this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.fromBukkitCopy(item));
     }
 
     // Villager
@@ -239,6 +247,11 @@ public class CustomVillager extends Villager implements NPCEntity {
             @NotNull final InteractionHand hand
     ) {
         SelectionScreen services = npc.getServices();
+        //TODO: Test this with two players
+        if (this.isInvulnerable()) {
+            player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("The NPC is busy"), UUID.randomUUID());
+            return InteractionResult.FAIL;
+        }
 
         if (services == null) {
             services = SelectionScreen.createScreen(npc);

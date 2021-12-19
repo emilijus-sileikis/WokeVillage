@@ -1,8 +1,7 @@
 package lt.vu.mif.it.paskui.village.util;
 
+import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,8 +16,9 @@ public class Pause extends BukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.broadcast(Component.text("Pause Over"));
         npc.setVisible();
         npc.moveBack(loc);
+        npc.setGoodsHand();
+        new Teleport(npc, loc).runTaskLater(Main.getInstance(), 120);//80
     }
 }

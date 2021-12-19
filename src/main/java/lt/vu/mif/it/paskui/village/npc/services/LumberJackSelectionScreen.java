@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class LumberJackSelectionScreen extends SelectionScreen {
 
@@ -40,7 +39,7 @@ public class LumberJackSelectionScreen extends SelectionScreen {
         {
             for(int i=0; i<pricesLumberjack.length; i++)
             {
-                pricesLumberjack[i] *= randomDouble(0.5, 0.9);;
+                pricesLumberjack[i] *= randomDouble(0.5, 0.9);
             }
         }
 

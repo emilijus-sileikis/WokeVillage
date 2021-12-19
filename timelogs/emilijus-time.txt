@@ -1,0 +1,178 @@
+Emilijus Šileikis
+
+- 2021-09-04:
+    - 2h, papermc analizė, gradle youtube tutorialai.
+
+- 2021-09-09:
+    - 2h, papildomai aptariam viziją ir planuojam technologijų naudojimą.
+
+- 2021-09-10:
+    - 5h, Mokiaus ,,Gradle'' ir bandžiau paleisti primityvų pluginą su viena komanda.
+
+- 2021-09-12:
+    - 2h, team meeting, git lab įrankių bandymas.
+
+- 2021-09-13:
+    - 2h, Padariau Inventory-like gui prototipą ir išbandžiau jį lokaliam serveryje.
+
+- 2021-09-15:
+    - 2h, Meet (Darbu pasiskirstymas, testavimas, gitkraken setup).
+
+- 2021-09-16:
+    - 1h, Padėjau komandos draugui galutinai išsiaiškinti git, pullinom/pushinom pirmą failą.
+
+- 2021-09-17:
+   - 3h, Pradėjau kurti NPC, ieškojau reikalingų bibliotekų.
+
+-2021-09-19:
+   - 3h, Meet (Nubraizytos dvejos schemos, aptarti NPC tipai, profesijos, perziureta dokumentacija).
+
+-2021-09-20:
+   - 3h, Padariau spawn NPC, panaikinau nametag, panaikinau ji is tab list.
+
+-2021-09-21:
+   -6h, NPCs matomi visiem prisijungusiems zaidejams, NPCs islieka net jei visi atsijungia, Data.yml ir kelios naujos klases, Pradetas darbas del custom skins.
+
+-2021-09-27:
+   -2h, Bandziau sutvarkyti nametag buga, keli pakeitimai kode.
+
+-2021-09-28:
+   -3h, Testavau kaip veikia papermc api, dirbau prie funkciju pakeitimo.
+
+-2021-09-29:
+   2h, Bandziau sutvarkyti click event buga, ruosiau savo pristatymo dali.
+
+-2021-10-01:
+  2h, Remapped some of the functions from spigot to paper, other minor code changes.
+
+-2021-10-04:
+  3h, Tried to fix the DataManager issue of not writing anything into the data.yml
+
+-2021-10-05:
+  3h, Tested the onInteract fix, removed Join class, added EventListen class for all future events, 
+modified Main class to match these changes.
+
+-2021-10-06:
+  3h, Fixed the DataManager issue, made the NPC reload after the server shut down, solved issue #17,
+regarding NPCs having player nametags on server restart.
+
+-2021-10-10:
+  2h, Preparing the speech for the seminar.
+
+-2021-10-11:
+  1h, Making the slides for the presentation.
+
+-2021-10-13:
+  3h, Trying to make the gravity and minimal movement. Compatibility issues.
+
+-2021-10-15:
+  2h, Looking through forums to find how others implement NPC movement.
+
+-2021-10-17:
+  2h, Minor code fixes + requirements documentation rework.
+
+-2021-10-19:
+  2h, requirements documentation review + few mistakes fixed + Interacton graph creation.
+
+-2021-10-21:
+  5h, Technical specification writing + graph uploading + mistake fixes.
+
+-2021-10-24:
+  3h, Technical specification update + few more graphs.
+
+-2021-10-25:
+  5h, speech preparation, helping with slides, ServerPlayer and Zombie function research and skin implementation testing.
+
+-2021-10-26:
+  -3h, NPC movement corrections, NPC attributes.
+  -3h, NPC remove command and polishment.
+
+-2021-10-27:
+  -2h, A Star template creation.
+  -1h, npc-rework testing and moevement adjustments.
+  -5h, Trying to implement CI/CD pipeline into our project.
+
+-2021-10-28:
+  -3h, NPC remove all function + bug testing + few adjustments.
+
+-2021-11-01:
+  -2h, Moved everything from NPCAttach to NPCEntity and CustomVillager + Tried to figure out how to make the NPC continue moving after inventory was closed + count how many NPCs were removed.
+
+-2021-11-03:
+  -2h, RemoveAll fix + console must have -l flag.
+
+-2021-11-08:
+  -6h, Scan surrounding area for a specific block function + trying to implement it for the Lumberjack role.
+  
+-2021-11-09:
+  -5h: Documentation update/fix/additions + looking more into how to create custom NPC goals + trying to create some goals.
+
+-2021-11-10:
+  -3h: Code cleaning and bug fixes (Steal item fix).
+
+-2021-11-11:
+  -10h: 24h task, testing part: diagrams, cases, unit testing.
+
+-2021-11-12:
+  -3h: 24h task, testing part overview, pseudocode diagram, blocks.
+
+-2021-11-14:
+  -3h: Starting working on NPC remove on death + additional research on custom NPC goals.
+
+-2021-11-15:
+  -4h: NPC data remove on NPC death.
+
+-2021-11-16:
+  -7h: NPC remove trading player, teleports to specific block, walks to specific block and stops there forever.
+
+-2021-11-17:
+  -8h: NPC walks to a certain block, waits there and returns, NPC walks to a certain block, destroys it and returns + Failed attempts at testing A Star implementation.
+
+-2021-11-18:
+  -3h: Simple implementation of A Star. Path from one block to another.
+
+-2021-11-22:
+  -4h: Trying to make the NPC chop down the whole tree.
+
+-2021-11-23:
+  -8h: Trying to optimize tree chopping and fixing timings.
+
+-2021-11-24:
+  -6h: Finishing with NPC timings and tree chopping, new task creation. NPC timings and tasks testing.
+
+-2021-11-25:
+  -2h: Research about space filling curves.
+
+-2021-11-28:
+  -5h: Trying to find a good example of H-curve in 3D.
+
+-2021-11-29:
+  -4h: More testing different methods on how to make the NPC move further if no material is found.
+
+-2021-11-30:
+  -2h: Trying to find out why coordinates won't update.
+  -2h: NPC coordinates won't update fix.
+  -3h: NPC move further additions, now he can move further if no blocks were found.
+
+-2021-12-01:
+  -3h: Looking and testing other cuboid variations.
+
+-2021-12-02:
+  -3h: Adding move to points to other Roles.
+  -2h: Make NPC move back to the start location fix.
+  -3h: Trying to fix timings again.
+
+-2021-12-05:
+  -3h: Trying to find out what is wrong with new cuboid.
+
+-2021-12-06:
+  -3h: Fixed NPC drowns in water while working.
+  -2h: Made a simple dig case for miner.
+  -2h: Testing new NPC implementations.
+
+-2021-12-07:
+  -4h: Fixing the resource lost bug. Trying to optimize runnables.
+  -2h: Trying some new versions of the cuboid.
+
+Viso valandu: 210h.
+Viso valandu sia savaite: 13h.

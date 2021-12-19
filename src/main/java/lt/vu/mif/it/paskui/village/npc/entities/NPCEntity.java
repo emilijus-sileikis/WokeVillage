@@ -1,11 +1,13 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -103,19 +105,49 @@ public interface NPCEntity {
      */
     double distanceTo(Material material);
 
+    /**
+     * Deletes all the behaviors.
+     */
     void removeBrain();
 
+    /**
+     * Puts back the behaviors in place.
+     */
     void refreshBrains(final ServerLevel world);
 
+    /**
+     * Move further if a block is not found.
+     * @param location
+     */
     void moveFurther(Location location);
 
+    /**
+     * Sets the NPC invisible.
+     */
     void setInvisible();
 
+    /**
+     * Sets the NPC visible.
+     */
     void setVisible();
 
+    /**
+     * Sets the NPC killable.
+     */
     void setKillable();
 
+    /**
+     * Sets the NPC non collidable.
+     */
     void setNonCollidable();
 
+    /**
+     * Sets the NPC Collidable.
+     */
     void setCollidable();
+
+    /**
+     * Interface for setting entities hand item;
+     */
+    void setHandItem(ItemStack item);
 }

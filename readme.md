@@ -1,27 +1,153 @@
-**"Minecraft" Plugin from "Paskui Solutions"**
+# Minecraft" Plugin from "Paskui Solutions"
 
-Server modification for "Minecraft", which adds extra NPC's to the world.
+Plugin for adding extra Villager NPC types while running on PaperMC/Paper.
 
-Description:
-- 
-Our main goal is creation of a functional NPC (Non Playable Character) plugin in “Minecraft”, using our developed “PaperMc” server API. In the finished product, our NPC will be able to complete certain tasks/get hired for gold or food. Possible work fields: mining, tree chopping, harvesting food, etc.
+### Table of Contents
 
-Requirements:
--
-This plugin runs on the Java edition of Minecraft, either on your local game or a dedicated server.
+1. [Description](#description)
+1. [System Requirements](#system-requirements)
+1. [For Admins](#for-admins)
+   - [Instalation](#instalation)
+   - [Guide](#guide)
+   - [FAQ](#faq)
+1. [For Developers](#for-developers)
+   - [Build Instructions](#build-instructions)
+   - [Issue Tracker](#issue-tracker)
+   - [Contribution](#contribution)
+1. [Licensing](#licensing)
+1. [Contact](#contact)
 
-It can’t be used on Realms, Windows 10 Edition, Bedrock Edition, or Pocket Edition versions. These versions of Minecraft have limited or no mod support. Note that “Windows 10 Edition” refers to a specific Edition of Minecraft, not the Java Edition running on a Windows 10 computer.
+## Description
 
-Instalation:
-- 
-- Download the .ZIP file from "Paskui Solutions";
-- Extract the ".jar" file;
-- Copy the ".jar" file into the servers "/plugin" directory.
+Our main goal is creation of a functional NPC (Non Playable Character) plugin for
+“Minecraft: Java Edition”, using “PaperMC” server API. These NPC's sometimes spawn
+in vanilla Minecraft villages or by admins executing `'/npc create ...'` command.
+The NPC could trade resources based on its role (can only specialise in a signle
+role) for a certain price. This should add some more interesting gameplay for the
+players while expanding NPC variation.
 
-Guide:
-- 
-The interface would be available in command or inventory-like interface when you right click them. Commands would allow admins to manually spawn the NPC (later might be more than one type) and configure some settings. An inventory-like interface would allow players to select available NPC settings (and administrators could have extra options).
-Since these NPC’s will be useful we plan to make them hard-to-find in order to keep the thrill and interest of the vanilla game itself. They might spawn in different biomes or in certain villages.
+NPC's have roles and personalities.
 
+![NPC roles and personalities](doc/pictures/rolepersonalitygraph.png)
 
-If you have any additional questions or problems contact our email: paskui@gmail.com.
+Roles determine what type of resource the NPC will be willing to gather, which further
+decreases the chance of the player to accidentally stumble upon the needed NPC. This
+encourages traveling and adventuring instead of grinding resources.
+
+![Short role description](doc/pictures/rolepersonality.png)
+
+Further more they have personality traits: some of them may be generous, while others
+might be lazy, which will impact the loot you get from their gatherings and the time
+it takes for them to complete the task.
+
+## For Admins
+
+### System Requirements
+
+1. Java 16 (or OpenJRE 16, or OpenJDK 16).
+
+> Usually **Minecraft: Java Edition** min requirement is Java 1.8,
+> but after 1.17 version **Mojang** switched over to Java 16.
+
+2. Download and setup [**PaperMC**](https://github.com/PaperMC/Paper) jar file
+    while following it's instructions.
+
+> It extends [**Minecraft: Java Edition**](https://minecraft.fandom.com/wiki/Java_Edition)
+> server software which is developed by **Mojang Studios** and allows support of vanilla
+> (unmodified **Minecraft: Java Edition** game) clients to connect and play over the
+> internet with other players.
+
+These requirements also apply for developers too.
+
+### Instalation
+
+1. Download the `'.zip'` file from "Paskui Solutions";
+2. Extract the `'.zip'` file;
+3. Copy the `'.jar'` file, that got extracted from `'.zip'` into the servers "/plugins" directory.
+
+### Guide
+
+1. Find an NPC in a village (Admins can use `'/npc'` command to spawn immediately);
+
+> Currently spawning mechanic is **not implemented** and `'/npc'` only spawns **in the location**
+> of the player that is **logged** in to the server.
+
+2. Right click on NPC to open inventory-like interface;
+
+3. Find a job you want done and check its price right next to the job;
+
+4. Get the required items (NPC's job price) and click on the job;
+
+5. Wait for your items to be shipped into your inventory.
+
+> Steps 3-5 are planned to be implemented in later version
+> (current version is v0.2 in `'dev'` branch).
+
+### FAQ
+
+Q: What are the supported minecraft versions?
+
+A: Currently this plugin supports 1.17.1 with a prospect to support older
+versions in the future.
+
+<br>
+Q: How can I access the NPC interface?
+
+A: Right click the NPC with your hand.
+
+<br>
+Q: Is it possible to modify the plugin?
+
+A: Yes, this plugin is open source and it is possible to modify it to your liking.
+
+<br>
+Q: Can I change what skin an NPC has?
+
+A: Currently this functionality is unavailable.
+
+## For Developers
+
+### Requirements
+
+Besides requirements that are mentioned in [System Requirements](#system-requirements), for
+developers there is extra:
+
+- Must have **Minecraft: Java Edition** game client as the server software used to run the plugin
+does not support other **Minecraft** editions (ex. **Bedrock edition**);
+
+- Must have **Gradle** (or have IDE that supports it via plugins) as it is the
+main tool used to build the source code or run tests. Minimum required version
+is 7.1.1 as the project was started with this version;
+
+- Must have **OpenJDK** (or other build of Java) v16 as after introduction of
+**Minecraft: Java Edtion** v1.17, **Mojang** updated their required runtime to be
+Java 16 which now is reflected in server and client software.
+
+### Build Instructions
+
+1. Clone this repo with `git clone https://git.mif.vu.lt/paskui/paskui-projektas.git`;
+
+2. Run `./gradlew build` or `./gradlew jar` to get jar file compiled or just open the folder where the source was cloned with IntelliJ IDEA or other preferred IDE.
+
+### Issue Tracker
+
+Visit our [Git Issue Tracker](https://git.mif.vu.lt/paskui/paskui-projektas/-/issues)
+
+### Contribution
+
+If you find bugs or though of a feature that might suite the plugin, feel free to write an issue.
+Our team will review it.
+
+## Contacts
+
+If you have any questions regarding this product, contact paskuisolutions@gmail.com.
+
+## Licensing
+
+Copyright 2021, "Paskui Solutions"
+
+Copying and distribution of this file, with or without modification, are permitted in any medium without royalty, provided the copyright notice and this notice are preserved. This file is offered as-is, without any warranty.
+
+- GNU All-permissive License
+[[1]](https://www.gnu.org/licenses/license-list.html#GNUAllPermissive)
+[[2]](https://www.gnu.org/prep/maintain/html_node/License-Notices-for-Other-Files.html)

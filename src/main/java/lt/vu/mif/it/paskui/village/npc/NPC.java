@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
@@ -56,8 +57,6 @@ public class NPC {
         this.updateLocation();
         return loc;
     }
-
-    public Location getLocation() { return loc; }
 
     public org.bukkit.entity.Entity getEntity() {
         return npcEntity.getBukkitEntity();
@@ -172,20 +171,46 @@ public class NPC {
      */
     public void setVisible() { npcEntity.setVisible(); }
 
+    /**
+     * Sets the NPC killable.
+     */
     public void setKillable() { npcEntity.setKillable(); }
 
+    /**
+     * Sets the NPC non collidable.
+     */
     public void setNonCollidable() { npcEntity.setNonCollidable(); }
 
+    /**
+     * Sets the NPC Collidable.
+     */
     public void setCollidable() { npcEntity.setCollidable(); }
+
+    /**
+     * Resets the Cosmetics.
+     */
+    public void itemReset() {
+        npcEntity.setHandItem(new ItemStack(Material.AIR));
+    }
+
+    /**
+     * Sets the Cosmetics for the NPC.
+     */
+    public void setWorkHand() {
+        npcEntity.setHandItem(new ItemStack(role.workCosmetic));
+    }
+
+    /**
+     * Sets {@link NPCEntity} hand based on its role.
+     */
+    public void setGoodsHand() {
+        npcEntity.setHandItem(new ItemStack(role.goodsCosmetic));
+    }
 
     /**
      * Checks if there is a specific block in a radius
      * @return returns the vector which the NPC will use for walking to the log.
      */
-    public Block getCuboid(Material material) {
-        return this.searchMaterials(material);
-    }
-
     public Block searchMaterials(final @NotNull Material material) {
         this.updateLocation();
 
