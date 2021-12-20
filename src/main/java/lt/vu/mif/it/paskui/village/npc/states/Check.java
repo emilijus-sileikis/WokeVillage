@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.util;
+package lt.vu.mif.it.paskui.village.npc.states;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -6,6 +6,7 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.world.entity.ai.behavior.Swim;
 import net.minecraft.world.entity.schedule.Activity;
 import org.bukkit.Location;

@@ -7,7 +7,7 @@ import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
-import lt.vu.mif.it.paskui.village.util.Check;
+import lt.vu.mif.it.paskui.village.npc.states.Check;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.chat.TextComponent;

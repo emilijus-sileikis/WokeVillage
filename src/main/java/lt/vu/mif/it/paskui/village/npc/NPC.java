@@ -24,13 +24,14 @@ import java.util.UUID;
  */
 public class NPC {
 
-    private String name;
-    private Location loc;
+    private final int id;
+    private final String name;
     private final Role role;
     private final Personality personality;
-    private final int id;
+    private Location loc;
     private SelectionScreen services;
     private NPCEntity npcEntity;
+
 
     public NPC(int id, String name, Location loc, Role role, Personality personality) {
         this.name = name;
@@ -86,11 +87,6 @@ public class NPC {
     }
 
     // Setters
-    public void setName(String name) {
-        this.name = name;
-        this.npcEntity.setEntityName(name);
-    }
-
     public void setLoc(Location loc) {
         this.loc = loc;
         this.npcEntity.setEntityPos(loc);
@@ -134,23 +130,13 @@ public class NPC {
     public void moveBack(final Location loc) {npcEntity.moveBack(loc);}
 
     /**
-     * Calculates the distance between two points.
-     */
-    public Double distanceTo(Material material) {return npcEntity.distanceTo(material);}
-
-    /**
-     * Deletes all the behaviors.
-     */
-    public void removeBrain() {npcEntity.removeBrain();}
-
-    /**
      * Puts back the behaviors in place.
      */
     public void refreshBrains(final ServerLevel world) {npcEntity.refreshBrains(world);}
 
     /**
      * Move further if a block is not found.
-     * @param location
+     * @param location loc to move to.
      */
     public void moveFurther(Location location) {npcEntity.moveFurther(location);}
 

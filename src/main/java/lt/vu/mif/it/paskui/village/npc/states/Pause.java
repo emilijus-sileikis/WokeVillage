@@ -1,4 +1,4 @@
-package lt.vu.mif.it.paskui.village.util;
+package lt.vu.mif.it.paskui.village.npc.states;
 
 import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
