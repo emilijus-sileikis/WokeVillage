@@ -3,6 +3,7 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import lt.vu.mif.it.paskui.village.util.Vector3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
@@ -214,30 +215,50 @@ public class NPC {
     public Block searchMaterials(final @NotNull Material material) {
         this.updateLocation();
 
-        final double RADIUS = 8;
+        final int RADIUS = 8;
         final World WORLD = this.loc.getWorld();
-        final Vec3 START = new Vec3(loc.getX(), loc.getY(), loc.getZ());
-        final Vec3 MIN = START.subtract(RADIUS, RADIUS, RADIUS);
-        final Vec3 MAX = START.add(RADIUS, RADIUS, RADIUS);
+        final Vector3 START = new Vector3(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        final Vector3 MIN = START.subtract(RADIUS);
+        final Vector3 MAX = START.add(RADIUS);
 
         LinkedList<Block> opened = new LinkedList<>(List.of(
                 this.loc.getBlock(),
                 this.loc.toBlockLocation().add(0, 1, 0).getBlock()
         ));
         LinkedList<Block> closed = new LinkedList<>();
+        int y, z, x;
+        Vector3 fn, ln; // firstNeighbour, lastNeighbour
 
         while (!opened.isEmpty()) {
             Block block = opened.pop();
 
-            for (int y = block.getY() - 1; y <= block.getY() + 1; ++y) {
-                for (int x = block.getX() - 1; x <= block.getX() + 1; ++x) {
-                    for (int z = block.getZ() - 1; z <= block.getZ() + 1; ++z) {
-                        if ((MIN.y > y || y > MAX.y)
-                                || (MIN.x > x || x > MAX.x)
-                                || (MIN.z > z || z > MAX.z)) {
-                            continue;
-                        }
+            // firstNeighbour
+            fn = new Vector3(
+                    block.getX() - 1,
+                    block.getY() - 1,
+                    block.getZ() - 1
+            );
+            fn = fn.add(
+                    Math.max(0, MIN.x() - fn.x()),
+                    Math.max(0, MIN.y() - fn.y()),
+                    Math.max(0, MIN.z() - fn.z())
+            );
 
+            // lastNeighbour
+            ln = new Vector3(
+                    block.getX() + 1,
+                    block.getY() + 1,
+                    block.getZ() + 1
+            );
+            ln = ln.subtract(
+                    Math.max(0, ln.x() - MAX.x()),
+                    Math.max(0, ln.y() - MAX.y()),
+                    Math.max(0, ln.z() - MAX.z())
+            );
+
+            for (y = fn.y(); y <= ln.y(); ++y) {
+                for (z = fn.z(); z <= ln.z(); ++z) {
+                    for (x = fn.x(); x <= ln.x(); ++x) {
                         Block newBlock = WORLD.getBlockAt(x, y, z);
 
                         if (newBlock.equals(block)
@@ -248,6 +269,7 @@ public class NPC {
 
                         if (newBlock.getType() == Material.AIR
                                 || newBlock.getType() == Material.CAVE_AIR) {
+                            newBlock.setType(Material.GLASS);
                             opened.add(newBlock);
                         } else if (newBlock.getType() == material) {
                             return newBlock;
