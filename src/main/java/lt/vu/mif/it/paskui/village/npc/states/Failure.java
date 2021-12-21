@@ -9,21 +9,17 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-public class Failure extends BukkitRunnable {
-    Player p;
-    ScheduledExecutorService scheduler;
-    Location loc;
-    NPC npc;
+public class Failure extends NPCLocState {
+    private final Player p;
+    private final ScheduledExecutorService scheduler;
 
-    public Failure(Player p, ScheduledExecutorService scheduler, Location loc, NPC npc) {
+    public Failure(NPC npc, Location loc, Player p, ScheduledExecutorService scheduler) {
+        super(npc, loc);
         this.p = p;
         this.scheduler = scheduler;
-        this.loc = loc;
-        this.npc = npc;
     }
 
     @Override

@@ -4,18 +4,14 @@ import lt.vu.mif.it.paskui.village.npc.NPC;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitRunnable;
 
-// TODO: This is only the ,,demo'' variant, change this to something more efficient if possible.
-public class Dig extends BukkitRunnable {
-    NPC npc;
-    Material material;
-    Location loc;
+// TODO: This is only the "demo" variant, change this to something more efficient if possible.
+public class Dig extends NPCLocState {
+    private final Material material;
 
-    public Dig(NPC npc, Material material, Location loc) {
-        this.npc = npc;
+    public Dig(NPC npc, Location loc, Material material) {
+        super(npc, loc);
         this.material = material;
-        this.loc = loc;
     }
 
     @Override

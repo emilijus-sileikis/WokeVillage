@@ -12,19 +12,15 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class ReceiveGoods extends BukkitRunnable {
-    NPC npc;
-    Location loc;
-    Player p;
-    Material material;
-    ItemStack itemReceived;
-    int goods;
+public class ReceiveGoods extends NPCLocState {
+    private final Player p;
+    private final Material material;
+    private final ItemStack itemReceived;
+    private final int goods;
 
     public ReceiveGoods(NPC npc, Location loc, Player p, Material material, ItemStack itemReceived, int goods) {
-        this.npc = npc;
-        this.loc = loc;
+        super(npc, loc);
         this.p = p;
         this.material = material;
         this.itemReceived = itemReceived;
@@ -33,7 +29,7 @@ public class ReceiveGoods extends BukkitRunnable {
 
     @Override
     public void run() {
-        for(int i=0; i<goods; i++) {
+        for(int i = 0; i < goods; ++i) {
             if (p.getInventory().firstEmpty() == -1) {
                 p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
             } else {//items are added 1 by 1 to avoid duping

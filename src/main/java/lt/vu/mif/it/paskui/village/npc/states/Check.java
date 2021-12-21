@@ -12,18 +12,14 @@ import net.minecraft.world.entity.schedule.Activity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class Check extends BukkitRunnable {
-    private final NPC npc;
+public class Check extends NPCLocState {
     private final CustomVillager villager;
-    private final Location back;
     private final Material material;
     private int timeElapsed;
 
     public Check(NPC npc, Material material, CustomVillager villager, int timeElapsed) {
-        this.npc = npc;
-        this.back = this.npc.getLoc();
+        super(npc, npc.getLoc());
         this.villager = villager;
         this.material = material;
         this.timeElapsed = timeElapsed;
@@ -41,14 +37,14 @@ public class Check extends BukkitRunnable {
                 Pair.of(0, new Swim(0.8f)))
         );
 
-        Location loc = this.npc.getLoc();
+        Location newLoc = this.npc.getLoc();
         if (npc.getRole() == Role.MINER) {
             villager.getNavigation().moveTo(
-                    loc.getX() + 5, loc.getY(), loc.getZ() + 3,
+                    newLoc.getX() + 5, newLoc.getY(), newLoc.getZ() + 3,
                     0.5D
             );
 
-            new Dig(npc, material, loc).runTaskLater(
+            new Dig(npc, newLoc, material).runTaskLater(
                     Main.getInstance(),
                     timeElapsed * 20L
             );
@@ -59,18 +55,18 @@ public class Check extends BukkitRunnable {
             villager.getNavigation().moveTo(block.getX(), block.getY(), block.getZ(), 0.5D);
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
-            new Chop(villager, material, block).runTaskTimer(
+            new Chop(this.npc, villager, material, block).runTaskTimer(
                     Main.getInstance(),
                     60 + ((long)dist * 20L),
                     (timeElapsed * 20L) / 7
             );
 
-            new Pause(npc, back).runTaskLater(
+            new Pause(npc, this.loc).runTaskLater(
                     Main.getInstance(), (timeElapsed * 20L)
             );
         }
         else {
-            new Move(npc, timeElapsed, back).runTaskLater(
+            new Move(npc, this.loc, timeElapsed).runTaskLater(
                     Main.getInstance(), 60
             );
         }

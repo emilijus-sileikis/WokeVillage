@@ -4,17 +4,13 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class Move extends BukkitRunnable {
-    NPC npc;
-    int timeElapsed;
-    Location back;
+public class Move extends NPCLocState {
+    private final int timeElapsed;
 
-    public Move(NPC npc, int timeElapsed, Location back) {
-        this.npc = npc;
+    public Move(NPC npc, Location loc, int timeElapsed) {
+        super(npc, loc);
         this.timeElapsed = timeElapsed;
-        this.back = back;
     }
 
     @Override
@@ -27,7 +23,7 @@ public class Move extends BukkitRunnable {
             npc.itemReset();
         }
 
-        new Pause(npc, back).runTaskLater(
+        new Pause(npc, this.loc).runTaskLater(
                 Main.getInstance(), (timeElapsed * 20L)
         );
     }
