@@ -19,12 +19,10 @@ public class Move extends NPCLocState {
         npc.moveFurther(location);
 
         if (npc.getRole() != Role.MINER) {
-            new Invisible(npc).runTaskLater(Main.getInstance(), 100);
+            new Invisible(npc).runTaskLater(100);
             npc.itemReset();
         }
 
-        new Pause(npc, this.loc).runTaskLater(
-                Main.getInstance(), (timeElapsed * 20L)
-        );
+        new Pause(npc, this.loc).runTaskLater(timeElapsed * 20L);
     }
 }

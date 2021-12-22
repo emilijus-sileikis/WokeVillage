@@ -252,7 +252,7 @@ public class EventListen implements Listener {
 
             //failure check
             if(random_int(0, 100) < failureChance) {
-                new Failure(screen.getNPC(), loc, p, scheduler).runTaskLater(Main.getInstance(), timeElapsed * 20L);
+                new Failure(screen.getNPC(), loc, p, scheduler).runTaskLater(timeElapsed * 20L);
             }
         } else {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));

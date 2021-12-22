@@ -44,10 +44,7 @@ public class Check extends NPCLocState {
                     0.5D
             );
 
-            new Dig(npc, newLoc, material).runTaskLater(
-                    Main.getInstance(),
-                    timeElapsed * 20L
-            );
+            new Dig(npc, newLoc, material).runTaskLater(timeElapsed * 20L);
         }
 
         if (block != null) {
@@ -56,19 +53,14 @@ public class Check extends NPCLocState {
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
             new Chop(this.npc, villager, material, block).runTaskTimer(
-                    Main.getInstance(),
                     60 + ((long)dist * 20L),
                     (timeElapsed * 20L) / 7
             );
 
-            new Pause(npc, this.loc).runTaskLater(
-                    Main.getInstance(), (timeElapsed * 20L)
-            );
+            new Pause(npc, this.loc).runTaskLater(timeElapsed * 20L);
         }
         else {
-            new Move(npc, this.loc, timeElapsed).runTaskLater(
-                    Main.getInstance(), 60
-            );
+            new Move(npc, this.loc, timeElapsed).runTaskLater(60);
         }
     }
 }

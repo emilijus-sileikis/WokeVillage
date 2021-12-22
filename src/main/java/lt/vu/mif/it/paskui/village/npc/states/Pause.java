@@ -15,6 +15,6 @@ public class Pause extends NPCLocState {
         npc.setVisible();
         npc.moveBack(loc);
         npc.setGoodsHand();
-        new Teleport(npc, loc).runTaskLater(Main.getInstance(), 120);//80
+        new Teleport(npc, loc).runTaskLater(120); //80
     }
 }

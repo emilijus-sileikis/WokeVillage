@@ -116,10 +116,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material    material to find and collect.
      */
     public void moveTo(final int timeElapsed, Material material) {
-        new Check(npc, material, this, timeElapsed)
-                .runTaskLater(
-                        Main.getInstance(), 20
-                );
+        new Check(npc, material, this, timeElapsed).runTaskLater(20);
     }
 
     /**
