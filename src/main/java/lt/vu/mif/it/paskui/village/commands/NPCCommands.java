@@ -58,6 +58,12 @@ public class NPCCommands {
             ? (String) context.getArg(NPC_NAME).value()
             : NPCNames.getRandomName().getName();
 
+        if (name.length() >= 20) {
+            sender.sendMessage("The name of the NPC was too long!");
+            sender.sendMessage("(Please use 20 or less characters)");
+            return;
+        }
+
         name += " The " + role.toStringWithCapInitial();
 
         Location loc;
