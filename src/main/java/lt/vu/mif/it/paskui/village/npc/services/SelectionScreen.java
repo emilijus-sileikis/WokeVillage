@@ -177,7 +177,7 @@ public class SelectionScreen implements InventoryHolder {
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
                 }
-                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...") //vis tiek duoda items
+                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                         .color(NamedTextColor.RED));
             } else {
                 new ReceiveGoods(this.npc, loc, p, material, itemReceived, goods)

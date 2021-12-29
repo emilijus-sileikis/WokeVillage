@@ -39,6 +39,7 @@ public class NPCCommands {
             perm = "wokevillage.npc.create")
     public void create(final @NotNull CommandContext context) {
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
         Logging.infoLog("NPCCommands::create has been executed.");
 
         Logging.infoLog(context.toString());
@@ -98,8 +99,9 @@ public class NPCCommands {
             mod = { "remove" },
             perm = "wokevillage.npc.remove")
     public void remove(@NotNull CommandContext context) {
-        Logging.infoLog("NPCCommands::remove has been executed.");
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
+        Logging.infoLog("NPCCommands::remove has been executed.");
 
         Logging.infoLog(context.toString());
         context.getArgs().forEach(
@@ -107,7 +109,6 @@ public class NPCCommands {
         );
 
         if (!npcManager.npcsExist()) {
-            //Bukkit.broadcast(Component.text("No npcs created"));
             sender.sendMessage("No NPCs created");
             return;
         }
@@ -134,14 +135,13 @@ public class NPCCommands {
             perm = "wokevillage.npc.removeAll")
     public void removeAll(@NotNull CommandContext context) {
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
 
         if (!(npcManager.npcsExist())) {
-            //Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             sender.sendMessage("There are no NPCs to remove!");
             return;
         }
 
-        //Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
         sender.sendMessage("Total of " + npcManager.getNPCs().size() + " NPCs were removed!");
 
         npcManager.removeAllNPC();
