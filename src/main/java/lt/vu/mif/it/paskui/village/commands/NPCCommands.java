@@ -5,6 +5,7 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
+import lt.vu.mif.it.paskui.village.npc.Book;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
@@ -146,5 +147,16 @@ public class NPCCommands {
         npcManager.removeAllNPC();
         dataManager.getConfig().set("data", null);
         dataManager.saveConfig();
+    }
+
+    @Command(
+            roots = "npc",
+            mod = { "help" },
+            perm = "wokevillage.npc.help")
+    public void npc(@NotNull CommandContext context) {
+        CommandSender sender = context.getSender();
+        Player player = (Player) sender;
+        Book book = new Book();
+        book.createBook(player);
     }
 }
