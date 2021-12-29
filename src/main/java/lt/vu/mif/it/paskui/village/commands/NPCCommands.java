@@ -11,6 +11,7 @@ import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -65,6 +66,10 @@ public class NPCCommands {
         } else if (sender instanceof Player) {
             Player player = (Player) sender;
             loc = player.getLocation();
+            if (player.getWorld().getEnvironment() != World.Environment.NORMAL) {
+                player.sendMessage("Can not create the NPC in this world!");
+                return;
+            }
         } else {
             Logging.infoLog("Can not create the NPC!");
             Logging.infoLog("The console MUST use the -l argument!");
