@@ -4,6 +4,7 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.util.Failure;
 import lt.vu.mif.it.paskui.village.util.ReceiveGoods;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,7 +14,6 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
-import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
@@ -27,15 +27,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static lt.vu.mif.it.paskui.village.npc.Personality.CLUMSY;
-import static lt.vu.mif.it.paskui.village.npc.Personality.GENEROUS;
-import static lt.vu.mif.it.paskui.village.npc.Personality.GREEDY;
-import static lt.vu.mif.it.paskui.village.npc.Personality.HARDWORKING;
-import static lt.vu.mif.it.paskui.village.npc.Personality.LAZY;
-import static lt.vu.mif.it.paskui.village.npc.Personality.RELIABLE;
 import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class SelectionScreen implements InventoryHolder {
@@ -173,17 +166,14 @@ public class SelectionScreen implements InventoryHolder {
             this.npc.moveTo(timeElapsed, material);
 
             //failure check
+            long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
             if(randomInt(0, 100) < failureChance) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-                }
-                p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
-                        .color(NamedTextColor.RED));
+                new Failure(p, loc, npc).runTaskLater(Main.getInstance(), delay);
             } else {
                 new ReceiveGoods(this.npc, loc, p, material, itemReceived, goods)
                         .runTaskLater(
                                 Main.getInstance(),
-                                (timeElapsed * 20L) + (dist.longValue() * 40)
+                                delay
                         );
             }
         } else {

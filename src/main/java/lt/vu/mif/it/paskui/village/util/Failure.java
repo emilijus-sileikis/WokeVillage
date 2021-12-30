@@ -11,17 +11,13 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 public class Failure extends BukkitRunnable {
     Player p;
-    ScheduledExecutorService scheduler;
     Location loc;
     NPC npc;
 
-    public Failure(Player p, ScheduledExecutorService scheduler, Location loc, NPC npc) {
+    public Failure(Player p, Location loc, NPC npc) {
         this.p = p;
-        this.scheduler = scheduler;
         this.loc = loc;
         this.npc = npc;
     }
@@ -37,7 +33,6 @@ public class Failure extends BukkitRunnable {
         }
         p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                 .color(NamedTextColor.RED));
-        scheduler.shutdown();
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
         npc.setKillable();
