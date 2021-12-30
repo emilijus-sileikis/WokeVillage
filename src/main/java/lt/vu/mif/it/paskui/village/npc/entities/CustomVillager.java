@@ -36,7 +36,9 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
-import java.util.UUID;;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;;import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * {@link NPC} interface into minecraft world.
@@ -47,6 +49,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * {@link NPC} instance that this entity is associated to.
      */
     private final NPC npc;
+    int count = 0;
 
     /** Default constructor.
      * @param npc reference of npc entity will represent.
@@ -224,6 +227,10 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.initBrainGoals(this.getBrain());
     }
 
+    public void setName(net.minecraft.network.chat.Component name) {
+        this.setCustomName(name);
+    }
+
     @Override
     protected void customServerAiStep() {
         // TODO : research what can be used in this method.
@@ -249,6 +256,36 @@ public class CustomVillager extends Villager implements NPCEntity {
         SelectionScreen services = npc.getServices();
         if (this.isInvulnerable()) {
             player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("The NPC is busy"), UUID.randomUUID());
+            return InteractionResult.FAIL;
+        }
+
+        ++count;
+
+        if (count == 6) {
+            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            final Runnable runnable = new Runnable() {
+                int countdownStarter = 20; //change to 1200 (minecraft day cycle is 20m)
+                final net.minecraft.network.chat.Component name = getName();
+
+                public void run() {
+
+                    countdownStarter--;
+                    setName(net.minecraft.network.chat.Component.nullToEmpty("Time Left: " + countdownStarter));
+
+                    if (countdownStarter < 0) {
+                        scheduler.shutdown();
+                        setName(name);
+                        count=0;
+
+                    }
+                }
+            };
+            scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
+        }
+
+        if (count > 5) {
+            player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("You have reached the limit of trades for now!"), UUID.randomUUID());
+            player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("(Please wait a whole Minecraft day to continue)"), UUID.randomUUID());
             return InteractionResult.FAIL;
         }
 
