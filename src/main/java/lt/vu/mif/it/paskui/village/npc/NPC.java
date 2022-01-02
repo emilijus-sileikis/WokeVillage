@@ -269,7 +269,6 @@ public class NPC {
 
                         if (newBlock.getType() == Material.AIR
                                 || newBlock.getType() == Material.CAVE_AIR) {
-                            newBlock.setType(Material.GLASS);
                             opened.add(newBlock);
                         } else if (newBlock.getType() == material) {
                             return newBlock;
