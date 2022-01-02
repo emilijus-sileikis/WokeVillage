@@ -4,6 +4,7 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * BukkitRunnable implemented as NPC state.
@@ -24,9 +25,9 @@ public abstract class NPCState extends BukkitRunnable {
      * @throws IllegalArgumentException if plugin is null.
      * @throws IllegalStateException if this was already scheduled.
      */
-    public synchronized NPCState runTaskLater(final long delay)
+    public synchronized BukkitTask runTaskLater(final long delay)
             throws IllegalArgumentException, IllegalStateException {
-        return (NPCState) this.runTaskLater(Main.getInstance(), delay);
+        return this.runTaskLater(Main.getInstance(), delay);
     }
 
     /**
@@ -38,8 +39,8 @@ public abstract class NPCState extends BukkitRunnable {
      * @throws IllegalArgumentException if plugin is null.
      * @throws IllegalStateException if this was already scheduled.
      */
-    public synchronized NPCState runTaskTimer(final long delay, final long period)
+    public synchronized BukkitTask runTaskTimer(final long delay, final long period)
             throws IllegalArgumentException, IllegalStateException {
-        return (NPCState) this.runTaskTimer(Main.getInstance(), delay, period);
+        return this.runTaskTimer(Main.getInstance(), delay, period);
     }
 }
