@@ -5,10 +5,9 @@ import lt.vu.mif.it.paskui.village.npc.services.LumberJackSelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.services.MinerSelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.states.NPCState;
-import lt.vu.mif.it.paskui.village.npc.states.NPCStates;
 import org.bukkit.Material;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Random;
 
 public enum Role {
@@ -16,30 +15,30 @@ public enum Role {
             LumberJackSelectionScreen.class,
             Material.BARREL,
             Material.IRON_AXE,
-            Map.of()
+            List.of()
     ),
     MINER(
             MinerSelectionScreen.class,
             Material.CHEST,
             Material.IRON_PICKAXE,
-            Map.of()
+            List.of()
     ),
     FISHER(
             FisherSelectionScreen.class,
             Material.TROPICAL_FISH_BUCKET,
             Material.FISHING_ROD,
-            Map.of()
+            List.of()
     );
 
     public final Class<? extends SelectionScreen> clazz;
     public final Material goodsCosmetic;
     public final Material workCosmetic;
-    public final Map<NPCStates, NPCState> states;
+    public final List<NPCState> states;
 
     Role(final Class<? extends SelectionScreen> clazz,
          final Material goodsCosmetic,
          final Material workCosmetic,
-         final Map<NPCStates, NPCState> states) {
+         final List<NPCState> states) {
         this.clazz = clazz;
         this.goodsCosmetic = goodsCosmetic;
         this.workCosmetic = workCosmetic;
