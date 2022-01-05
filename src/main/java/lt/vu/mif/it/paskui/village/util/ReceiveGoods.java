@@ -34,19 +34,21 @@ public class ReceiveGoods extends BukkitRunnable {
 
     @Override
     public void run() {
-        for(int i=0; i<goods; i++) {
-            if (p.getInventory().firstEmpty() == -1) {
-                p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
-            } else {//items are added 1 by 1 to avoid duping
-                receiveItems(p.getInventory(), material, 1);
-                p.updateInventory();
+        if (!(npc.getEntity().isDead())) {
+            for(int i=0; i<goods; i++) {
+                if (p.getInventory().firstEmpty() == -1) {
+                    p.getWorld().dropItemNaturally(loc, itemReceived.asBukkitCopy());
+                } else {//items are added 1 by 1 to avoid duping
+                    receiveItems(p.getInventory(), material, 1);
+                    p.updateInventory();
+                }
             }
-        }
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+            }
+            p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
         }
-        p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
         npc.setKillable();

@@ -35,9 +35,9 @@ public class SelectionScreen implements InventoryHolder {
 
     private final NPC npc;
     protected final Inventory inv;
-    protected int pricesFisher[];
-    protected int pricesMiner[];
-    protected int pricesLumberjack[];
+    protected int[] pricesFisher;
+    protected int[] pricesMiner;
+    protected int[] pricesLumberjack;
 
     public SelectionScreen(NPC npc) {
         this.npc = npc;
@@ -147,8 +147,8 @@ public class SelectionScreen implements InventoryHolder {
                 case LAZY        -> timeElapsed += randomInt(0, 240);
                 case RELIABLE    -> failureChance -= randomInt(0, 5);
                 case CLUMSY      -> failureChance += randomInt(0, 15);
-                case GENEROUS    -> cost *= randomDouble(0.5, 0.9);
-                case GREEDY      -> cost *= randomDouble(1, 2);
+                case GENEROUS    -> {}
+                case GREEDY      -> {}
                 default          -> p.sendMessage(Component.text("Plugin ERROR: processTrade")
                         .color(NamedTextColor.RED).decorate(TextDecoration.BOLD));
             }
