@@ -2,9 +2,9 @@ package lt.vu.mif.it.paskui.village.npc.states;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
+import lt.vu.mif.it.paskui.village.npc.ai.SearchMaterials;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import net.minecraft.world.entity.ai.behavior.Swim;
@@ -16,7 +16,8 @@ import org.bukkit.block.Block;
 public class Check extends NPCLocState {
     private final CustomVillager villager;
     private final Material material;
-    private int timeElapsed;
+    private final int timeElapsed;
+    SearchMaterials search = new SearchMaterials(npc, loc);
 
     public Check(NPC npc, Material material, CustomVillager villager, int timeElapsed) {
         super(npc, npc.getLoc());
@@ -32,7 +33,8 @@ public class Check extends NPCLocState {
         this.npc.setWorkHand();
 
         villager.removeBrain();
-        Block block = npc.searchMaterials(material);
+        //Block block = npc.searchMaterials(material);
+        Block block = search.searchMaterials(material);
         villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
                 Pair.of(0, new Swim(0.8f)))
         );

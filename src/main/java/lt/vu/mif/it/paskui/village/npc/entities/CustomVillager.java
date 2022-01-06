@@ -2,9 +2,9 @@ package lt.vu.mif.it.paskui.village.npc.entities;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Dynamic;
-import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.ai.CustomVillagerGoalBuilder;
+import lt.vu.mif.it.paskui.village.npc.ai.SearchMaterials;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.states.Check;
@@ -130,7 +130,9 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material - required material.
      */
     public double distanceTo(Material material) {
-        Block block = npc.searchMaterials(material);
+        //Block block = npc.searchMaterials(material);
+        SearchMaterials search = new SearchMaterials(npc, npc.getLoc());
+        Block block = search.searchMaterials(material);
 
         if (block == null) {
             return 0;

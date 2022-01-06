@@ -3,20 +3,14 @@ package lt.vu.mif.it.paskui.village.npc;
 import lt.vu.mif.it.paskui.village.npc.entities.CustomVillager;
 import lt.vu.mif.it.paskui.village.npc.entities.NPCEntity;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
-import lt.vu.mif.it.paskui.village.util.Vector3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -192,82 +186,5 @@ public class NPC {
      */
     public void setGoodsHand() {
         npcEntity.setHandItem(new ItemStack(role.goodsCosmetic));
-    }
-
-    /**
-     * Checks if there is a specific block in a radius
-     * @return returns the vector which the NPC will use for walking to the log.
-     */
-    public Block searchMaterials(final @NotNull Material material) {
-        this.updateLocation();
-
-        final int RADIUS = 8;
-        final World WORLD = this.loc.getWorld();
-        final Vector3 START = new Vector3(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-        final Vector3 MIN = START.subtract(RADIUS);
-        final Vector3 MAX = START.add(RADIUS);
-
-        LinkedList<Block> opened = new LinkedList<>(List.of(
-                this.loc.getBlock(),
-                this.loc.toBlockLocation().add(0, 1, 0).getBlock()
-        ));
-        LinkedList<Block> closed = new LinkedList<>();
-        int y, z, x;
-        Vector3 fn, ln; // firstNeighbour, lastNeighbour
-
-        while (!opened.isEmpty()) {
-            Block block = opened.pop();
-
-            // firstNeighbour
-            fn = new Vector3(
-                    block.getX() - 1,
-                    block.getY() - 1,
-                    block.getZ() - 1
-            );
-            fn = fn.add(
-                    Math.max(0, MIN.x() - fn.x()),
-                    Math.max(0, MIN.y() - fn.y()),
-                    Math.max(0, MIN.z() - fn.z())
-            );
-
-            // lastNeighbour
-            ln = new Vector3(
-                    block.getX() + 1,
-                    block.getY() + 1,
-                    block.getZ() + 1
-            );
-            ln = ln.subtract(
-                    Math.max(0, ln.x() - MAX.x()),
-                    Math.max(0, ln.y() - MAX.y()),
-                    Math.max(0, ln.z() - MAX.z())
-            );
-
-            for (y = fn.y(); y <= ln.y(); ++y) {
-                for (z = fn.z(); z <= ln.z(); ++z) {
-                    for (x = fn.x(); x <= ln.x(); ++x) {
-                        Block newBlock = WORLD.getBlockAt(x, y, z);
-
-                        if (newBlock.equals(block)
-                            || opened.contains(newBlock)
-                            || closed.contains(newBlock)) {
-                            continue;
-                        }
-
-                        if (newBlock.getType() == Material.AIR
-                                || newBlock.getType() == Material.CAVE_AIR) {
-                            opened.add(newBlock);
-                        } else if (newBlock.getType() == material) {
-                            return newBlock;
-                        } else {
-                            closed.push(newBlock);
-                        }
-                    }
-                }
-            }
-
-            closed.add(block);
-        }
-
-        return null;
     }
 }
