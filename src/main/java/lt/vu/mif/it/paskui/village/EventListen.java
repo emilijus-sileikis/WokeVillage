@@ -2,17 +2,16 @@ package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
+import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.services.tables.FisherLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.LumberjackLootTable;
 import lt.vu.mif.it.paskui.village.npc.services.tables.MinerLootTable;
-import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.states.Failure;
 import lt.vu.mif.it.paskui.village.npc.states.ReceiveGoods;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.world.entity.Entity.RemovalReason;
-import net.minecraft.world.item.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
@@ -25,6 +24,7 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.concurrent.Executors;
@@ -32,7 +32,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers.getItem;
 
 public class EventListen implements Listener {
 
@@ -200,7 +199,6 @@ public class EventListen implements Listener {
     }
 
     private static void processTrade(SelectionScreen screen, Player p, int cost, int goods, Material material, Material goTo){
-        ItemStack itemReceived = new ItemStack(getItem(material));
         if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
             int failureChance = 5; //future functionality for failure
             int timeElapsed = 500; //future functionality for time elapsed while gathering
@@ -235,15 +233,14 @@ public class EventListen implements Listener {
                 int countdownStarter = finalTimeElapsed + 20;
 
                 public void run() {
-
-                    //Bukkit.broadcast(Component.text(countdownStarter));
                     countdownStarter--;
 
                     if (screen.getNPC().getEntity().isDead()) {
                         scheduler.shutdown();
                     }
                     if (countdownStarter < 0) {
-                        new ReceiveGoods(screen.getNPC(), loc, p, material, itemReceived, goods).runTaskLaterAsynchronously(Main.getInstance(), 20);
+                        new ReceiveGoods(screen.getNPC(), loc, p, material, goods)
+                                .runTaskLaterAsynchronously(20);
                         scheduler.shutdown();
                     }
                 }
@@ -264,10 +261,10 @@ public class EventListen implements Listener {
         if(type == null || inventory == null)
             return -1;
 
-        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.addItem(new org.bukkit.inventory.ItemStack(type,amount));
+        HashMap<Integer, ItemStack> retVal = inventory.addItem(new ItemStack(type,amount));
 
         int granted = 0;
-        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+        for(ItemStack item: retVal.values()) {
             granted+=item.getAmount();
         }
         return granted;
@@ -284,10 +281,10 @@ public class EventListen implements Listener {
             return 0;
         }
 
-        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.removeItem(new org.bukkit.inventory.ItemStack(type,amount));
+        HashMap<Integer, ItemStack> retVal = inventory.removeItem(new ItemStack(type,amount));
 
         int notRemoved = 0;
-        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+        for(ItemStack item: retVal.values()) {
             notRemoved+=item.getAmount();
         }
         return notRemoved;
