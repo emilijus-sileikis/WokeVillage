@@ -224,7 +224,6 @@ public class EventListen implements Listener {
             p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
                 timeElapsed = 50; //Delete this after testing
-                //Double dist = screen.getNPC().distanceTo(goTo);
                 screen.getNPC().moveTo(timeElapsed, goTo);
 
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -239,8 +238,7 @@ public class EventListen implements Listener {
                         scheduler.shutdown();
                     }
                     if (countdownStarter < 0) {
-                        new ReceiveGoods(screen.getNPC(), loc, p, material, goods)
-                                .runTaskLaterAsynchronously(20);
+                        new ReceiveGoods(screen.getNPC(), loc, p, material, goods).runTaskLater(20);
                         scheduler.shutdown();
                     }
                 }

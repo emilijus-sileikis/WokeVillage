@@ -13,36 +13,34 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ReceiveGoods extends NPCLocState {
     private final Player p;
-    private final Material material;
     private final ItemStack itemReceived;
-    private final int goods;
 
     /**
-     * @param npc      instance of NPC running this state
-     * @param loc      npc position
-     * @param p        player to receive goods
-     * @param material type of item to give to player.
-     * @param goods    count of goods
+     * Bukkit task for transferring collected goods to player that
+     * ordered them.
+     * @param npc       instance of NPC running this state
+     * @param loc       npc position
+     * @param p         player to receive goods
+     * @param material  type of item to give to player.
+     * @param goodCount count of goods
      */
-    public ReceiveGoods(NPC npc, Location loc, Player p, Material material, int goods) {
+    public ReceiveGoods(NPC npc, Location loc, Player p, Material material, int goodCount) {
         super(npc, loc);
         this.p = p;
-        this.material = material;
-        this.itemReceived = new ItemStack(material);
-        this.goods = goods;
+        this.itemReceived = new ItemStack(material, goodCount);
     }
 
     @Override
     public void run() {
-        for(int i = 0; i < goods; ++i) {
-            if (p.getInventory().firstEmpty() == -1) {
-                p.getWorld().dropItemNaturally(loc, itemReceived);
-            } else {//items are added 1 by 1 to avoid duping
-                EventListen.receiveItems(p.getInventory(), material, 1);
-                p.updateInventory();
-            }
+        Map<Integer, ItemStack> leftItems = p.getInventory().addItem(itemReceived);
+        p.updateInventory();
+        for (ItemStack items : leftItems.values()) {
+            p.getWorld().dropItemNaturally(loc, items);
         }
 
         // displays particle effect to all players
