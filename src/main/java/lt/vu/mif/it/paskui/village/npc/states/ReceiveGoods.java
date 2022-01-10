@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village.npc.states;
 
-import lt.vu.mif.it.paskui.village.EventListen;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -13,7 +12,6 @@ import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ReceiveGoods extends NPCLocState {
@@ -37,6 +35,7 @@ public class ReceiveGoods extends NPCLocState {
 
     @Override
     public void run() {
+        //if (!(npc.getEntity().isDead())) {
         Map<Integer, ItemStack> leftItems = p.getInventory().addItem(itemReceived);
         p.updateInventory();
         for (ItemStack items : leftItems.values()) {

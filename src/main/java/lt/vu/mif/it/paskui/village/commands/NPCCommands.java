@@ -5,12 +5,14 @@ import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.command.Argument;
 import lt.vu.mif.it.paskui.village.command.Command;
 import lt.vu.mif.it.paskui.village.command.CommandContext;
+import lt.vu.mif.it.paskui.village.npc.Book;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.util.Logging;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +39,7 @@ public class NPCCommands {
             perm = "wokevillage.npc.create")
     public void create(final @NotNull CommandContext context) {
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
         Logging.infoLog("NPCCommands::create has been executed.");
 
         Logging.infoLog(context.toString());
@@ -57,6 +60,12 @@ public class NPCCommands {
             ? (String) context.getArg(NPC_NAME).value()
             : NPCNames.getRandomName().getName();
 
+        if (name.length() >= 20) {
+            sender.sendMessage("The name of the NPC was too long!");
+            sender.sendMessage("(Please use 20 or less characters)");
+            return;
+        }
+
         name += " The " + role.toStringWithCapInitial();
 
         Location loc;
@@ -65,6 +74,10 @@ public class NPCCommands {
         } else if (sender instanceof Player) {
             Player player = (Player) sender;
             loc = player.getLocation();
+            if (player.getWorld().getEnvironment() != World.Environment.NORMAL) {
+                player.sendMessage("Can not create the NPC in this world!");
+                return;
+            }
         } else {
             Logging.infoLog("Can not create the NPC!");
             Logging.infoLog("The console MUST use the -l argument!");
@@ -86,8 +99,9 @@ public class NPCCommands {
             mod = { "remove" },
             perm = "wokevillage.npc.remove")
     public void remove(@NotNull CommandContext context) {
-        Logging.infoLog("NPCCommands::remove has been executed.");
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
+        Logging.infoLog("NPCCommands::remove has been executed.");
 
         Logging.infoLog(context.toString());
         context.getArgs().forEach(
@@ -95,7 +109,6 @@ public class NPCCommands {
         );
 
         if (!npcManager.npcsExist()) {
-            //Bukkit.broadcast(Component.text("No npcs created"));
             sender.sendMessage("No NPCs created");
             return;
         }
@@ -122,18 +135,28 @@ public class NPCCommands {
             perm = "wokevillage.npc.removeAll")
     public void removeAll(@NotNull CommandContext context) {
         CommandSender sender = context.getSender();
+        if (!(sender.isOp())) { sender.sendMessage("You don't have the permissions for this command!"); return; }
 
         if (!(npcManager.npcsExist())) {
-            //Bukkit.broadcast(Component.text("There are no NPCs to remove!"));
             sender.sendMessage("There are no NPCs to remove!");
             return;
         }
 
-        //Bukkit.broadcast(Component.text("Total of " + npcs.size() + " NPCs were removed!"));
         sender.sendMessage("Total of " + npcManager.getNPCs().size() + " NPCs were removed!");
 
         npcManager.removeAllNPC();
         dataManager.getConfig().set("data", null);
         dataManager.saveConfig();
+    }
+
+    @Command(
+            roots = "npc",
+            mod = { "help" },
+            perm = "wokevillage.npc.help")
+    public void npc(@NotNull CommandContext context) {
+        CommandSender sender = context.getSender();
+        Player player = (Player) sender;
+        Book book = new Book();
+        book.createBook(player);
     }
 }

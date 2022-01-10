@@ -9,7 +9,7 @@ import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
 import lt.vu.mif.it.paskui.village.npc.states.Check;
 import lt.vu.mif.it.paskui.village.util.Logging;
-import net.kyori.adventure.text.Component;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -37,6 +37,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * {@link NPC} interface into minecraft world.
@@ -47,6 +51,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * {@link NPC} instance that this entity is associated to.
      */
     private final NPC npc;
+    int count = 0;
 
     /** Default constructor.
      * @param npc reference of npc entity will represent.
@@ -73,7 +78,7 @@ public class CustomVillager extends Villager implements NPCEntity {
     public String getEntityName() {
         return Objects.requireNonNullElse(
                 this.getCustomName(),
-                Component.text("CustomVillager")
+                net.kyori.adventure.text.Component.text("CustomVillager")
         ).toString();
     }
 
@@ -223,6 +228,10 @@ public class CustomVillager extends Villager implements NPCEntity {
         this.initBrainGoals(this.getBrain());
     }
 
+    public void setName(net.minecraft.network.chat.Component name) {
+        this.setCustomName(name);
+    }
+
     @Override
     protected void customServerAiStep() {
         // TODO : research what can be used in this method.
@@ -241,14 +250,41 @@ public class CustomVillager extends Villager implements NPCEntity {
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(
-            @NotNull final Player player,
-            @NotNull final InteractionHand hand
-    ) {
+    public @NotNull InteractionResult mobInteract(@NotNull final Player player,
+                                                  @NotNull final InteractionHand hand) {
         SelectionScreen services = npc.getServices();
-        //TODO: Test this with two players
         if (this.isInvulnerable()) {
-            player.sendMessage(net.minecraft.network.chat.Component.nullToEmpty("The NPC is busy"), UUID.randomUUID());
+            player.sendMessage(Component.nullToEmpty("The NPC is busy"), UUID.randomUUID());
+            return InteractionResult.FAIL;
+        }
+
+        ++count;
+
+        if (count == 6) {
+            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            final Runnable runnable = new Runnable() {
+                int countdownStarter = 20; //change to 1200 (minecraft day cycle is 20m)
+                final Component name = getName();
+
+                public void run() {
+
+                    countdownStarter--;
+                    setName(Component.nullToEmpty("Time Left: " + countdownStarter));
+
+                    if (countdownStarter < 0) {
+                        scheduler.shutdown();
+                        setName(name);
+                        count=0;
+
+                    }
+                }
+            };
+            scheduler.scheduleAtFixedRate(runnable, 0, 1, SECONDS);
+        }
+
+        if (count > 5) {
+            player.sendMessage(Component.nullToEmpty("You have reached the limit of trades for now!"), UUID.randomUUID());
+            player.sendMessage(Component.nullToEmpty("(Please wait a whole Minecraft day to continue)"), UUID.randomUUID());
             return InteractionResult.FAIL;
         }
 

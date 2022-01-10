@@ -1,6 +1,5 @@
 package lt.vu.mif.it.paskui.village.npc.states;
 
-import lt.vu.mif.it.paskui.village.Main;
 import lt.vu.mif.it.paskui.village.npc.NPC;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import org.bukkit.Location;

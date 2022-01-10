@@ -3,29 +3,24 @@ package lt.vu.mif.it.paskui.village.npc.services.tables;
 import org.bukkit.Material;
 
 public enum MinerLootTable {
-    COBBLESTONE(Material.COBBLESTONE,10,96),
-    IRON_ORE(Material.IRON_ORE,16,32),
-    COAL(Material.COAL,10,64),
+    COBBLESTONE(Material.COBBLESTONE,96),
+    IRON_ORE(Material.IRON_ORE,32),
+    COAL(Material.COAL,64),
     //
-    COAL_ORE(Material.COAL_ORE, 0, 0),
-    STONE(Material.STONE, 0, 0);
+    COAL_ORE(Material.COAL_ORE,0),
+    STONE(Material.STONE,0);
 
     private final Material item;
-    private final int cost;
     private final int goods;
 
-    MinerLootTable(Material item, int cost, int goods)
+    MinerLootTable(Material item, int goods)
     {
         this.item = item;
-        this.cost = cost;
         this.goods = goods;
     }
 
     public Material getItem() {
         return item;
-    }
-    public int getCost() {
-        return cost;
     }
     public int getGoods() {
         return goods;

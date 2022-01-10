@@ -10,16 +10,19 @@ import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
 import org.bukkit.entity.Player;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 public class Failure extends NPCLocState {
     private final Player p;
-    private final ScheduledExecutorService scheduler;
 
-    public Failure(NPC npc, Location loc, Player p, ScheduledExecutorService scheduler) {
+//    private final ScheduledExecutorService scheduler;
+//    public Failure(NPC npc, Location loc, Player p, ScheduledExecutorService scheduler) {
+//        super(npc, loc);
+//        this.p = p;
+//        this.scheduler = scheduler;
+//    }
+
+    public Failure(NPC npc, Location loc, Player p) {
         super(npc, loc);
         this.p = p;
-        this.scheduler = scheduler;
     }
 
     @Override
@@ -33,7 +36,6 @@ public class Failure extends NPCLocState {
         }
         p.sendMessage(Component.text("Your items have been lost! The trader suffered an accident...")
                 .color(NamedTextColor.RED));
-        scheduler.shutdown();
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
         npc.setKillable();
