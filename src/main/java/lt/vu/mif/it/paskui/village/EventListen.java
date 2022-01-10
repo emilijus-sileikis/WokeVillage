@@ -1,5 +1,6 @@
 package lt.vu.mif.it.paskui.village;
 
+import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
@@ -17,12 +18,15 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
+import org.bukkit.StructureType;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,6 +41,8 @@ public class EventListen implements Listener {
 
     private final NPCManager npcManager;
     private final DataManager dataManager;
+    boolean newChunk;
+    int limit = 0;
 
     public EventListen(NPCManager npcManager, DataManager dataManager) {
         this.npcManager = npcManager;
@@ -195,6 +201,35 @@ public class EventListen implements Listener {
             SelectionScreen screen = (SelectionScreen) event.getInventory().getHolder();
             screen.getNPC().stopTrade();
             screen.getNPC().setKillable();
+        }
+    }
+
+    @EventHandler
+    public boolean ChunkCheck (ChunkLoadEvent event) {
+        if (event.isNewChunk()) {
+            return newChunk = true;
+            //Chunk chunk = event.getChunk();
+            //VillageCheck(chunk);
+        }
+        else return newChunk = false;
+    }
+
+    @EventHandler
+    public void ChunkLoad (PlayerChunkLoadEvent event) {
+        Player p = event.getPlayer();
+        //if (newChunk) {
+            VillageCheck(p);
+        //}
+    }
+
+    public void VillageCheck (Player p) {
+        World world = p.getWorld();
+        Location village = world.locateNearestStructure(p.getLocation(), StructureType.VILLAGE, 1, false);
+        Location player = p.getLocation();
+        double range = village.distance(player);
+        if (village.getChunk().isLoaded() && range <= 100) {
+            //TODO: DO SOME RANDOM SPAWNING.
+            // MAKE THE SPAWN LIMIT 1.
         }
     }
 
