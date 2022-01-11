@@ -30,43 +30,34 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SelectionScreen implements InventoryHolder {
 
-    private final NPC npc;
-    protected final Inventory inv;
-    protected int[] pricesFisher;
-    protected int[] pricesMiner;
-    protected int[] pricesLumberjack;
+    public final NPC npc;
+    public final Inventory inv;
+    protected int[] prices;
 
-    public SelectionScreen(NPC npc) {
+    public SelectionScreen(final @NotNull NPC npc) {
         this.npc = npc;
-        inv = Bukkit.createInventory(this,
+        this.inv = Bukkit.createInventory(this,
                 InventoryType.HOPPER,
                 Component.text(String.format("%s %s", getRole().toString().substring(0,1).toUpperCase() + getRole().toString().substring(1), getPersonality()))
                         .decorate(TextDecoration.BOLD)
                         .color(NamedTextColor.RED)
         );
-        pricesFisher = new int[3];
-        pricesMiner = new int[3];
-        pricesLumberjack = new int[3];
 
         init(npc.getRole(), npc.getPersonality());
     }
 
+    // getters
     @Override
     public @NotNull Inventory getInventory() {
         return inv;
     }
 
-    // getters
     public final Role getRole() {
         return npc.getRole();
     }
 
     public final Personality getPersonality() {
         return npc.getPersonality();
-    }
-
-    public final NPC getNPC() {
-        return npc;
     }
 
     // public
@@ -99,6 +90,24 @@ public class SelectionScreen implements InventoryHolder {
     }
 
     // finals
+    /**
+     * Modifies service prices based on NPC personality.
+     */
+    protected final void modifyPrices() {
+        switch (this.npc.getPersonality()) {
+            case GREEDY -> {
+                for(int i = 0; i < prices.length; i++) {
+                    prices[i] *= randomDouble(1, 2);
+                }
+            }
+            case GENEROUS -> {
+                for(int i = 0; i < prices.length; i++) {
+                    prices[i] *= randomDouble(0.5, 0.9);;
+                }
+            }
+        }
+    }
+
     protected final ItemStack createItem(Component name, Material mat, List<Component> lore) {
         ItemStack item = new ItemStack(mat, 1);
         ItemMeta meta = item.getItemMeta();

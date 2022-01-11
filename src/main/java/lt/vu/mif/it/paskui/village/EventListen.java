@@ -63,8 +63,8 @@ public class EventListen implements Listener {
     public void onInvClose(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof SelectionScreen) {
             SelectionScreen screen = (SelectionScreen) event.getInventory().getHolder();
-            screen.getNPC().stopTrade();
-            screen.getNPC().setKillable();
+            screen.npc.stopTrade();
+            screen.npc.setKillable();
         }
     }
 
