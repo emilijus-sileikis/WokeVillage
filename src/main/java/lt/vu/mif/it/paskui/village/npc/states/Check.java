@@ -40,7 +40,7 @@ public class Check extends NPCLocState {
         );
 
         Location newLoc = this.npc.getLoc();
-        if (npc.getRole() == Role.MINER) {
+        if (npc.role == Role.MINER) {
             villager.getNavigation().moveTo(
                     newLoc.getX() + 5, newLoc.getY(), newLoc.getZ() + 3,
                     0.5D

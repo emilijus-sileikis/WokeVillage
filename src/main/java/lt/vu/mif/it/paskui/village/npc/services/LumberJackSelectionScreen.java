@@ -17,14 +17,13 @@ import java.util.List;
 public class LumberJackSelectionScreen extends SelectionScreen {
 
     public LumberJackSelectionScreen(NPC npc) {
-        super(npc);
-        this.prices = new int[]{20, 10, 2};
-        this.modifyPrices();
+        super(npc, new int[]{20, 10, 2});
     }
 
     @Override
     protected void init(Role role, Personality personality) {
         super.init(role, personality);
+        this.modifyPrices();
 
         List<Component> loreLog = new ArrayList<>();
         loreLog.add(Component.text("Task: 128 Spruce Logs.") .color(NamedTextColor.YELLOW));

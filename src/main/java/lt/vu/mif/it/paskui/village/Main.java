@@ -60,7 +60,7 @@ public class Main extends JavaPlugin implements Listener, ManagerContainer {
     public void onDisable() {
 
         for (NPC npc : npcManager.getNPCs().values()) {
-            data.writeData(npc, npc.getId());
+            data.writeData(npc, npc.id);
         }
         npcManager.removeAllNPC();
     }

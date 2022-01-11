@@ -88,7 +88,7 @@ public class NPCCommands {
         NPC npc = npcManager.createNPC(name, loc, role, personality);
 
         if (npc != null) {
-            dataManager.writeData(npc, npc.getId());
+            dataManager.writeData(npc, npc.id);
             sender.sendMessage("NPC CREATED");
             Logging.infoLog("NPC CREATED");
         }

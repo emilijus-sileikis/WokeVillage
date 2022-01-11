@@ -30,20 +30,31 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SelectionScreen implements InventoryHolder {
 
+    protected static final Material REQUIRED_RESOURCE = Material.GOLD_INGOT;
+    protected static final String REQUIRED_RESOURCE_STR = "Gold ingots";
+
     public final NPC npc;
     public final Inventory inv;
     protected int[] prices;
 
-    public SelectionScreen(final @NotNull NPC npc) {
+    public SelectionScreen(final @NotNull NPC npc, final int[] prices) {
         this.npc = npc;
         this.inv = Bukkit.createInventory(this,
                 InventoryType.HOPPER,
-                Component.text(String.format("%s %s", getRole().toString().substring(0,1).toUpperCase() + getRole().toString().substring(1), getPersonality()))
-                        .decorate(TextDecoration.BOLD)
+                Component.text(
+                        String.format("%s %s",
+                                getRole().toStringWithCapInitial(),
+                                getPersonality()
+                        )).decorate(TextDecoration.BOLD)
                         .color(NamedTextColor.RED)
         );
+        this.prices = prices;
 
-        init(npc.getRole(), npc.getPersonality());
+        init(getRole(), getPersonality());
+    }
+
+    private SelectionScreen(final @NotNull NPC npc) {
+        this(npc, new int[]{0, 0, 0});
     }
 
     // getters
@@ -53,14 +64,32 @@ public class SelectionScreen implements InventoryHolder {
     }
 
     public final Role getRole() {
-        return npc.getRole();
+        return npc.role;
     }
 
     public final Personality getPersonality() {
-        return npc.getPersonality();
+        return npc.personality;
     }
 
     // public
+    /**
+     * Modifies service prices based on NPC personality.
+     */
+    protected void modifyPrices() {
+        switch (getPersonality()) {
+            case GREEDY -> {
+                for(int i = 0; i < prices.length; i++) {
+                    prices[i] *= randomDouble(1, 2);
+                }
+            }
+            case GENEROUS -> {
+                for(int i = 0; i < prices.length; i++) {
+                    prices[i] *= randomDouble(0.5, 0.9);
+                }
+            }
+        }
+    }
+
     public void processService(Material item, Player player) {
         switch (item) {
             case BOOK -> {
@@ -90,24 +119,6 @@ public class SelectionScreen implements InventoryHolder {
     }
 
     // finals
-    /**
-     * Modifies service prices based on NPC personality.
-     */
-    protected final void modifyPrices() {
-        switch (this.npc.getPersonality()) {
-            case GREEDY -> {
-                for(int i = 0; i < prices.length; i++) {
-                    prices[i] *= randomDouble(1, 2);
-                }
-            }
-            case GENEROUS -> {
-                for(int i = 0; i < prices.length; i++) {
-                    prices[i] *= randomDouble(0.5, 0.9);;
-                }
-            }
-        }
-    }
-
     protected final ItemStack createItem(Component name, Material mat, List<Component> lore) {
         ItemStack item = new ItemStack(mat, 1);
         ItemMeta meta = item.getItemMeta();
@@ -140,45 +151,45 @@ public class SelectionScreen implements InventoryHolder {
         inv.setItem(inv.getSize() - 1, item);
     }
 
-
     protected final void processTrade(Player p, int cost, int goods, Material material){
-        if (p.getInventory().contains(Material.GOLD_INGOT, cost)) {
-            int failureChance = 5; //future functionality for failure
-            int timeElapsed = 500; //future functionality for time elapsed while gathering
-
-            //personality check
-            switch (this.npc.getPersonality()) {
-                case HARDWORKING -> timeElapsed -= randomInt(0, 240);
-                case LAZY        -> timeElapsed += randomInt(0, 240);
-                case RELIABLE    -> failureChance -= randomInt(0, 5);
-                case CLUMSY      -> failureChance += randomInt(0, 15);
-                case GENEROUS    -> {}
-                case GREEDY      -> {}
-                default          -> p.sendMessage(Component.text("Plugin ERROR: processTrade")
-                        .color(NamedTextColor.RED).decorate(TextDecoration.BOLD));
-            }
-            //payment
-            Location loc = p.getLocation();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
-            }
-            removeItems(p.getInventory(), Material.GOLD_INGOT, cost);
-            p.updateInventory();
-            p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
-
-            timeElapsed = 20; //Delete this after testing
-//            Double dist = this.npc.distanceTo(material);
-            this.npc.moveTo(timeElapsed, material);
-
-            //failure check
-//            long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
-            if(randomInt(0, 100) < failureChance) {
-                new Failure(npc, loc, p).runTaskLater(timeElapsed * 20L);
-            } else {
-                new ReceiveGoods(this.npc, loc, p, material, goods).runTaskLater(20L);
-            }
-        } else {
+        if (!p.getInventory().contains(REQUIRED_RESOURCE, cost)) {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
+            p.closeInventory();
+            return;
+        }
+
+        int failureChance = 5; //future functionality for failure
+        int timeElapsed = 500; //future functionality for time elapsed while gathering
+
+        //personality check
+        switch (getPersonality()) {
+            case HARDWORKING -> timeElapsed -= randomInt(0, 240);
+            case LAZY        -> timeElapsed += randomInt(0, 240);
+            case RELIABLE    -> failureChance -= randomInt(0, 5);
+            case CLUMSY      -> failureChance += randomInt(0, 15);
+            case GENEROUS, GREEDY -> {}
+            default          -> p.sendMessage(Component.text("Plugin ERROR: processTrade")
+                    .color(NamedTextColor.RED).decorate(TextDecoration.BOLD));
+        }
+        //payment
+        Location loc = p.getLocation();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.playNote(loc, Instrument.BANJO, Note.sharp(2, Note.Tone.F));
+        }
+        removeItems(p.getInventory(), REQUIRED_RESOURCE, cost);
+        p.updateInventory();
+        p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
+
+        timeElapsed = 20; //Delete this after testing
+//            Double dist = this.npc.distanceTo(material);
+        this.npc.moveTo(timeElapsed, material);
+
+        //failure check
+//            long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
+        if(randomInt(0, 100) < failureChance) {
+            new Failure(npc, loc, p).runTaskLater(timeElapsed * 20L);
+        } else {
+            new ReceiveGoods(this.npc, loc, p, material, goods).runTaskLater(20L);
         }
         p.closeInventory();
     }
@@ -187,30 +198,22 @@ public class SelectionScreen implements InventoryHolder {
         if(type == null || inventory == null)
             return -1;
 
-        HashMap<Integer, ItemStack> retVal = inventory.addItem(new org.bukkit.inventory.ItemStack(type,amount));
+        HashMap<Integer, ItemStack> retVal = inventory.addItem(new ItemStack(type,amount));
 
         int granted = 0;
-        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+        for(ItemStack item: retVal.values()) {
             granted+=item.getAmount();
         }
         return granted;
     }
 
-    public static int removeItems(Inventory inventory, Material type, int amount) {
-        if(type == null || inventory == null)
-            return -1;
-        if (amount <= 0 )
-            return -1;
-
-        if (amount == Integer.MAX_VALUE) {
-            inventory.remove(type);
-            return 0;
-        }
-
-        HashMap<Integer, org.bukkit.inventory.ItemStack> retVal = inventory.removeItem(new org.bukkit.inventory.ItemStack(type,amount));
+    public static int removeItems(final @NotNull Inventory inventory,
+                                  final @NotNull Material type,
+                                  final int amount) {
+        HashMap<Integer, ItemStack> retVal = inventory.removeItem(new ItemStack(type, amount));
 
         int notRemoved = 0;
-        for(org.bukkit.inventory.ItemStack item: retVal.values()) {
+        for(ItemStack item: retVal.values()) {
             notRemoved+=item.getAmount();
         }
         return notRemoved;
@@ -233,7 +236,7 @@ public class SelectionScreen implements InventoryHolder {
 
     public static SelectionScreen createScreen(NPC npc) {
         try {
-            Constructor<? extends SelectionScreen> cns = npc.getRole().clazz.getConstructor(npc.getClass());
+            Constructor<? extends SelectionScreen> cns = npc.role.clazz.getConstructor(npc.getClass());
             return cns.newInstance(npc);
         } catch (NoSuchMethodException | IllegalAccessException |
                 InstantiationException | InvocationTargetException e

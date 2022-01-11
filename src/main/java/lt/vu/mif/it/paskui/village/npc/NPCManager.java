@@ -82,10 +82,10 @@ public class NPCManager {
      * @param npc {@link NPC} instance existing in {@link NPCManager}.
      */
     public void deleteNPC(NPC npc) {
-        npcs.remove(npc.getId());
-        npcIds.removeFirstOccurrence(npc.getId());
+        npcs.remove(npc.id);
+        npcIds.removeFirstOccurrence(npc.id);
 
-        Bukkit.broadcast(Component.text("NPC - " + npc.getName() + " was removed from the world!"));
+        Bukkit.broadcast(Component.text("NPC - " + npc.id + " was removed from the world!"));
     }
 
     /**
@@ -130,8 +130,8 @@ public class NPCManager {
         boolean spawned = npc.spawn();
 
         if (spawned) {
-            npcs.put(npc.getId(), npc);
-            npcIds.add(npc.getId());
+            npcs.put(npc.id, npc);
+            npcIds.add(npc.id);
             return npc;
         }
 

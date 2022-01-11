@@ -68,15 +68,15 @@ public class DataManager {
         String npcData = "data." + id;
         dataConfig.set(npcData + ".id", id);
         dataConfig.set(npcData + ".uuid", npc.getUUID().toString());
-        dataConfig.set(npcData + ".name", npc.getName());
+        dataConfig.set(npcData + ".name", npc.name);
         dataConfig.set(npcData + ".x", (int) npc.getLoc().getX());
         dataConfig.set(npcData + ".y", (int) npc.getLoc().getY());
         dataConfig.set(npcData + ".z", (int) npc.getLoc().getZ());
         dataConfig.set(npcData + ".p", npc.getLoc().getPitch());
         dataConfig.set(npcData + ".yaw", npc.getLoc().getYaw());
         dataConfig.set(npcData + ".world", npc.getLoc().getWorld().getName());
-        dataConfig.set(npcData + ".role", npc.getRole().toString());
-        dataConfig.set(npcData + ".personality", npc.getPersonality().toString());
+        dataConfig.set(npcData + ".role", npc.role.toString());
+        dataConfig.set(npcData + ".personality", npc.personality.toString());
 //        this.dataConfig.set(npcData + ".tex", "");
 //        this.dataConfig.set(npcData + ".signature", "");
         saveConfig();

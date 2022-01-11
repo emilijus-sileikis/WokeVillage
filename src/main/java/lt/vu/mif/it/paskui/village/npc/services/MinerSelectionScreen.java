@@ -16,14 +16,14 @@ import java.util.List;
 public class MinerSelectionScreen extends SelectionScreen {
 
     public MinerSelectionScreen(NPC npc) {
-        super(npc);
-        this.prices = new int[]{10, 16, 10};
+        super(npc, new int[]{10, 16, 10});
         this.modifyPrices();
     }
 
     @Override
     protected void init(Role role, Personality personality) {
         super.init(role, personality);
+        this.modifyPrices();
 
         List<Component> loreCobble = new ArrayList<>();
         loreCobble.add(Component.text("Task: 96 Cobblestone").color(NamedTextColor.YELLOW));

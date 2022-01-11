@@ -18,10 +18,10 @@ import java.util.UUID;
  */
 public class NPC {
 
-    private final int id;
-    private final String name;
-    private final Role role;
-    private final Personality personality;
+    public final int id;
+    public final String name;
+    public final Role role;
+    public final Personality personality;
     private Location loc;
     private SelectionScreen services;
     private NPCEntity npcEntity;
@@ -45,10 +45,6 @@ public class NPC {
     }
 
     // Getters
-    public String getName() {
-        return name;
-    }
-
     public Location getLoc() {
         this.updateLocation();
         return loc;
@@ -62,19 +58,9 @@ public class NPC {
         return npcEntity.getEntityUUID();
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public Personality getPersonality() {
-        return personality;
-    }
-
     public SelectionScreen getServices() {
         return services;
     }
-
-    public int getId() {return id;}
 
     public void setServices(SelectionScreen services) {
         this.services = services;

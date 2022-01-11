@@ -16,14 +16,14 @@ import java.util.List;
 public class FisherSelectionScreen extends SelectionScreen {
 
     public FisherSelectionScreen(NPC npc) {
-        super(npc);
-        this.prices = new int[]{10, 5, 10};
+        super(npc, new int[]{10, 5, 10});
         this.modifyPrices();
     }
 
     @Override
     protected void init(Role role, Personality personality) {
         super.init(role, personality);
+        this.modifyPrices();
 
         List<Component> loreFish = new ArrayList<>();
         loreFish.add(Component.text("Task: 64 Fish").color(NamedTextColor.YELLOW));

@@ -54,7 +54,7 @@ public class EventListen implements Listener {
     public void onNPCDeath(NPCDeathEvent event) {
         if (event.getReason().equals(RemovalReason.KILLED)) {
             npcManager.deleteNPC(event.getNpc());
-            dataManager.getConfig().set("data." + event.getNpc().getId(), null);
+            dataManager.getConfig().set("data." + event.getNpc().id, null);
             dataManager.saveConfig();
         }
     }
