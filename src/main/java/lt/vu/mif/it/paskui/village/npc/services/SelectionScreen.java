@@ -5,6 +5,7 @@ import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.states.Failure;
 import lt.vu.mif.it.paskui.village.npc.states.ReceiveGoods;
+import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -158,19 +159,9 @@ public class SelectionScreen implements InventoryHolder {
             return;
         }
 
-        int failureChance = 5; //future functionality for failure
-        int timeElapsed = 500; //future functionality for time elapsed while gathering
+        int failChance = 5 + getPersonality().getFailChanceMod(); //future functionality for failure
+        int workDuration = 500 + getPersonality().getWorkDurationMod(); //future functionality for time elapsed while gathering
 
-        //personality check
-        switch (getPersonality()) {
-            case HARDWORKING -> timeElapsed -= randomInt(0, 240);
-            case LAZY        -> timeElapsed += randomInt(0, 240);
-            case RELIABLE    -> failureChance -= randomInt(0, 5);
-            case CLUMSY      -> failureChance += randomInt(0, 15);
-            case GENEROUS, GREEDY -> {}
-            default          -> p.sendMessage(Component.text("Plugin ERROR: processTrade")
-                    .color(NamedTextColor.RED).decorate(TextDecoration.BOLD));
-        }
         //payment
         Location loc = p.getLocation();
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -180,14 +171,14 @@ public class SelectionScreen implements InventoryHolder {
         p.updateInventory();
         p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-        timeElapsed = 20; //Delete this after testing
-//            Double dist = this.npc.distanceTo(material);
-        this.npc.moveTo(timeElapsed, material);
+        workDuration = 20; //Delete this after testing
+        //Double dist = this.npc.distanceTo(material);
+        this.npc.moveTo(workDuration, material);
 
         //failure check
-//            long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
-        if(randomInt(0, 100) < failureChance) {
-            new Failure(npc, loc, p).runTaskLater(timeElapsed * 20L);
+        //long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
+        if(randomInt(0, 100) < failChance) {
+            new Failure(npc, loc, p).runTaskLater(workDuration * 20L);
         } else {
             new ReceiveGoods(this.npc, loc, p, material, goods).runTaskLater(20L);
         }
