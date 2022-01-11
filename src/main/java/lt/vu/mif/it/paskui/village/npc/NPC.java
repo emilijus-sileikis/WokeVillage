@@ -102,7 +102,9 @@ public class NPC {
     /**
      * Removes the trading player from the NPCs brain.
      */
-    public void stopTrade() {npcEntity.stopEntityTrading();}
+    public void stopTrade() {
+        npcEntity.stopEntityTrading();
+    }
 
     /**
      * Removes npc entity from minecraft world.
@@ -121,18 +123,24 @@ public class NPC {
     /**
      * Makes the NPC move back to the starting location.
      */
-    public void moveBack(final Location loc) {npcEntity.moveBack(loc);}
+    public void moveBack(final Location loc) {
+        npcEntity.moveBack(loc);
+    }
 
     /**
      * Puts back the behaviors in place.
      */
-    public void refreshBrains(final ServerLevel world) {npcEntity.refreshBrains(world);}
+    public void refreshBrains(final ServerLevel world) {
+        npcEntity.refreshBrains(world);
+    }
 
     /**
      * Move further if a block is not found.
      * @param location loc to move to.
      */
-    public void moveFurther(Location location) {npcEntity.moveFurther(location);}
+    public void moveFurther(Location location) {
+        npcEntity.moveFurther(location);
+    }
 
     /**
      * Update location
@@ -145,27 +153,31 @@ public class NPC {
     /**
      * Sets the NPC invisible.
      */
-    public void setInvisible() { npcEntity.setInvisible(); }
+    public void setInvisible() {
+        npcEntity.setInvisible();
+    }
 
     /**
      * Sets the NPC visible.
      */
-    public void setVisible() { npcEntity.setVisible(); }
+    public void setVisible() {
+        npcEntity.setVisible();
+    }
 
     /**
      * Sets the NPC killable.
      */
-    public void setKillable() { npcEntity.setKillable(); }
+    public void setKillable() {
+        npcEntity.setKillable();
+    }
 
     /**
-     * Sets the NPC non collidable.
+     * Collision setting abstraction for NPC.
+     * @param state state to set Collision at.
      */
-    public void setNonCollidable() { npcEntity.setNonCollidable(); }
-
-    /**
-     * Sets the NPC Collidable.
-     */
-    public void setCollidable() { npcEntity.setCollidable(); }
+    public void setCollidable(boolean state) {
+        npcEntity.setCollidable(state);
+    }
 
     /**
      * Resets the Cosmetics.

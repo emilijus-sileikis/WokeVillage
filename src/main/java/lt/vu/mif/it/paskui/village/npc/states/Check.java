@@ -29,7 +29,7 @@ public class Check extends NPCLocState {
     @Override
     public void run() {
         this.villager.setInvulnerable(true);
-        this.npc.setNonCollidable();
+        this.npc.setCollidable(false);
         this.npc.setWorkHand();
 
         villager.removeBrain();

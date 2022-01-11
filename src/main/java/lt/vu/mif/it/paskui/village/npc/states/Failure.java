@@ -39,7 +39,7 @@ public class Failure extends NPCLocState {
         ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
         npc.refreshBrains(world);
         npc.setKillable();
-        npc.setCollidable();
+        npc.setCollidable(true);
         npc.setVisible();
         npc.itemReset();
     }

@@ -137,14 +137,10 @@ public interface NPCEntity {
     void setKillable();
 
     /**
-     * Sets the NPC non collidable.
+     * Collision setting abstraction for NPC.
+     * @param state state to set Collision at.
      */
-    void setNonCollidable();
-
-    /**
-     * Sets the NPC Collidable.
-     */
-    void setCollidable();
+    void setCollidable(boolean state);
 
     /**
      * Interface for setting entities hand item;

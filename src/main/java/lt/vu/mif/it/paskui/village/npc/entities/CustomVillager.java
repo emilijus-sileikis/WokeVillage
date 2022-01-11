@@ -186,18 +186,10 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void setKillable() { this.setInvulnerable(false); }
 
     @Override
-    public void setNonCollidable() {
-        this.getBukkitLivingEntity().setCollidable(false);
+    public void setCollidable(boolean state) {
+        this.getBukkitLivingEntity().setCollidable(state);
         for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
-            player.setCollidable(false);
-        }
-    }
-
-    @Override
-    public void setCollidable() {
-        this.getBukkitLivingEntity().setCollidable(true);
-        for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
-            player.setCollidable(true);
+            player.setCollidable(state);
         }
     }
 
