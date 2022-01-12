@@ -171,7 +171,7 @@ public class SelectionScreen implements InventoryHolder {
         p.updateInventory();
         p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-        workDuration = 20; //Delete this after testing
+        workDuration = 40; //Delete this after testing
         //Double dist = this.npc.distanceTo(material);
         this.npc.moveTo(workDuration, material);
 
@@ -180,7 +180,7 @@ public class SelectionScreen implements InventoryHolder {
         if(randomInt(0, 100) < failChance) {
             new Failure(npc, loc, p).runTaskLater(workDuration * 20L);
         } else {
-            new ReceiveGoods(this.npc, loc, p, material, goods).runTaskLater(20L);
+            new ReceiveGoods(this.npc, loc, p, material, goods).runTaskTimer((workDuration * 20L) + 80L, 20L);
         }
         p.closeInventory();
     }

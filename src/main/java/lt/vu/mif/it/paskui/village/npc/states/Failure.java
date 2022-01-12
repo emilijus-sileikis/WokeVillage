@@ -28,6 +28,7 @@ public class Failure extends NPCLocState {
     @Override
     public void run() {
         if (npc.getEntity().isDead()) {
+            this.cancel();
             return;
         }
 

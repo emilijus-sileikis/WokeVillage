@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
-// TODO: This is only the "demo" variant, change this to something more efficient if possible.
 public class Dig extends NPCLocState {
     private final Material material;
 
@@ -18,6 +17,7 @@ public class Dig extends NPCLocState {
     @Override
     public void run() {
         if (npc.getEntity().isDead()) {
+            this.cancel();
             return;
         }
 
