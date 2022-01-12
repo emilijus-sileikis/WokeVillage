@@ -1,20 +1,39 @@
 package lt.vu.mif.it.paskui.village;
 
 import io.papermc.paper.event.packet.PlayerChunkLoadEvent;
+import lt.vu.mif.it.paskui.village.commands.NPCNames;
 import lt.vu.mif.it.paskui.village.npc.NPCManager;
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.events.NPCDeathEvent;
 import lt.vu.mif.it.paskui.village.npc.services.SelectionScreen;
+import net.kyori.adventure.text.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.monster.ZombieVillager;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.StructureType;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.craftbukkit.v1_17_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftVillagerZombie;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityCategory;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityTransformEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class EventListen implements Listener {
 
@@ -68,32 +87,21 @@ public class EventListen implements Listener {
         }
     }
 
-    @EventHandler
-    public boolean ChunkCheck (ChunkLoadEvent event) {
-        if (event.isNewChunk()) {
-            return newChunk = true;
-            //Chunk chunk = event.getChunk();
-            //VillageCheck(chunk);
+/*    @EventHandler
+    public void turnEvent (EntityTransformEvent event) {
+        if (event.getTransformedEntity().getType().equals(EntityType.ZOMBIE_VILLAGER)) {
+            Bukkit.broadcast(Component.text("A Villager was turned!"));
         }
-        else return newChunk = false;
     }
+    
+ */
 
     @EventHandler
-    public void ChunkLoad (PlayerChunkLoadEvent event) {
-        Player p = event.getPlayer();
-        //if (newChunk) {
-            VillageCheck(p);
-        //}
-    }
-
-    public void VillageCheck (Player p) {
-        World world = p.getWorld();
-        Location village = world.locateNearestStructure(p.getLocation(), StructureType.VILLAGE, 1, false);
-        Location player = p.getLocation();
-        double range = village.distance(player);
-        if (village.getChunk().isLoaded() && range <= 100) {
-            //TODO: DO SOME RANDOM SPAWNING.
-            // MAKE THE SPAWN LIMIT 1.
+    public void spawnEvent (CreatureSpawnEvent event) {
+        if (event.getEntity() instanceof Villager && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CURED) {
+            event.getEntity().remove();
+            String name = NPCNames.getRandomName().getName() + " The " + Role.getRandomRole().toStringWithCapInitial();
+            npcManager.createNPC(name, event.getLocation(), Role.getRandomRole(), Personality.getRandomPersonality());
         }
     }
 }
