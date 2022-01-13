@@ -58,14 +58,15 @@ public class FisherSelectionScreen extends SelectionScreen {
 
     @Override
     public void processService(Material item, Player player) {
+        FisherLootTable material = FisherLootTable.WATER;
         switch (item) {
             case FISHING_ROD -> {
                 FisherLootTable loot = FisherLootTable.fromInt(randomInt(1, 4));
-                processTrade(player, prices[0], loot.getGoods(), loot.getItem());
+                processTrade(player, prices[0], loot.getGoods(), material.getItem());
             }
             case ENCHANTED_BOOK -> {
                 FisherLootTable loot = FisherLootTable.fromInt(randomInt(1, 11));
-                processTrade(player, prices[1], loot.getGoods(), loot.getItem());
+                processTrade(player, prices[1], loot.getGoods(), material.getItem());
             }
             case FILLED_MAP -> {
                 int temp = randomInt(1, 10);
@@ -76,7 +77,7 @@ public class FisherSelectionScreen extends SelectionScreen {
                     FisherLootTable loot = FisherLootTable.fromInt(
                             randomInt(13, FisherLootTable.values().length)
                     );
-                    processTrade(player, prices[2], loot.getGoods(), loot.getItem());
+                    processTrade(player, prices[2], loot.getGoods(), material.getItem());
                 }
             }
         }
