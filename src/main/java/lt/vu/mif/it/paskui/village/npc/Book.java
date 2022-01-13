@@ -21,6 +21,9 @@ public class Book {
         pages.add(Component.text("Something2 Something Something Something Something" + nl + "Something Something Something Something")); //2nd page
         bookmeta.pages(pages);
         book.setItemMeta(bookmeta);
-        player.getInventory().addItem(book);
+        if (!(player.getInventory().contains(book))) {
+            player.getInventory().addItem(book);
+        }
+        else player.sendMessage("You can only have one information book!");
     }
 }
