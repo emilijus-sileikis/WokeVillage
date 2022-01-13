@@ -18,7 +18,7 @@ public class Move extends NPCLocState {
         npc.moveFurther(location);
 
         if (npc.role != Role.MINER) {
-            new Invisible(npc).runTaskLater(100);
+            new Invisible(npc).runTaskLater(180);
             npc.itemReset();
         }
 

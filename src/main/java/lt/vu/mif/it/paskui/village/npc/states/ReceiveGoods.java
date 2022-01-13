@@ -35,23 +35,25 @@ public class ReceiveGoods extends NPCLocState {
 
     @Override
     public void run() {
-        //if (!(npc.getEntity().isDead())) {
-        Map<Integer, ItemStack> leftItems = p.getInventory().addItem(itemReceived);
-        p.updateInventory();
-        for (ItemStack items : leftItems.values()) {
-            p.getWorld().dropItemNaturally(loc, items);
-        }
+        if (npc.getEntity().getVelocity().getZ() == 0 && npc.getEntity().getVelocity().getX() == 0) {
+            Map<Integer, ItemStack> leftItems = p.getInventory().addItem(itemReceived);
+            p.updateInventory();
+            for (ItemStack items : leftItems.values()) {
+                p.getWorld().dropItemNaturally(loc, items);
+            }
 
-        // displays particle effect to all players
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
-        }
+            // displays particle effect to all players
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.spawnParticle(Particle.CRIT_MAGIC, loc, 100);
+            }
 
-        p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
-        ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
-        npc.refreshBrains(world);
-        npc.setKillable();
-        npc.setCollidable(true);
-        npc.itemReset();
+            p.sendMessage(Component.text("Your items have been delivered!").color(NamedTextColor.GREEN));
+            ServerLevel world = ((CraftWorld) loc.getWorld()).getHandle();
+            npc.refreshBrains(world);
+            npc.setKillable();
+            npc.setCollidable(true);
+            npc.itemReset();
+            this.cancel();
+        }
     }
 }

@@ -31,6 +31,9 @@ public class Book {
 
         bookmeta.pages(pages);
         book.setItemMeta(bookmeta);
-        player.getInventory().addItem(book);
+        if (!(player.getInventory().contains(book))) {
+            player.getInventory().addItem(book);
+        }
+        else player.sendMessage("You can only have one information book!");
     }
 }
