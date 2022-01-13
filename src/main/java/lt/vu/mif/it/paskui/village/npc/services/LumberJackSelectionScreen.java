@@ -78,7 +78,6 @@ public class LumberJackSelectionScreen extends SelectionScreen {
             }
         }
 
-
         super.processService(item, player);
     }
 }

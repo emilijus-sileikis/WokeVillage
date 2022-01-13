@@ -17,7 +17,6 @@ public class FisherSelectionScreen extends SelectionScreen {
 
     public FisherSelectionScreen(NPC npc) {
         super(npc, new int[]{10, 5, 10});
-        this.modifyPrices();
     }
 
     @Override
