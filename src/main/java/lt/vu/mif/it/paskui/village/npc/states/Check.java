@@ -46,7 +46,7 @@ public class Check extends NPCLocState {
                     0.5D
             );
 
-            new Dig(npc, newLoc, material).runTaskLater(timeElapsed * 20L);
+            new Dig(npc, newLoc).runTaskLater(timeElapsed * 20L);
         }
 
         if (block != null) {

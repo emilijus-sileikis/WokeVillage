@@ -7,11 +7,9 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 public class Dig extends NPCLocState {
-    private final Material material;
 
-    public Dig(NPC npc, Location loc, Material material) {
+    public Dig(NPC npc, Location loc) {
         super(npc, loc);
-        this.material = material;
     }
 
     @Override
