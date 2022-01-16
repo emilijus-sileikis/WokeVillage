@@ -1,6 +1,10 @@
 package lt.vu.mif.it.paskui.village;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
+import lt.vu.mif.it.paskui.village.npc.Personality;
+import lt.vu.mif.it.paskui.village.npc.Role;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -8,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class DataManager {
@@ -80,5 +86,42 @@ public class DataManager {
         saveConfig();
     }
 
+    /**
+     * Spawns NPCs' from data.yml file
+     */
+    public void spawnNPC() {
+        FileConfiguration file = getConfig();
+        Objects.requireNonNull(getConfig().getConfigurationSection("data"))
+                .getKeys(false)
+                .forEach(npc -> {
+                            String npcData = "data." + npc;
 
+                            int id = file.getInt(npcData + ".id");
+
+                            UUID npcUUID = UUID.fromString(
+                                    Objects.requireNonNull(file.getString(npcData + ".uuid"))
+                            );
+
+                            String name = file.getString(npcData + ".name");
+
+                            Location location = new Location(
+                                    Bukkit.getWorld(
+                                            Objects.requireNonNull(file.getString(npcData + ".world"))
+                                    ),
+                                    file.getInt(npcData + ".x"),
+                                    file.getInt(npcData + ".y"),
+                                    file.getInt(npcData + ".z")
+                            );
+
+                            location.setPitch((float) file.getDouble(npcData + ".p"));
+                            location.setYaw((float) file.getDouble(npcData + ".yaw"));
+
+                            Role role = Role.fromString( file.getString(npcData + ".role") );
+                            Personality personality = Personality.fromString(
+                                    file.getString(npcData + ".personality")
+                            );
+                            Main.getInstance().getNPCManager().loadNPC(id, name, location, npcUUID, role, personality);
+                        }
+                );
+    }
 }
