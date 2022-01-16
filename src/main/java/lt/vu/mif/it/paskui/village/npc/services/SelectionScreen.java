@@ -5,7 +5,6 @@ import lt.vu.mif.it.paskui.village.npc.Personality;
 import lt.vu.mif.it.paskui.village.npc.Role;
 import lt.vu.mif.it.paskui.village.npc.states.Failure;
 import lt.vu.mif.it.paskui.village.npc.states.ReceiveGoods;
-import lt.vu.mif.it.paskui.village.util.Logging;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

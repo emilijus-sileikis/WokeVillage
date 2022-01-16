@@ -13,13 +13,6 @@ import org.bukkit.entity.Player;
 public class Failure extends NPCLocState {
     private final Player p;
 
-//    private final ScheduledExecutorService scheduler;
-//    public Failure(NPC npc, Location loc, Player p, ScheduledExecutorService scheduler) {
-//        super(npc, loc);
-//        this.p = p;
-//        this.scheduler = scheduler;
-//    }
-
     public Failure(NPC npc, Location loc, Player p) {
         super(npc, loc);
         this.p = p;

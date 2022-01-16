@@ -1,7 +1,6 @@
 package lt.vu.mif.it.paskui.village.npc.entities;
 
 import lt.vu.mif.it.paskui.village.npc.NPC;
-import lt.vu.mif.it.paskui.village.npc.Role;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;

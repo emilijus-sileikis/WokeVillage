@@ -77,8 +77,6 @@ public class DataManager {
         dataConfig.set(npcData + ".world", npc.getLoc().getWorld().getName());
         dataConfig.set(npcData + ".role", npc.role.toString());
         dataConfig.set(npcData + ".personality", npc.personality.toString());
-//        this.dataConfig.set(npcData + ".tex", "");
-//        this.dataConfig.set(npcData + ".signature", "");
         saveConfig();
     }
 
