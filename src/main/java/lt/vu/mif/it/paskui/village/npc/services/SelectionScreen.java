@@ -184,19 +184,6 @@ public class SelectionScreen implements InventoryHolder {
         inv.setItem(inv.getSize() - 1, item);
     }
 
-    public static int receiveItems(Inventory inventory, Material type, int amount) {
-        if(type == null || inventory == null)
-            return -1;
-
-        HashMap<Integer, ItemStack> retVal = inventory.addItem(new ItemStack(type,amount));
-
-        int granted = 0;
-        for(ItemStack item: retVal.values()) {
-            granted+=item.getAmount();
-        }
-        return granted;
-    }
-
     public static int removeItems(final @NotNull Inventory inventory,
                                   final @NotNull Material type,
                                   final int amount) {
