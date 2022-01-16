@@ -1,6 +1,7 @@
 package lt.vu.mif.it.paskui.village.npc;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 public class Book {
     public void createBook(Player player) {
         String nl = "\n";
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK, 1);
         BookMeta bookmeta = (BookMeta) book.getItemMeta();
-        bookmeta.setAuthor("Paskui Solutions");
-        bookmeta.setTitle("Plugin Guide");
+        bookmeta.setAuthor(ChatColor.DARK_RED + "Paskui Solutions");
+        bookmeta.setTitle((ChatColor.DARK_PURPLE + "Plugin Guide"));
         ArrayList<Component> pages = new ArrayList<>();
         pages.add(Component.text("Welcome to WokeVillage plugin guide book!" + nl + nl + "Our NPCs are here to help you whenever you need them." + nl + nl + "There are 3 variations of roles and 6 types of personalities.")); //1st page
         pages.add(Component.text("Our NPCs can be spawned as Lumberjack, Miner or Fisher." + nl + nl + "They will have their own personality as well, for instance: " + nl + nl + "hardworking, lazy, reliable, clumsy, generous or even greedy."));
