@@ -118,7 +118,7 @@ public class SelectionScreen implements InventoryHolder {
         }
     }
 
-    protected void processTrade(Player p, int cost, int goods, Material material){
+    protected void processTrade(Player p, int cost, int goods, Material material, Material destination){
         if (!p.getInventory().contains(REQUIRED_RESOURCE, cost)) {
             p.sendMessage(Component.text("You lack the required resources.").color(NamedTextColor.RED));
             p.closeInventory();
@@ -139,14 +139,15 @@ public class SelectionScreen implements InventoryHolder {
 
         workDuration = 40; //Delete this after testing
         //Double dist = this.npc.distanceTo(material);
-        this.npc.moveTo(workDuration, material);
+        this.npc.moveTo(workDuration, destination);
 
         //failure check
         //long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
         if(randomInt(0, 100) < failChance) {
             new Failure(npc, loc, p).runTaskLater(workDuration * 20L);
         } else {
-            new ReceiveGoods(this.npc, loc, p, material, goods).runTaskTimer((workDuration * 20L) + 80L, 20L);
+            int id = this.npc.getEntity().getEntityId();
+            new ReceiveGoods(this.npc, loc, p, material, goods, id).runTaskTimer((workDuration * 20L) + 80L, 20L);
         }
         p.closeInventory();
     }

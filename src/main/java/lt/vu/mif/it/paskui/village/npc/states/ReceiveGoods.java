@@ -17,6 +17,7 @@ import java.util.Map;
 public class ReceiveGoods extends NPCLocState {
     private final Player p;
     private final ItemStack itemReceived;
+    private final int id;
 
     /**
      * Bukkit task for transferring collected goods to player that
@@ -27,15 +28,16 @@ public class ReceiveGoods extends NPCLocState {
      * @param material  type of item to give to player.
      * @param goodCount count of goods
      */
-    public ReceiveGoods(NPC npc, Location loc, Player p, Material material, int goodCount) {
+    public ReceiveGoods(NPC npc, Location loc, Player p, Material material, int goodCount, int id) {
         super(npc, loc);
         this.p = p;
         this.itemReceived = new ItemStack(material, goodCount);
+        this.id = id;
     }
 
     @Override
     public void run() {
-        if (npc.getEntity().getVelocity().getZ() == 0 && npc.getEntity().getVelocity().getX() == 0) {
+        if (npc.getEntity().getEntityId() == id && npc.getEntity().getVelocity().getZ() == 0 && npc.getEntity().getVelocity().getX() == 0) {
             Map<Integer, ItemStack> leftItems = p.getInventory().addItem(itemReceived);
             p.updateInventory();
             for (ItemStack items : leftItems.values()) {

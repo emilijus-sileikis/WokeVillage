@@ -118,10 +118,10 @@ public class CustomVillager extends Villager implements NPCEntity {
     /**
      * Makes the NPC move to the desired block.
      * @param timeElapsed time for collecting resources.
-     * @param material    material to find and collect.
+     * @param destination material to find and collect.
      */
-    public void moveTo(final int timeElapsed, Material material) {
-        new Check(npc, material, this, timeElapsed).runTaskLater(20);
+    public void moveTo(final int timeElapsed, Material destination) {
+        new Check(npc, destination, this, timeElapsed).runTaskLater(20);
     }
 
     /**

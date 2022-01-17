@@ -60,15 +60,15 @@ public class MinerSelectionScreen extends SelectionScreen {
         switch (item) {
             case STONE_PICKAXE:
                 MinerLootTable treasureM = MinerLootTable.fromInt(randomInt(0, 1));
-                processTrade(player, prices[0], treasureM.getGoods(), treasureM.getItem());
+                processTrade(player, prices[0], treasureM.getGoods(), treasureM.getItem(), null);
                 break;
             case IRON_PICKAXE:
                 treasureM = MinerLootTable.fromInt(randomInt(1, 2));
-                processTrade(player, prices[1], treasureM.getGoods(), treasureM.getItem());
+                processTrade(player, prices[1], treasureM.getGoods(), treasureM.getItem(), null);
                 break;
             case WOODEN_PICKAXE:
                 treasureM = MinerLootTable.fromInt(randomInt(2, 3));
-                processTrade(player, prices[2], treasureM.getGoods(), treasureM.getItem());
+                processTrade(player, prices[2], treasureM.getGoods(), treasureM.getItem(), null);
                 break;
         }
 

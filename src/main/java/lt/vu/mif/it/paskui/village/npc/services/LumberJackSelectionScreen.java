@@ -64,17 +64,17 @@ public class LumberJackSelectionScreen extends SelectionScreen {
                 LumberjackLootTable loot = ItemRandomizer.getRandomItem(
                         LumberjackLootTable.values(), 0, 5
                 );
-                processTrade(player, prices[0], loot.getGoods(), loot.getItem());
+                processTrade(player, prices[0], loot.getGoods(), loot.getItem(), loot.getItem());
             }
             case APPLE -> {
                 Material apple = Material.APPLE;
-                processTrade(player, prices[1], 64, apple);
+                processTrade(player, prices[1], 64, apple, null);
             }
             case OAK_SAPLING -> {
                 LumberjackLootTable loot = ItemRandomizer.getRandomItem(
                         LumberjackLootTable.values(), 5, 10
                 );
-                processTrade(player, prices[2], loot.getGoods(), loot.getItem());
+                processTrade(player, prices[2], loot.getGoods(), loot.getItem(), null);
             }
         }
 
