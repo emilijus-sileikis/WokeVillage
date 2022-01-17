@@ -145,4 +145,6 @@ public interface NPCEntity {
      * Interface for setting entities hand item;
      */
     void setHandItem(ItemStack item);
+
+    void resetSpeed();
 }

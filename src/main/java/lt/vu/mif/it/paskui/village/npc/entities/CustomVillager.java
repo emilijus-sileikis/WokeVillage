@@ -135,9 +135,7 @@ public class CustomVillager extends Villager implements NPCEntity {
      * @param material - required material.
      */
     public double distanceTo(Material material) {
-        //Block block = npc.searchMaterials(material);
-        SearchMaterials search = new SearchMaterials(npc, npc.getLoc());
-        Block block = search.searchMaterials(material);
+        Block block = SearchMaterials.search(material, npc);
 
         if (block == null) {
             return 0;
@@ -223,6 +221,10 @@ public class CustomVillager extends Villager implements NPCEntity {
     public void setName(net.minecraft.network.chat.Component name) {
         this.setCustomName(name);
     }
+
+    public void resetSpeed() { Objects.requireNonNull(this.getAttribute(Attributes.MOVEMENT_SPEED))
+            .setBaseValue(0.5F); }
+
 
     @Override
     protected void customServerAiStep() {
@@ -332,20 +334,5 @@ public class CustomVillager extends Villager implements NPCEntity {
                 this.level.getDayTime(),
                 this.level.getGameTime()
         );
-    }
-
-    /**
-     * To add basic MobGoals to {@link CustomVillager}.
-     */
-    public void initMobGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
-        //this.goalSelector.addGoal(1, new MoveTowardsRestrictionGoal(this, 0.5));
-        //this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.5));
-        //this.goalSelector.addGoal(3, new RandomLookAroundGoal(this));
-        //this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, LivingEntity.class, 8.0F));
-        //this.goalSelector.addGoal(5, new HurtByTargetGoal(this));
-        //this.goalSelector.addGoal(7, new TryFindWaterGoal(this));
-        //this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 5, true));
     }
 }

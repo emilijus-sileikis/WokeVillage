@@ -55,6 +55,7 @@ public class ReceiveGoods extends NPCLocState {
             npc.setKillable();
             npc.setCollidable(true);
             npc.itemReset();
+            npc.resetSpeed();
             this.cancel();
         }
     }

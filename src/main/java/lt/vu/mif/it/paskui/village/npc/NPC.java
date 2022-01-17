@@ -185,4 +185,6 @@ public class NPC {
     public void setGoodsHand() {
         npcEntity.setHandItem(new ItemStack(role.goodsCosmetic));
     }
+
+    public void resetSpeed() { npcEntity.resetSpeed(); }
 }

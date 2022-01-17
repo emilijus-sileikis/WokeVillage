@@ -17,7 +17,6 @@ public class Check extends NPCLocState {
     private final CustomVillager villager;
     private final Material material;
     private final int timeElapsed;
-    SearchMaterials search = new SearchMaterials(npc, loc);
 
     public Check(NPC npc, Material material, CustomVillager villager, int timeElapsed) {
         super(npc, npc.getLoc());
@@ -33,8 +32,7 @@ public class Check extends NPCLocState {
         this.npc.setWorkHand();
 
         villager.removeBrain();
-        //Block block = npc.searchMaterials(material);
-        Block block = search.searchMaterials(material);
+        Block block = SearchMaterials.search(material, npc);
         villager.getBrain().addActivity(Activity.CORE, ImmutableList.of(
                 Pair.of(0, new Swim(0.8f)))
         );
@@ -55,14 +53,14 @@ public class Check extends NPCLocState {
             double dist = villager.distanceTo(material); //10 blocks ~= 10 seconds
 
             new Chop(this.npc, villager, material, block).runTaskTimer(
-                    40 + ((long)dist * 20L),
-                    (timeElapsed * 20L) / 7
+                    40L + ((long)dist * 20L),
+                    (40L)
             );
 
-            new Pause(npc, this.loc).runTaskLater(timeElapsed * 20L);
+            new Pause(npc, this.loc, villager).runTaskLater(timeElapsed * 20L);
         }
         else {
-            new Move(npc, this.loc, timeElapsed).runTaskLater(40);
+            new Move(npc, this.loc, timeElapsed, villager).runTaskLater(40);
         }
     }
 }

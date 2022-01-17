@@ -137,12 +137,10 @@ public class SelectionScreen implements InventoryHolder {
         p.updateInventory();
         p.sendMessage(Component.text("You have bought villagers services!").color(NamedTextColor.GREEN));
 
-        workDuration = 40; //Delete this after testing
-        //Double dist = this.npc.distanceTo(material);
+        workDuration = 40; //Implementation for demo purposes
         this.npc.moveTo(workDuration, destination);
 
         //failure check
-        //long delay = (timeElapsed * 20L) + (dist.longValue() * 40);
         if(randomInt(0, 100) < failChance) {
             new Failure(npc, loc, p).runTaskLater(workDuration * 20L);
         } else {
