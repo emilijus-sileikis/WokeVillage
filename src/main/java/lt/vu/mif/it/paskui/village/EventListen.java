@@ -87,14 +87,20 @@ public class EventListen implements Listener {
         int rng = SelectionScreen.randomInt(1, 4);
         if (event.getEntity() instanceof Villager && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CURED && nitwit) {
             event.getEntity().remove();
-            String name = NPCNames.getRandomName().getName() + " The " + Role.getRandomRole().toStringWithCapInitial();
-            NPC npc = npcManager.createNPC(name, event.getLocation(), Role.getRandomRole(), Personality.getRandomPersonality());
+            Role role = Role.getRandomRole();
+            Personality pers = Personality.getRandomPersonality();
+            String name = NPCNames.getRandomName().getName();
+            String fullname = name + " The " + role;
+            NPC npc = npcManager.createNPC(fullname, event.getLocation(), role, pers);
             if (npc != null) { dataManager.writeData(npc, npc.id); }
         }
         else if (event.getEntity() instanceof Villager && event.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CURED && rng == 1) {
             event.getEntity().remove();
-            String name = NPCNames.getRandomName().getName() + " The " + Role.getRandomRole().toStringWithCapInitial();
-           NPC npc = npcManager.createNPC(name, event.getLocation(), Role.getRandomRole(), Personality.getRandomPersonality());
+            Role role = Role.getRandomRole();
+            Personality pers = Personality.getRandomPersonality();
+            String name = NPCNames.getRandomName().getName();
+            String fullname = name + " The " + role;
+            NPC npc = npcManager.createNPC(fullname, event.getLocation(), role, pers);
             if (npc != null) { dataManager.writeData(npc, npc.id); }
         }
     }
